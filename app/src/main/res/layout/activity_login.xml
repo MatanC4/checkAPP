@@ -7,7 +7,9 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.matka.check.LoginActivity">
+    tools:context="com.example.matka.check.LoginActivity"
+    android:background="@drawable/bgimage"
+    >
 
     <TextView
         android:layout_width="match_parent"
@@ -19,7 +21,42 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:id="@+id/fb_login_id"
-        android:layout_centerInParent="true"></com.facebook.login.widget.LoginButton>
+        android:layout_alignBottom="@+id/text_view"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="109dp"></com.facebook.login.widget.LoginButton>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="CHECK"
+        android:id="@+id/title"
+        android:textSize="60dp"
+        android:textColor="#555653"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="ACHIEVE MORE"
+        android:id="@+id/welcome_description"
+        android:layout_marginTop="23dp"
+        android:textColor="#555653"
+        android:layout_below="@+id/title"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="23dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Anonymous login"
+        android:id="@+id/button"
+        android:layout_alignTop="@+id/fb_login_id"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp" />
 
 
 </RelativeLayout>

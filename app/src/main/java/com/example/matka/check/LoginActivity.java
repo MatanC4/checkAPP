@@ -23,14 +23,26 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        fbConnect();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode,resultCode,data);
+    }
+
+
+    public void fbConnect(){
         loginButton =  (LoginButton)findViewById(R.id.fb_login_id);
         textview = (TextView)findViewById(R.id.text_view);
         callbackManager = CallbackManager.Factory.create();
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                textview.setText("Success + /n" +
-                        loginResult.getAccessToken());
+                textview.setText("Success + \n" +
+                        loginResult.getRecentlyGrantedPermissions() + "\n" );
+
             }
 
             @Override
@@ -44,10 +56,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode,resultCode,data);
     }
 }
