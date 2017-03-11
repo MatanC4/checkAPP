@@ -3,6 +3,8 @@ package com.example.matka.check;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.facebook.CallbackManager;
@@ -18,10 +20,12 @@ public class LoginActivity extends AppCompatActivity {
     LoginButton loginButton;
     CallbackManager callbackManager;
     TextView textview;
+    Button anonymousLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.requestWindowFeature(getWindow().FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
         fbConnect();
 
@@ -35,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void fbConnect(){
         loginButton =  (LoginButton)findViewById(R.id.fb_login_id);
+        anonymousLogin = (Button)findViewById(R.id.anonymous_login);
         textview = (TextView)findViewById(R.id.text_view);
         callbackManager = CallbackManager.Factory.create();
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -55,7 +60,11 @@ public class LoginActivity extends AppCompatActivity {
                 textview.setText("Error occured");
             }
         });
+        anonymousLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-
+            }
+        });
     }
 }
