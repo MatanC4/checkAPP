@@ -1,8 +1,10 @@
 package com.example.matka.check;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,11 +18,13 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
 public class LoginActivity extends AppCompatActivity {
+    private final String TAG = "Login Activity";
 
-    LoginButton loginButton;
-    CallbackManager callbackManager;
-    TextView textview;
-    Button anonymousLogin;
+    private LoginButton loginButton;
+    private CallbackManager callbackManager;
+    private TextView textview;
+    private Button anonymousLogin;
+    private Intent mainScreenIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     public void fbConnect(){
+        mainScreenIntent = new Intent(this,MainScreenActivity.class );
         loginButton =  (LoginButton)findViewById(R.id.fb_login_id);
         anonymousLogin = (Button)findViewById(R.id.anonymous_login);
         textview = (TextView)findViewById(R.id.text_view);
@@ -47,7 +52,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 textview.setText("Success + \n" +
                         loginResult.getRecentlyGrantedPermissions() + "\n" );
-
+                try{
+                    startActivity(mainScreenIntent);
+                }catch (Exception e){
+                }
             }
 
             @Override
@@ -63,7 +71,11 @@ public class LoginActivity extends AppCompatActivity {
         anonymousLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                try{
+                    startActivity(mainScreenIntent);
+                }catch (Exception e){
+                    Log.i(TAG, e.getMessage());
+                }
             }
         });
     }
