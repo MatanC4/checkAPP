@@ -15,10 +15,12 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
     private CategoriesListView categoriesListView;
+    private UpNextListView upNextListView;
 
-    public CollectionPagerAdapter(FragmentManager fm , CategoriesListView categoriesListView) {
+    public CollectionPagerAdapter(FragmentManager fm , CategoriesListView categoriesListView , UpNextListView upNextListView) {
         super(fm);
         this.categoriesListView = categoriesListView;
+        this.upNextListView = upNextListView;
     }
 
     @Override
@@ -27,8 +29,10 @@ public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
                 return this.categoriesListView;
-             //case 1:
-               //  return this.categoriesListView;
+
+             case 1:
+                 return this.upNextListView;
+
             default:
                 return null;
         }
@@ -36,7 +40,7 @@ public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount () {
-        return 1;
+        return 2;
     }
 
     @Override
@@ -44,7 +48,7 @@ public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
         if (position == 0)
             return ("CATEGORIES");
         else
-            return ("Map View");
+            return ("UP NEXT");
     }
 }
 

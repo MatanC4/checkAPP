@@ -6,9 +6,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainScreenActivity extends FragmentActivity implements CategoriesListView.OnFragmentInteractionListener {
+public class MainScreenActivity extends FragmentActivity implements CategoriesListView.OnFragmentInteractionListener, UpNextListView.OnFragmentInteractionListener {
 
     private CategoriesListView categoriesListView;
+    private UpNextListView upNextListView;
     CollectionPagerAdapter collectionPagerAdapter;
     ViewPager mViewPager;
 
@@ -17,12 +18,13 @@ public class MainScreenActivity extends FragmentActivity implements CategoriesLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
         categoriesListView = CategoriesListView.newInstance();
+        upNextListView = UpNextListView.newInstance();
         bindUi();
     }
 
 
     private void bindUi() {
-        collectionPagerAdapter =  new CollectionPagerAdapter(getSupportFragmentManager(), categoriesListView);
+        collectionPagerAdapter =  new CollectionPagerAdapter(getSupportFragmentManager(), categoriesListView ,upNextListView);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(collectionPagerAdapter);
 

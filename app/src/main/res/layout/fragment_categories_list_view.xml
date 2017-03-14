@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="fill"
-        android:background="#80b5e5e3"
+        android:background="@color/com_facebook_messenger_blue"
         />
 
 </FrameLayout>
