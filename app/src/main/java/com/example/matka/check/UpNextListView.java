@@ -1,9 +1,5 @@
 package com.example.matka.check;
 
-/**
- * Created by matka on 11/03/17.
- */
-
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,15 +13,14 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 
-//import android.app.Fragment;
+
+public class UpNextListView extends Fragment {
 
 
-public class CategoriesListView extends Fragment {
-
-    private ArrayList<String> recordList;
+    private ArrayList upNextList;
     private OnFragmentInteractionListener mListener;
 
-    public CategoriesListView() {
+    public UpNextListView() {
         // Required empty public constructor
     }
 
@@ -34,7 +29,8 @@ public class CategoriesListView extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_categories_list_view, container, false);
+        // Inflate the layout for this fragment
+        View view =  inflater.inflate(R.layout.fragment_up_next_list_view, container, false);
         //ScoreTable table;
         try{
             //table = SharedPreferencesHandler.getData(getContext());
@@ -43,23 +39,25 @@ public class CategoriesListView extends Fragment {
             //table = new ScoreTable();
         }
 
-        recordList = new ArrayList<>();
-        recordList.add("MOVIES");
-        recordList.add("MOVIES");
-        recordList.add("MOVIES");
-        recordList.add("MOVIES");
+        upNextList = new ArrayList<>();
+        upNextList.add("first");
+        upNextList.add("second");
+        upNextList.add("third");
+
+
 
 
         // }
-        ListView listView = (ListView) view.findViewById(R.id.category_list_view);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_selectable_list_item,
-                recordList);
+        ListView listView = (ListView) view.findViewById(R.id.up_next_list_view_ListView);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,
+                upNextList);
 
         listView.setAdapter(arrayAdapter);
         return view;
+
     }
 
-
+    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -83,8 +81,8 @@ public class CategoriesListView extends Fragment {
         mListener = null;
     }
 
-    public static CategoriesListView newInstance() {
-        CategoriesListView fragment = new CategoriesListView();
+    public static UpNextListView newInstance()  {
+        UpNextListView fragment = new UpNextListView();
         return fragment;
     }
 
