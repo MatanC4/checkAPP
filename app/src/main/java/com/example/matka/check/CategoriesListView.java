@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class CategoriesListView extends Fragment {
 
-    private ArrayList<String> recordList;
+    private ArrayList<String> categoryList;
     private OnFragmentInteractionListener mListener;
 
     public CategoriesListView() {
@@ -43,17 +43,26 @@ public class CategoriesListView extends Fragment {
             //table = new ScoreTable();
         }
 
-        recordList = new ArrayList<>();
-        recordList.add("MOVIES");
-        recordList.add("MOVIES");
-        recordList.add("MOVIES");
-        recordList.add("MOVIES");
+
+
+
+        categoryList = new ArrayList<String>();
+        categoryList.add("MOVIES");
+        categoryList.add("RESTAURANTS");
+        categoryList.add("TRIPS");
+        categoryList.add("SELF DEVELOPMENT");
+        categoryList.add("BOOKS");
+        categoryList.add("MUSIC");
+        categoryList.add("GENERAL");
+
 
 
         // }
         ListView listView = (ListView) view.findViewById(R.id.category_list_view);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_selectable_list_item,
-                recordList);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity()
+                ,R.layout.custom_category_item_layout,R.id.category_list_item ,
+                categoryList);
+
 
         listView.setAdapter(arrayAdapter);
         return view;
