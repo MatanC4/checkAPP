@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.matka.check.MainScreenActivity"
+    tools:context=".MainScreen.MainScreenActivity"
     android:background="#383b3f">
 
 
