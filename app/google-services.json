@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "708254261206",
+    "firebase_url": "https://check-196f9.firebaseio.com",
+    "project_id": "check-196f9",
+    "storage_bucket": "check-196f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708254261206:android:aa7e484cd702c0b0",
+        "android_client_info": {
+          "package_name": "com.example.matka.check"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "708254261206-k58v1grta91mu8e6d625tkgq4i2g2bbl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.matka.check",
+            "certificate_hash": "852ee7ac3332d12139735c37fd46545ab66cdb90"
+          }
+        },
+        {
+          "client_id": "708254261206-1r4nk49t5it6kdvtt2i659q0fdd9tlsu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8Ght3VdJtmBT3H4V3TF67GMB3d3nGYfY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "708254261206-1r4nk49t5it6kdvtt2i659q0fdd9tlsu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

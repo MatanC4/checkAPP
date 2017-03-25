@@ -1,26 +1,17 @@
 package bl.entities;
 
-import java.util.ArrayList;
-
 /**
  * Created by Daniel_m on 11/03/2017.
  */
 
-public class Category {
+public class Category implements Comparable<Category> {
 
     private CategoryName name;
-    private String apiURI;
-    private ArrayList<Event> events;
+    private String apiKey;
 
-    public Category(CategoryName name, String apiURI) {
+    public Category(CategoryName name, String apiKey) {
         this.name = name;
-        this.apiURI = apiURI;
-        events = new ArrayList<>();
-    }
-
-    public void addEvent(Event event) throws Exception{
-        if(event.getCategory().equals(this))
-        events.add(event);
+        this.apiKey = apiKey;
     }
 
     @Override
@@ -30,6 +21,30 @@ public class Category {
         if (o == null || getClass() != o.getClass())
             return false;
         Category category = (Category) o;
-        return name.equals(category.name);
+        return name == category.name;
     }
+
+    @Override
+    public int compareTo(Category category) {
+        if(this.equals(category))
+            return 0;
+        return this.name.toString().compareTo(category.name.toString());
+    }
+
+    public CategoryName getName() {
+        return name;
+    }
+
+    public void setName(CategoryName name) {
+        this.name = name;
+    }
+
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
 }

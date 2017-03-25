@@ -6,7 +6,7 @@ import java.util.Calendar;
  * Created by Daniel_m on 11/03/2017.
  */
 
-public class Event {
+public class Event implements Comparable<Event>{
 
     private long id;
     private String name;
@@ -18,11 +18,15 @@ public class Event {
     private Calendar dueDate;
     private Amendment amendment;
 
+    public Event() {
+
+    }
     public Event(long id) {
         this.id = id;
     }
 
-    public Event(String name, String imageURL, String description, Category category, EventStatus status, Calendar dueDate) {
+    public Event(long id,String name, String imageURL, String description, Category category, EventStatus status, Calendar dueDate) {
+        this(id);
         this.name = name;
         this.imageURL = imageURL;
         this.description = description;
@@ -102,5 +106,16 @@ public class Event {
 
     public void setAmendment(Amendment amendment) {
         this.amendment = amendment;
+    }
+
+    @Override
+    public int compareTo(Event event) {
+        if(this.category.equals(event.getCategory())){
+            if(this.getStatus()==this.getStatus()) {
+                return (this.getCreationDate().compareTo(event.creationDate));
+            }
+            return this.getStatus().ordinal()-event.getStatus().ordinal();
+        }
+        return category.compareTo(event.getCategory());
     }
 }
