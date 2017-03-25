@@ -42,7 +42,8 @@
         <activity
             android:name=".Category.CategoryActivity"
             android:label="@string/title_activity_category"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".APIs.MoviesApi"></activity>
     </application>
 
 </manifest>
