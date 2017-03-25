@@ -33,6 +33,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     testCompile 'junit:junit:4.12'
     compile 'com.google.android.gms:play-services-appindexing:9.8.0'
+    compile project(':volley')
 }
 
 apply plugin: 'com.google.gms.google-services'

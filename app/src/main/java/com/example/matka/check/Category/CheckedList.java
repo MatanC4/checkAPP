@@ -1,6 +1,5 @@
 package com.example.matka.check.Category;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.matka.check.APIs.MoviesApi;
 import com.example.matka.check.R;
 
 import java.util.ArrayList;
@@ -66,7 +66,8 @@ public class CheckedList extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                Intent intent  = new Intent(getContext() , MoviesApi.class);
+                startActivity(intent);
             }
         });
         return view;
