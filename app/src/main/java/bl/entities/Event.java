@@ -6,7 +6,7 @@ import java.util.Calendar;
  * Created by Daniel_m on 11/03/2017.
  */
 
-public class Event implements Comparable<Event>{
+public class Event {
 
     private long id;
     private String name;
@@ -84,6 +84,11 @@ public class Event implements Comparable<Event>{
         this.description = description;
     }
 
+    public void addToDescription(String addedText , AdditionToDescription type){
+
+        this.description += "\n" + type.toString() + " " +  addedText + ".";
+    }
+
     public EventStatus getStatus() {
         return status;
     }
@@ -106,6 +111,11 @@ public class Event implements Comparable<Event>{
 
     public void setAmendment(Amendment amendment) {
         this.amendment = amendment;
+    }
+
+    @Override
+    public String toString(){
+      return this.name + "\n" + this.description;
     }
 
     @Override

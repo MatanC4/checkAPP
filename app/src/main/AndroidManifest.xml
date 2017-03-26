@@ -48,7 +48,9 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".APIs.MoviesApi"></activity>
+        <activity android:name=".APIs.MoviesApi" />
+        <activity android:name=".APIs.APIresActivity" />
+        <activity android:name=".Event.EventActivity"></activity>
     </application>
 
 </manifest>
