@@ -2,7 +2,9 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
+    //23
     buildToolsVersion '23.0.2'
+    //
 
     defaultConfig {
         applicationId "com.example.matka.check"
@@ -26,9 +28,11 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
+    compile project(':volley')
     compile 'com.android.support:appcompat-v7:23.4.0'
     compile 'com.facebook.android:facebook-android-sdk:[4,5)'
     compile 'com.android.support:recyclerview-v7:23.4.0'
     compile 'com.android.support:design:23.4.0'
-    compile project(':volley')
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
 }

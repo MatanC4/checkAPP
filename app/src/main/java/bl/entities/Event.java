@@ -80,6 +80,11 @@ public class Event {
         this.description = description;
     }
 
+    public void addToDescription(String addedText , AdditionToDescription type){
+
+        this.description += "\n" + type.toString() + " " +  addedText + ".";
+    }
+
     public EventStatus getStatus() {
         return status;
     }
@@ -102,5 +107,10 @@ public class Event {
 
     public void setAmendment(Amendment amendment) {
         this.amendment = amendment;
+    }
+
+    @Override
+    public String toString(){
+      return this.name + "\n" + this.description;
     }
 }

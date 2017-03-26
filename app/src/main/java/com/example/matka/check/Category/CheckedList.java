@@ -12,7 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.example.matka.check.APIs.MoviesApi;
+import com.example.matka.check.APIs.APIresActivity;
 import com.example.matka.check.R;
 
 import java.util.ArrayList;
@@ -28,7 +28,6 @@ public class CheckedList extends Fragment {
     private ArrayList<String> checkedItems;
     private OnFragmentInteractionListener mListener;
     private Intent intent;
-
     public CheckedList() {
         // Required empty public constructor
     }
@@ -66,8 +65,9 @@ public class CheckedList extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent  = new Intent(getContext() , MoviesApi.class);
+                Intent intent  = new Intent(getContext() , APIresActivity.class);
                 startActivity(intent);
+
             }
         });
         return view;

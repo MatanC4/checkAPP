@@ -43,7 +43,9 @@
             android:name=".Category.CategoryActivity"
             android:label="@string/title_activity_category"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".APIs.MoviesApi"></activity>
+        <activity android:name=".APIs.MoviesApi" />
+        <activity android:name=".APIs.APIresActivity" />
+        <activity android:name=".Event.EventActivity"></activity>
     </application>
 
 </manifest>
