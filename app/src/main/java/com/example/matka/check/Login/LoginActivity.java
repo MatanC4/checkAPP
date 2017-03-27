@@ -128,8 +128,9 @@ public class LoginActivity extends AppCompatActivity {
                                 try {
                                     String birthday = object.getString("birthday");
                                     JSONObject location = (JSONObject)object.get("location");
-                                    String country = location.getString("name");
-                                    Log.d("FACEBOOK","BirthDay: " + birthday + " Location: " + country);
+                                    String locationDetails  = location.getString("name");
+                                    String[] localDetails = locationDetails.split(", ");
+                                    Log.d("FACEBOOK","BirthDay: " + birthday + " Location: ");
                                 } catch (JSONException e) {
                                     Log.d("FACEBOOK","Failed");
                                 }
