@@ -9,13 +9,14 @@ public class UserInfo {
     private int age;
     private String country;
     private String city;
-    private boolean isAnonymous = false;
+    private boolean isAnonymous = true;
 
     public UserInfo(String name, int age, String country, String city) {
         this.name = name;
         this.age = age;
         this.country = country;
         this.city = city;
+        this.isAnonymous = false;
     }
 
     public UserInfo(String country){
@@ -24,6 +25,14 @@ public class UserInfo {
     }
 
     public UserInfo(){
+    }
+
+    public boolean isAnonymous() {
+        return isAnonymous;
+    }
+
+    public void setAnonymous(boolean anonymous) {
+        isAnonymous = anonymous;
     }
 
     public String getName() {

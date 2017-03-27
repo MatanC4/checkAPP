@@ -2,10 +2,17 @@ package bl.controlers;
 
 import android.content.Context;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 
+import bl.data.DBRecord;
+import bl.data.DataListener;
+import bl.data.FireBaseHandler;
 import bl.data.SharedPreferencesHandler;
 import bl.data.UserEvents;
 import bl.entities.Amendment;
@@ -20,17 +27,69 @@ import bl.entities.UserInfo;
  * Created by Daniel_m on 14/03/2017.
  */
 
-public class AppManager {
+public class AppManager implements DataListener {
 
+    private static final int MINIMUM_RATING = 3;
     private static AppManager singleton;
     private HashMap<Category, HashMap<Long, Event>> sortedEvents;
     private HashMap<CategoryName, String> categoriesAPIKeys;
+    private HashMap<CategoryName, ArrayList<DBRecord>> suggestion;
     private UserEvents userEvents;
+    private UserInfo info;
+    private FireBaseHandler fbHandler;
+
+    public Event changeEventStatus(Context context, Event event, EventStatus status){
+        Event modifiedEvent = sortedEvents.get(event.getCategory()).get(event.getId());
+        if(event.getStatus()!=status){
+            modifiedEvent.setStatus(status);
+            if(status==EventStatus.DONE)
+                writeToFireBase(context, event);
+            saveData(context);
+        }
+        return modifiedEvent;
+    }
+
+    public ArrayList<Event> getEventsInCategory(CategoryName cName){
+        HashMap<Long,Event> eventsMap = sortedEvents.get(new Category(cName,null));
+        ArrayList<Event> events = new ArrayList<>();
+        for(Event e : eventsMap.values()){
+            events.add(e);
+        }
+        return events;
+    }
+
+    private void writeToFireBase(Context context, Event event){
+        if(info==null) {
+            info = getUserInformation(context);
+        }
+        if(!info.isAnonymous()) {
+            fbHandler.writeToFireBase(event,info);
+        }
+    }
+
+    public ArrayList<DBRecord> getSuggestionsByProfile(CategoryName categoryName, Context context) throws Exception{
+        if(info==null)
+            info = getUserInformation(context);
+        if(info.isAnonymous())
+            throw new Exception("Sorry! this service is not available to anonymous users");
+        return suggestion.get(categoryName);
+    }
+
+    private void readFromFireBase(UserInfo info) {
+        for(CategoryName cn : CategoryName.values())
+            fbHandler.readFromFireBase(cn, info);
+    }
+
 
     private AppManager(Context context){
         sortedEvents = new HashMap<>();
         categoriesAPIKeys = new HashMap<>();
+        suggestion = new HashMap<>();
         userEvents = SharedPreferencesHandler.getData(context);
+        FireBaseHandler fbHandler =  new FireBaseHandler(this);
+        UserInfo info = getUserInformation(context);
+        if(!info.isAnonymous())
+            readFromFireBase(info);
         setCategories();
         setKeys();
         getData(context);
@@ -47,7 +106,7 @@ public class AppManager {
         final boolean remove = userEvents.getEvents().remove(event);
         if(remove){
             sortedEvents.get(event.getCategory()).remove(event.getId());
-            SharedPreferencesHandler.saveData(context,userEvents);
+            saveData(context);
         }
     }
 
@@ -69,11 +128,12 @@ public class AppManager {
         long eventID = categoryName==CategoryName.GENERAL? id: SharedPreferencesHandler.getNextGeneralID(context);
         Event event = new Event(eventID, name, imageURL, description, new Category(categoryName,categoriesAPIKeys.get(categoryName)),
                 EventStatus.TODO, dueDate);
+        event.setCreationDate(calendar);
         Amendment amendment = new Amendment(amendmentType, amendmentDescription);
         event.setAmendment(amendment);
         userEvents.getEvents().add(event);
         sortedEvents.get(event.getCategory()).put(event.getId(),event);
-        SharedPreferencesHandler.saveData(context,userEvents);
+        saveData(context);
         return event;
     }
 
@@ -95,14 +155,25 @@ public class AppManager {
         }
     }
 
-    public void saveData(Context context){
+    private void saveData(Context context){
         SharedPreferencesHandler.saveData(context,userEvents);
     }
 
     private void getData(Context context){
         userEvents = SharedPreferencesHandler.getData(context);
         for(Event e : userEvents.getEvents()){
-            sortedEvents.get(e.getCategory().getName()).put(e.getId(),e);
+            sortedEvents.get(e.getCategory()).put(e.getId(),e);
         }
+    }
+
+    @Override
+    public void onDataReceived(CategoryName categoryName, ArrayList<DBRecord> records) {
+        ArrayList<DBRecord> approved = new ArrayList();
+        for(DBRecord record : records){
+            if(!sortedEvents.get(new Category(categoryName,null)).containsKey(record.getId()) && record.getRating()>=MINIMUM_RATING){
+                approved.add(record);
+            }
+        }
+        suggestion.put(categoryName,approved);
     }
 }
