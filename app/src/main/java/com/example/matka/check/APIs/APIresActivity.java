@@ -13,12 +13,15 @@ import android.widget.ListView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
+import android.content.Intent;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.matka.check.Event.EventActivity;
+import com.example.matka.check.Event.EventInfoActivity;
 import com.example.matka.check.R;
 import com.squareup.picasso.Picasso;
 
@@ -36,6 +39,7 @@ public class APIresActivity extends Activity implements OnItemClickListener , AP
     private int [] addBtnImages;
     List<RowItem> rowItems;
     ListView mylistview;
+    Intent intent;
 
     private final String BASE_URL = "https://api.themoviedb.org/3/";
     private final String API_KEY = "8a5c1fef1a13c3293e4c069fde43be81";
@@ -67,42 +71,6 @@ public class APIresActivity extends Activity implements OnItemClickListener , AP
        // titles = new String[]{"Title 1","Title2", "Title 3","Title 1","Title2", "Title 3","Title 1","Title2"};
 
 
-
-       /* eventImages =  new  int[]{
-                R.drawable.millennial_explorers,
-                R.drawable.millennial_explorers,
-                R.drawable.millennial_explorers,
-                R.drawable.millennial_explorers,
-                R.drawable.millennial_explorers,
-                R.drawable.millennial_explorers,
-                R.drawable.millennial_explorers,
-                R.drawable.millennial_explorers
-        };**/
-
-       /* addBtnImages = new int[] {
-                R.drawable.plus_1,
-                R.drawable.plus_1,
-                R.drawable.plus_1,
-                R.drawable.plus_1,
-                R.drawable.plus_1,
-                R.drawable.plus_1,
-                R.drawable.plus_1,
-                R.drawable.plus_1
-        };**/
-
-
-
-      /**  new Thread(new Runnable() {
-            @Override
-            public void run() {
-                postAPI();
-            }
-        }).start(); **/
-
-
-
-
-
     }
 
     @Override
@@ -116,60 +84,26 @@ public class APIresActivity extends Activity implements OnItemClickListener , AP
 
 
 
-    private void getPopularMovies(String popUrl) {
-
-        jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,popUrl ,
-                null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.v("MOVIE DB API" , "RESPONSE: " + response.toString());
-                try {
-                    //JSONObject responseText = response.getJSONObject("overview");
-
-                    JSONArray movieList = response.getJSONArray("results");
-                    for (int i = 0; i<NUM_OF_RES ; i++){
-                        Event event = new Event(i);
-                        JSONObject movie = movieList.getJSONObject(i);
-                        event.setImageURL(BASE_URL_IMAGE + IMAGE_SIZE[2]+ movie.getString("poster_path"));
-                        event.setDescription(movie.getString("overview"));
-                        event.setId(movie.getInt("id"));
-                        event.addToDescription(movie.getString("release_date"), AdditionToDescription.RELEASE_DATE);
-                        event.setName(movie.getString("original_title"));
-                        event.addToDescription(movie.getString("vote_average"), AdditionToDescription.SCORE);
-                        popularMoviesList.add(event);
-                        Log.v("MOVIE NAME:" , event.toString());
-                    }
-
-                }catch (JSONException e){
-                    Log.v("JSON Parsing" , "ERROR:" + e.getLocalizedMessage());
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.v("MOVIE DB" , "ERROR: " + error.getLocalizedMessage());
-            }
-        });
-
-        Volley.newRequestQueue(this).add(jsonObjectRequest);
-    }
-
-
-
     @Override
     public void passArrayList(ArrayList<Event> popularMoviesList) {
+        Log.v("Log 3" , popularMoviesList.toString());
         for (int i = 0; i < popularMoviesList.size(); i++) {
             RowItem item = new RowItem(popularMoviesList.get(i).getName(),
                     R.drawable.millennial_explorers,
                     R.drawable.plus_1);
             rowItems.add(item);
-            Log.v("suspcted Loop", item.toString());
+
            // Picasso.with(this).load(popularMoviesList.get(i).getImageURL()).into();
         }
         mylistview = (ListView) findViewById(R.id.list_for_api_res);
         CustomAdapter adapter = new CustomAdapter(this, rowItems , popularMoviesList);
         mylistview.setAdapter(adapter);
-        mylistview.setOnItemClickListener(this);
+
+                mylistview.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            }
+        });
 
 
     }

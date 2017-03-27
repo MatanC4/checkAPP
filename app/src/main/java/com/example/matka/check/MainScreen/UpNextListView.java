@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import com.example.matka.check.R;
 
 import java.util.ArrayList;
@@ -49,14 +48,12 @@ public class UpNextListView extends Fragment {
 
 
 
-        // }
+
         ListView listView = (ListView) view.findViewById(R.id.up_next_list_view_ListView);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,
                 upNextList);
-
         listView.setAdapter(arrayAdapter);
         return view;
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event

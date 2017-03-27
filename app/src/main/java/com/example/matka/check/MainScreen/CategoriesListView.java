@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 import com.example.matka.check.Category.CategoryActivity;
@@ -64,7 +65,7 @@ public class CategoriesListView extends Fragment {
 
 
         // }
-        ListView listView = (ListView) view.findViewById(R.id.category_list_view);
+        ListView  listView = (ListView) view.findViewById(R.id.category_list_view);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity()
                 ,R.layout.custom_category_item_layout,R.id.category_list_item ,
                 categoryList);
