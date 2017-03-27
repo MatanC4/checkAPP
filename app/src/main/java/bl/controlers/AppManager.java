@@ -1,6 +1,7 @@
 package bl.controlers;
 
 import android.content.Context;
+import android.widget.ImageView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -34,6 +35,7 @@ public class AppManager implements DataListener {
     private HashMap<Category, HashMap<Long, Event>> sortedEvents;
     private HashMap<CategoryName, String> categoriesAPIKeys;
     private HashMap<CategoryName, ArrayList<DBRecord>> suggestion;
+    private HashMap<String, ImageView> images;
     private UserEvents userEvents;
     private UserInfo info;
     private FireBaseHandler fbHandler;
@@ -47,6 +49,20 @@ public class AppManager implements DataListener {
             saveData(context);
         }
         return modifiedEvent;
+    }
+
+    public ImageView getImageByKey(String key) throws Exception{
+        if(!images.containsKey(key))
+            throw new Exception("Invalid Key");
+        return images.get(key);
+    }
+    
+    public void temporarilyStoreImage(String key, ImageView image){
+        images.put(key, image);
+    }
+
+    public void removeImageFromMap(String key){
+        images.remove(key);
     }
 
     public ArrayList<Event> getEventsInCategory(CategoryName cName){
@@ -82,17 +98,22 @@ public class AppManager implements DataListener {
 
 
     private AppManager(Context context){
-        sortedEvents = new HashMap<>();
-        categoriesAPIKeys = new HashMap<>();
-        suggestion = new HashMap<>();
-        userEvents = SharedPreferencesHandler.getData(context);
+        initMaps();
+/*        userEvents = SharedPreferencesHandler.getData(context);
         FireBaseHandler fbHandler =  new FireBaseHandler(this);
         UserInfo info = getUserInformation(context);
         if(!info.isAnonymous())
-            readFromFireBase(info);
+            readFromFireBase(info);*/
         setCategories();
         setKeys();
-        getData(context);
+        //getData(context);
+    }
+
+    private void initMaps(){
+        sortedEvents = new HashMap<>();
+        categoriesAPIKeys = new HashMap<>();
+        suggestion = new HashMap<>();
+        images = new HashMap<>();
     }
 
     public AppManager getInstance(Context context){
@@ -100,6 +121,7 @@ public class AppManager implements DataListener {
             singleton = new AppManager(context);
         }
         return singleton;
+
     }
 
     public void removeEvent(Context context, Event event){
