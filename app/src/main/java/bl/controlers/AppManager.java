@@ -1,6 +1,7 @@
 package bl.controlers;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.google.firebase.database.DatabaseReference;
@@ -92,14 +93,20 @@ public class AppManager implements DataListener {
     }
 
     private void readFromFireBase(UserInfo info) {
-        for(CategoryName cn : CategoryName.values())
-            fbHandler.readFromFireBase(cn, info);
+        for(CategoryName cn : CategoryName.values()) {
+            try {
+                fbHandler.readFromFireBase(cn, info);
+            }
+            catch(Exception e){
+                Log.v("FIRE_BASE","Reading failed, Category: " +cn.toString());
+            }
+        }
     }
 
 
     private AppManager(Context context){
         initMaps();
-/*        userEvents = SharedPreferencesHandler.getData(context);
+/*      userEvents = SharedPreferencesHandler.getData(context);
         FireBaseHandler fbHandler =  new FireBaseHandler(this);
         UserInfo info = getUserInformation(context);
         if(!info.isAnonymous())
@@ -109,6 +116,10 @@ public class AppManager implements DataListener {
         //getData(context);
     }
 
+    public boolean isEventAlreadyExist(long id, CategoryName cName){
+        return sortedEvents.get(new Category(cName, null)).containsKey(id);
+    }
+
     private void initMaps(){
         sortedEvents = new HashMap<>();
         categoriesAPIKeys = new HashMap<>();
@@ -116,7 +127,7 @@ public class AppManager implements DataListener {
         images = new HashMap<>();
     }
 
-    public AppManager getInstance(Context context){
+    public static AppManager getInstance(Context context){
         if(singleton==null){
             singleton = new AppManager(context);
         }
