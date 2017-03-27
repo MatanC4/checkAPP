@@ -8,6 +8,7 @@
        android:layout_height="match_parent"
        android:id="@+id/up_next_list_view_ListView"
        android:layout_gravity="fill"
+       android:background="@drawable/greybg"
       ></ListView>
 
 </FrameLayout>

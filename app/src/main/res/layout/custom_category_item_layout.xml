@@ -14,6 +14,6 @@
         android:textSize="30dp"
         android:fontFamily="serif-monospace"
         android:textAllCaps="true"
-        android:textColor="#ECAA60"
+        android:textColor="#12294c"
         />
 </RelativeLayout>
