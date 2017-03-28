@@ -60,7 +60,10 @@ public class MainScreenActivity extends FragmentActivity implements CategoriesLi
         alarms.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+5000, operation) ;
         intent.putExtra("param", "My 2nd scheduled action");
         alarms.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+15000, operation);
+
+
     }
+
 
 
     private void bindUi() {

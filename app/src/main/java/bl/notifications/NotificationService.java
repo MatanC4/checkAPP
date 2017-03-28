@@ -12,12 +12,15 @@ import android.util.Log;
 
 import com.example.matka.check.Category.CategoryActivity;
 
+import bl.entities.CategoryName;
+
 public class NotificationService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
+
 
     @Override
     public void onCreate(){
