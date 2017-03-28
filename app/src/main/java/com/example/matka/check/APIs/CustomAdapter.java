@@ -19,12 +19,14 @@ import com.example.matka.check.Event.EventActivity;
 import com.example.matka.check.Event.EventInfoActivity;
 import com.example.matka.check.Event.EventInfoFragment;
 import com.example.matka.check.R;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import bl.controlers.AppManager;
 import bl.entities.Event;
 
 public class CustomAdapter extends BaseAdapter {
@@ -36,6 +38,8 @@ public class CustomAdapter extends BaseAdapter {
     private int imageIdToPassToIntent;
     private ViewHolder holder;
     private ByteArrayOutputStream byteArrayOutputStream;
+    private AppManager appManager;
+    private int positionOfEvent;
 
     CustomAdapter(Context context, List<RowItem> rowItems, ArrayList<Event> arrayList) {
         this.context = context;
@@ -66,9 +70,10 @@ public class CustomAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
          holder = null;
+        appManager = AppManager.getInstance(CustomAdapter.this.context);
 
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -80,9 +85,11 @@ public class CustomAdapter extends BaseAdapter {
 
             holder.eventImage = (ImageView) convertView.findViewById(R.id.event_image);
             Picasso.with(context).load(arrayList.get(position).getImageURL()).into(holder.eventImage);
+            appManager.temporarilyStoreImage(arrayList.get(position).getImageURL(),holder.eventImage);
+
 
             //prepare image to be passed in intent
-           /* Bitmap bitmap = (((BitmapDrawable)holder.eventImage.getDrawable())).getBitmap();
+           /*Bitmap bitmap = (((BitmapDrawable)holder.eventImage.getDrawable())).getBitmap();
             ByteArrayOutputStream byteArrayOutputStream  = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG , 50 ,byteArrayOutputStream);**/
 
@@ -91,7 +98,7 @@ public class CustomAdapter extends BaseAdapter {
                     .findViewById(R.id.event_name);
             holder.addBtn = (ImageButton) convertView
                     .findViewById(R.id.add_btn);
-            RowItem row_pos = rowItems.get(position);
+            final RowItem row_pos = rowItems.get(position);
             //holder.eventImage.setImageResource(row_pos.getEventImageId());
             holder.title.setText(row_pos.getTitle());
             holder.addBtn.setImageResource(row_pos.getAddButtonImage());
@@ -108,7 +115,9 @@ public class CustomAdapter extends BaseAdapter {
                 @Override
                 public void onClick(View view) {
                     intent = new Intent(CustomAdapter.this.context , EventInfoActivity.class);
-                    //intent.putExtra("ImageViewID" ,  CustomAdapter.this.byteArrayOutputStream.toByteArray());
+                    Gson gson = new Gson();
+                    String event = gson.toJson(arrayList.get(position));
+                    intent.putExtra("EventObj",event);
                     CustomAdapter.this.context.startActivity(intent);
                 }
             });

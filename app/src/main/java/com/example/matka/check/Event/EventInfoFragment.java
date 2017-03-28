@@ -1,6 +1,7 @@
 package com.example.matka.check.Event;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -10,22 +11,26 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation;
 
 import com.example.matka.check.R;
+import com.squareup.picasso.Picasso;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link EventInfoFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link EventInfoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.Timer;
+
+import bl.controlers.AppManager;
+import bl.entities.Event;
+import bl.entities.EventStatus;
+
+
 public class EventInfoFragment extends android.support.v4.app.Fragment {
     private ImageView imageView;
     private TextView title;
     private TextView description;
     private Button addBtn;
+    private AppManager appManager;
+    private Event event;
 
     public ImageView getImageView() {
         return imageView;
@@ -42,6 +47,14 @@ public class EventInfoFragment extends android.support.v4.app.Fragment {
     }
 
 
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
     // TODO: Rename and change types and number of parameters
     public static EventInfoFragment newInstance() {
         EventInfoFragment fragment = new EventInfoFragment();
@@ -55,15 +68,56 @@ public class EventInfoFragment extends android.support.v4.app.Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+        appManager = AppManager.getInstance(this.getContext());
         View view = inflater.inflate(R.layout.fragment_event_info, container, false);
         imageView = (ImageView)view.findViewById(R.id.event_bg_image);
         title = (TextView) view.findViewById(R.id.event_title_event_info_screen);
         description = (TextView) view.findViewById(R.id.desc_textview);
         addBtn = (Button)view.findViewById(R.id.add_event_button);
+        showButtonsAccordingToEventStatus(view ,event.getStatus());
+
+        try {
+
+            Picasso.with(this.getContext()).load(event.getImageURL()).into(imageView);
+            //imageView  = appManager.getImageByKey(event.getImageURL()).
+           // imageView = appManager.getImageByKey(event.getImageURL());
+            title.setText(event.getName());
+            description.setText(event.getDescription());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+
 
         return view;
+    }
+
+    private void showButtonsAccordingToEventStatus(View view , EventStatus eventStaus) {
+
+        //addBtn.setVisibility(View.GONE);
+        if(true){
+
+            addBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //appManager.addEvent( )
+                    addBtn.setText("EVENT ADDED TO LIST");
+                    Animation animFadeOut = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_out);
+                    animFadeOut.setDuration(2000);
+                    addBtn.setAnimation(animFadeOut);
+                    addBtn.setVisibility(View.GONE);
+                }
+            });
+        }
+        else if(eventStaus== EventStatus.VIEW){
+
+        }
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

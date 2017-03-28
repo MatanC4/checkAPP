@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#4e5a6d">
+        android:background="#4e5a3A">
 
 
             <android.support.v7.widget.Toolbar
@@ -24,7 +24,6 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@android:mipmap/sym_def_app_icon"
                 android:id="@+id/event_bg_image"
                 />
         <RelativeLayout
@@ -43,30 +42,17 @@
             android:textColor="#eff1f4"
              />
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/event_title_event_info_screen">
 
-
-        </ScrollView>
-            <Button
-                android:layout_width="240dp"
-                android:layout_height="wrap_content"
-                android:text="ADD TO LIST"
-                android:id="@+id/add_event_button"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentEnd="true"
-                android:background="#22c13d"
-                android:textColor="#eff1f4"
-                />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="overview:In the near future, a weary Logan cares for an ailing Professor X in a hide out on the Mexican border. But Logan's attempts to hide from the world and his legacy are up-ended when a young mutant arrives, being pursued by dark forces."
+                android:text="overview:In the near future, a weary Logan cares for an ailing Professor X in a hide out on the Mexican border. But Logan's attempts
+                to hide from the world and his legacy are up-ended when a young mutant arrives, being
+                 pursued by dark forces.view:In the near future,
+                 a weary Logan cares for an ailing Professor X in a hide out on the Mexican
+                  border. But Logan's attempts to hide from the wor view:In the near future, a weary Logan cares for an ailing Professor X in a hide out on the Mexican border. But Logan's attempts to hide from the wor"
                 android:id="@+id/desc_textview"
                 android:layout_gravity="left"
                 android:paddingTop="3dp"
@@ -76,6 +62,18 @@
                 android:textColor="#eff1f4"
                 android:layout_centerVertical="true"
                 android:layout_alignParentStart="true" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="ADD TO LIST"
+                android:id="@+id/add_event_button"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:background="#22c13d"
+                android:textColor="#eff1f4"
+                />
 
         </RelativeLayout>
         </LinearLayout>

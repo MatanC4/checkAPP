@@ -19,6 +19,7 @@ public class Event implements Comparable<Event>{
     private Amendment amendment;
     private int rating;
 
+
     public Event() {
 
     }

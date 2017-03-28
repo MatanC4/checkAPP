@@ -174,8 +174,8 @@ public class AppManager implements DataListener {
     private void setKeys(){
         categoriesAPIKeys.put(CategoryName.BOOKS, APIKey.BOOKS);
         categoriesAPIKeys.put(CategoryName.GENERAL, APIKey.GENERAL);
-        categoriesAPIKeys.put(CategoryName.LOCATIONS, APIKey.LOCATIONS);
-        categoriesAPIKeys.put(CategoryName.MOVIES_AND_SHOWS, APIKey.MOVIES);
+        categoriesAPIKeys.put(CategoryName.PLACES, APIKey.LOCATIONS);
+        categoriesAPIKeys.put(CategoryName.MOVIES, APIKey.MOVIES);
         categoriesAPIKeys.put(CategoryName.MUSIC, APIKey.MUSIC);
         categoriesAPIKeys.put(CategoryName.RESTAURANTS, APIKey.RESTAURANTS);
     }
