@@ -116,7 +116,7 @@ public class AppManager implements DataListener {
         images = new HashMap<>();
     }
 
-    public AppManager getInstance(Context context){
+    public static AppManager getInstance(Context context){
         if(singleton==null){
             singleton = new AppManager(context);
         }
@@ -163,8 +163,8 @@ public class AppManager implements DataListener {
     private void setKeys(){
         categoriesAPIKeys.put(CategoryName.BOOKS, APIKey.BOOKS);
         categoriesAPIKeys.put(CategoryName.GENERAL, APIKey.GENERAL);
-        categoriesAPIKeys.put(CategoryName.LOCATIONS, APIKey.LOCATIONS);
-        categoriesAPIKeys.put(CategoryName.MOVIES_AND_SHOWS, APIKey.MOVIES);
+        categoriesAPIKeys.put(CategoryName.PLACES, APIKey.LOCATIONS);
+        categoriesAPIKeys.put(CategoryName.MOVIES, APIKey.MOVIES);
         categoriesAPIKeys.put(CategoryName.MUSIC, APIKey.MUSIC);
         categoriesAPIKeys.put(CategoryName.RESTAURANTS, APIKey.RESTAURANTS);
     }

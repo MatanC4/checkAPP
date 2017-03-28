@@ -1,5 +1,6 @@
 package com.example.matka.check.Event;
 
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -9,22 +10,34 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
 import com.example.matka.check.R;
+import com.google.gson.Gson;
+
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import org.w3c.dom.Text;
+
+import bl.controlers.AppManager;
+import bl.entities.Event;
 
 
 public class EventInfoActivity extends AppCompatActivity implements EventInfoFragment.OnFragmentInteractionListener {
 
    private EventInfoFragment eventInfoActivity;
     private ImageView imageView;
+    private AppManager appManager;
+    private Event event;
+    private EventInfoFragment eventInfoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_info);
-        setFragment(EventInfoFragment.newInstance());
+        Gson gson = new Gson();
+        event = gson.fromJson(getIntent().getExtras().getString("EventObj"),Event.class);
+        eventInfoFragment = EventInfoFragment.newInstance();
+        eventInfoFragment.setEvent(event);
+        setFragment(eventInfoFragment);
     }
 
     // This could be moved into an abstract BaseActivity
@@ -35,7 +48,7 @@ public class EventInfoActivity extends AppCompatActivity implements EventInfoFra
                 fragmentManager.beginTransaction();
         fragmentTransaction.replace(android.R.id.content, fragment);
         fragmentTransaction.commit();
-        //imageView = (ImageView)findViewById((Integer) getIntent().getExtras("ImageViewID"));
+        //Im = (Bitmap) findViewById(getIntent().getExtras("ImageViewID"));
 
     }
 

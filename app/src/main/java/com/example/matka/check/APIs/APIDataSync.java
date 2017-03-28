@@ -62,7 +62,7 @@ public class APIDataSync extends Thread implements Runnable {
                     for (int i = 0; i<NUM_OF_RES ; i++){
                         Event event = new Event(i);
                         JSONObject movie = movieList.getJSONObject(i);
-                        event.setImageURL(BASE_URL_IMAGE + IMAGE_SIZE[3]+ movie.getString("backdrop_path"));
+                        event.setImageURL(BASE_URL_IMAGE + IMAGE_SIZE[4]+ movie.getString("backdrop_path"));
                         event.setDescription(movie.getString("overview"));
                         event.setId(movie.getInt("id"));
                         event.addToDescription(movie.getString("release_date"), AdditionToDescription.RELEASE_DATE);

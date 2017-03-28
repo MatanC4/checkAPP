@@ -5,5 +5,5 @@ package bl.entities;
  */
 
 public enum CategoryName {
-    MOVIES_AND_SHOWS, BOOKS, LOCATIONS, MUSIC, RESTAURANTS, GENERAL
+    MOVIES , BOOKS, PLACES, MUSIC, RESTAURANTS, GENERAL
 }

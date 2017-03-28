@@ -22,6 +22,9 @@ import com.example.matka.check.R;
 
 import java.util.ArrayList;
 
+import bl.entities.Category;
+import bl.entities.CategoryName;
+
 
 //import android.app.Fragment;
 
@@ -52,15 +55,11 @@ public class CategoriesListView extends Fragment {
 
 
 
-
         categoryList = new ArrayList<String>();
-        categoryList.add("MOVIES");
-        categoryList.add("RESTAURANTS");
-        categoryList.add("TRIPS");
-        categoryList.add("SELF DEVELOPMENT");
-        categoryList.add("BOOKS");
-        categoryList.add("MUSIC");
-        categoryList.add("GENERAL");
+        for(CategoryName name:CategoryName.values()){
+            categoryList.add(name.toString());
+        }
+
 
 
 

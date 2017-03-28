@@ -5,5 +5,5 @@ package bl.entities;
  */
 
 public enum EventStatus {
-    TODO, DONE, EXPIRED
+     VIEW ,TODO, DONE, EXPIRED
 }
