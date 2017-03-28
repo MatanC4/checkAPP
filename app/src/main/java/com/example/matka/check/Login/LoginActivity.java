@@ -37,8 +37,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
+import bl.controlers.AppManager;
+import bl.entities.UserInfo;
 
 public class LoginActivity extends AppCompatActivity {
     private final String TAG = "Login Activity";
@@ -48,6 +52,11 @@ public class LoginActivity extends AppCompatActivity {
     private TextView textview;
     private Button anonymousLogin;
     private Intent mainScreenIntent;
+    private String city = "Earth";
+    private String country="Earth";
+    private String name = "Anonynous";
+    private int age;
+    private AppManager manager;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -62,11 +71,20 @@ public class LoginActivity extends AppCompatActivity {
         //dummyWriteToFireBase();
         this.requestWindowFeature(getWindow().FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
-        fbConnect();
+        manager = AppManager.getInstance(this);
+        mainScreenIntent = new Intent(this, MainScreenActivity.class);
+        UserInfo info = manager.getUserInformation(this);
+        Log.v("USER_INFO", info.toString());
         dummyReadFromFireBase();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        if(!info.isAnonymous())
+            startNextActivity();
+        else{
+            fbConnect();
+        }
     }
 
 
@@ -105,7 +123,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void fbConnect() {
-        mainScreenIntent = new Intent(this, MainScreenActivity.class);
         loginButton = (LoginButton) findViewById(R.id.fb_login_id);
         anonymousLogin = (Button) findViewById(R.id.anonymous_login);
         textview = (TextView) findViewById(R.id.text_view);
@@ -128,9 +145,22 @@ public class LoginActivity extends AppCompatActivity {
                                 try {
                                     String birthday = object.getString("birthday");
                                     JSONObject location = (JSONObject)object.get("location");
+                                    LoginActivity.this.name = object.get("name").toString();
                                     String locationDetails  = location.getString("name");
                                     String[] localDetails = locationDetails.split(", ");
-                                    Log.d("FACEBOOK","BirthDay: " + birthday + " Location: ");
+                                    LoginActivity.this.city = localDetails[0];
+                                    if(localDetails.length>0)
+                                        LoginActivity.this.country = localDetails[localDetails.length-1];
+                                    int year;
+                                    try{
+                                        year = Integer.parseInt(birthday.substring(birthday.length() - 4));
+                                    }
+                                    catch(Exception e){
+                                        year = 2000;
+                                    }
+                                    LoginActivity.this.age = Calendar.getInstance().get(Calendar.YEAR) - year;
+                                    Log.d("FACEBOOK","name: " + name + " ,BirthDay: " + birthday + " City: "+ localDetails[0] + " Country: "+ localDetails[localDetails.length-1] + " ,Age: " + age);
+                                    LoginActivity.this.saveUserData();
                                 } catch (JSONException e) {
                                     Log.d("FACEBOOK","Failed");
                                 }
@@ -141,10 +171,7 @@ public class LoginActivity extends AppCompatActivity {
                 parameters.putString("fields", "id,name,email,gender,birthday,location");
                 request.setParameters(parameters);
                 request.executeAsync();
-                try {
-                    startActivity(mainScreenIntent);
-                } catch (Exception e) {
-                }
+                startNextActivity();
             }
 
             @Override
@@ -160,13 +187,17 @@ public class LoginActivity extends AppCompatActivity {
         anonymousLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    startActivity(mainScreenIntent);
-                } catch (Exception e) {
-                    Log.i(TAG, e.getMessage());
-                }
+                startNextActivity();
             }
         });
+    }
+
+    public void startNextActivity(){
+        try {
+            startActivity(mainScreenIntent);
+        } catch (Exception e) {
+            Log.i(TAG, e.getMessage());
+        }
     }
 
     /**
@@ -203,5 +234,9 @@ public class LoginActivity extends AppCompatActivity {
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
+    }
+
+    public void saveUserData(){
+        manager.saveLoggedUserInformation(this,name,age,city,country);
     }
 }

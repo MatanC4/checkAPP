@@ -11,6 +11,17 @@ public class UserInfo {
     private String city;
     private boolean isAnonymous = true;
 
+    @Override
+    public String toString() {
+        return "UserInfo{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", isAnonymous=" + isAnonymous +
+                '}';
+    }
+
     public UserInfo(String name, int age, String country, String city) {
         this.name = name;
         this.age = age;
