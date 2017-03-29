@@ -15,6 +15,8 @@ import com.example.matka.check.R;
 
 import java.util.Calendar;
 
+import bl.controlers.AppManager;
+import bl.entities.Event;
 import bl.notifications.EventNotification;
 import bl.notifications.NotificationService;
 
@@ -33,7 +35,9 @@ public class MainScreenActivity extends FragmentActivity implements CategoriesLi
         upNextListView = UpNextListView.newInstance();
         bindUi();
        // setDummyNotificaion();
-        setDummyNotificationWithBroadcast();
+        //setDummyNotificationWithBroadcast();
+        AppManager manager = AppManager.getInstance(this);
+        manager.setEventNotification(this,new Event(122));
     }
 
     private void setDummyNotificaion(){
@@ -60,8 +64,6 @@ public class MainScreenActivity extends FragmentActivity implements CategoriesLi
         alarms.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+5000, operation) ;
         intent.putExtra("param", "My 2nd scheduled action");
         alarms.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+15000, operation);
-
-
     }
 
 

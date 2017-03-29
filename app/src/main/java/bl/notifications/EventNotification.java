@@ -22,18 +22,17 @@ public class EventNotification extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Intent newIntent = new Intent(context, CategoryActivity.class);
-        // Toast.makeText(context, intent.getStringExtra("param"),Toast.LENGTH_SHORT).show();
-        Log.d("ALARM", "On");
-        // context.startActivity(newIntent);
+        newIntent.putExtra(BroadcastTags.EVENT_ID,(intent.getLongExtra(BroadcastTags.EVENT_ID, -1)));
+        newIntent.putExtra(BroadcastTags.CATEGORY_NAME,(intent.getSerializableExtra(BroadcastTags.EVENT_TITLE)));
+        Log.d("NOTIFICATION", "On");
         long[] pattern = {0, 300, 0};
         PendingIntent pi = PendingIntent.getActivity(context, 0, newIntent, 0);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.notification)
-                .setContentTitle("Due date arrived")
-                .setContentText(intent.getStringExtra("param"))
+                .setContentTitle("Event due date")
+                .setContentText(intent.getStringExtra(BroadcastTags.EVENT_TITLE))
                 .setVibrate(pattern)
                 .setAutoCancel(true);
-
         mBuilder.setContentIntent(pi);
         mBuilder.setDefaults(Notification.DEFAULT_SOUND);
         NotificationManagerCompat mNotificationManager = NotificationManagerCompat.from(context);

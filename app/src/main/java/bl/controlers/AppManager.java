@@ -1,12 +1,21 @@
 package bl.controlers;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.ImageView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -24,6 +33,8 @@ import bl.entities.CategoryName;
 import bl.entities.Event;
 import bl.entities.EventStatus;
 import bl.entities.UserInfo;
+import bl.notifications.BroadcastTags;
+import bl.notifications.EventNotification;
 
 /**
  * Created by Daniel_m on 14/03/2017.
@@ -51,6 +62,7 @@ public class AppManager implements DataListener {
         }
         return modifiedEvent;
     }
+
 
     public ImageView getImageByKey(String key) throws Exception{
         if(!images.containsKey(key))
@@ -155,19 +167,71 @@ public class AppManager implements DataListener {
         return SharedPreferencesHandler.getUserInfo(context);
     }
 
-    public Event addEvent(Context context, long id, CategoryName categoryName, String name, String imageURL, String description, Calendar dueDate,
-                          AmendmentType amendmentType, String amendmentDescription){
+    public Bitmap getImageFromStorage(Event event){
+        return BitmapFactory.decodeFile(event.getImageURL());
+    }
+
+
+    public Event addEvent(Context context, Event event, Bitmap image) {
+
         Calendar calendar = Calendar.getInstance();
-        long eventID = categoryName==CategoryName.GENERAL? id: SharedPreferencesHandler.getNextGeneralID(context);
-        Event event = new Event(eventID, name, imageURL, description, new Category(categoryName,categoriesAPIKeys.get(categoryName)),
-                EventStatus.TODO, dueDate);
+        long eventID = event.getCategory().getName()==CategoryName.GENERAL?
+                SharedPreferencesHandler.getNextGeneralID(context):event.getId();
         event.setCreationDate(calendar);
+        event.setId(eventID);
+        storeImage(event, image);
+        saveAndStoreEvent(context, event);
+        return event;
+    }
+
+    private void storeImage(Event event, Bitmap image){
+        try {
+            String root = Environment.getExternalStorageDirectory().toString();
+            File myDir = new File(root + "/Check");
+            if (!myDir.exists()) {
+                myDir.mkdirs();
+            }
+            String name = event.getCategory().getName().toString() + event.getId();
+            myDir = new File(myDir, name);
+            FileOutputStream out = new FileOutputStream(myDir);
+            image.compress(Bitmap.CompressFormat.JPEG, 90, out);
+            out.flush();
+            out.close();
+            event.setImageURL(myDir.getPath());
+        } catch(Exception e){
+            Log.d("IMAGE", "Saving the image failed");
+        }
+
+    }
+    public Event addEventByDetails(Context context, long id, CategoryName categoryName, String name, String imageURL, String description, Calendar dueDate,
+                                   AmendmentType amendmentType, String amendmentDescription, Bitmap image){
+        Event event = new Event(id, name, imageURL, description, new Category(categoryName,categoriesAPIKeys.get(categoryName)),
+                EventStatus.TODO, dueDate);
         Amendment amendment = new Amendment(amendmentType, amendmentDescription);
         event.setAmendment(amendment);
+        return addEvent(context, event, image);
+    }
+
+    private void saveAndStoreEvent(Context context, Event event){
         userEvents.getEvents().add(event);
         sortedEvents.get(event.getCategory()).put(event.getId(),event);
         saveData(context);
-        return event;
+        setEventNotification(context, event);
+    }
+
+    public void setEventNotification(Context context, Event event) {
+        AlarmManager alarms = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+
+        EventNotification receiver = new EventNotification();
+        IntentFilter filter = new IntentFilter(BroadcastTags.ACTION);
+        context.registerReceiver(receiver, filter);
+
+        Intent intent = new Intent(BroadcastTags.ACTION);
+        intent.putExtra(BroadcastTags.EVENT_ID, event.getId());
+        intent.putExtra(BroadcastTags.CATEGORY_NAME,event.getCategory().getName());
+        intent.putExtra(BroadcastTags.EVENT_TITLE,event.getName());
+        PendingIntent operation = PendingIntent.getBroadcast(context, 0, intent, 0);
+        alarms.set(AlarmManager.RTC_WAKEUP, event.getDueDate().getTimeInMillis(), operation) ;
     }
 
 
