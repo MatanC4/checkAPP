@@ -36,18 +36,17 @@ public class MainScreenActivity extends FragmentActivity implements CategoriesLi
         bindUi();
        // setDummyNotificaion();
         //setDummyNotificationWithBroadcast();
-        AppManager manager = AppManager.getInstance(this);
-        manager.setEventNotification(this,new Event(122));
+        //AppManager manager = AppManager.getInstance(this);
     }
 
-    private void setDummyNotificaion(){
-        Calendar sevendayalarm = Calendar.getInstance();
-        sevendayalarm.add(Calendar.MINUTE, 1);
+    private void setDummyNotification(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE, 1);
         Intent intent = new Intent(this, NotificationService.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 001, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
         AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
-        am.set(AlarmManager.RTC_WAKEUP, sevendayalarm.getTimeInMillis(), pendingIntent);
-        Log.d("ALARM","set to: "+sevendayalarm.getTime());
+        am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        Log.d("ALARM","set to: "+calendar.getTime());
     }
 
     private void setDummyNotificationWithBroadcast(){

@@ -12,9 +12,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.matka.check.APIs.CustomAdapter;
+import com.example.matka.check.APIs.RowItem;
 import com.example.matka.check.R;
 
 import java.util.ArrayList;
+
+import bl.controlers.AppManager;
+import bl.entities.Event;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,23 +43,13 @@ public class ToCheckList extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_to_check, container, false);
-        //ScoreTable table;
-        try{
-            //table = SharedPreferencesHandler.getData(getContext());
-        }
-        catch(Exception e){
-            //table = new ScoreTable();
-        }
 
-        ToCheckItems = new ArrayList<String>();
+/*        ToCheckItems = new ArrayList<String>();
         ToCheckItems.add("Alora");
         ToCheckItems.add("Barbary");
         ToCheckItems.add("Room Service");
         ToCheckItems.add("Zozobra");
 
-
-
-        // }
         ListView listView = (ListView) view.findViewById(R.id.to_check_list_view);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity()
                 ,R.layout.custom_category_item_layout,R.id.category_list_item ,
@@ -66,6 +61,24 @@ public class ToCheckList extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+            }
+        });*/
+        AppManager manager = AppManager.getInstance(getContext());
+        ArrayList<Event> toCheck = manager.getEventsByStatus(null,null);
+        ArrayList<RowItem> rowItems = new ArrayList<>();
+        for (Event event :  toCheck) {
+            RowItem item = new RowItem(event.getName(),
+                    R.drawable.millennial_explorers,
+                    R.drawable.plus_1);
+            rowItems.add(item);
+        }
+        ListView myListview = (ListView) view.findViewById(R.id.to_check_list_view);
+        CustomAdapter adapter = new CustomAdapter(this.getContext(), rowItems, toCheck);
+        myListview.setAdapter(adapter);
+
+        myListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             }
         });
         return view;

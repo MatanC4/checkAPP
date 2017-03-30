@@ -46,7 +46,6 @@ public class EventInfoFragment extends android.support.v4.app.Fragment {
         // Required empty public constructor
     }
 
-
     public Event getEvent() {
         return event;
     }
@@ -90,16 +89,11 @@ public class EventInfoFragment extends android.support.v4.app.Fragment {
             e.printStackTrace();
         }
 
-
-
-
-
         return view;
     }
 
     private void showButtonsAccordingToEventStatus(View view , EventStatus eventStaus) {
 
-        //addBtn.setVisibility(View.GONE);
         if(true){
 
             addBtn.setOnClickListener(new View.OnClickListener() {

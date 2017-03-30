@@ -45,46 +45,23 @@ public class CategoriesListView extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categories_list_view, container, false);
-        //ScoreTable table;
-        try{
-            //table = SharedPreferencesHandler.getData(getContext());
-        }
-        catch(Exception e){
-            //table = new ScoreTable();
-        }
-
-
-
-        categoryList = new ArrayList<String>();
+        categoryList = new ArrayList<>();
         for(CategoryName name:CategoryName.values()){
             categoryList.add(name.toString());
         }
 
-
-
-
-        // }
         ListView  listView = (ListView) view.findViewById(R.id.category_list_view);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity()
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity()
                 ,R.layout.custom_category_item_layout,R.id.category_list_item ,
                 categoryList);
-
 
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 intent  = new Intent(getContext() , CategoryActivity.class);
-                switch (i) {
-                    case 0:
-                        startActivity(intent);
-
-                    case 1:
-                        startActivity(intent);
-
-                    default:
-                        startActivity(intent);
-                }
+                intent.putExtra("CATEGORY_NAME",CategoryName.valueOf(categoryList.get(i)));
+                startActivity(intent);
             }
         });
         return view;

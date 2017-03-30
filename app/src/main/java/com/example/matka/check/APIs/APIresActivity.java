@@ -37,7 +37,7 @@ public class APIresActivity extends Activity implements OnItemClickListener , AP
     private String[] titles;
     private int [] eventImages;
     private int [] addBtnImages;
-    List<RowItem> rowItems;
+    private List<RowItem> rowItems;
     ListView mylistview;
     Intent intent;
 
@@ -53,9 +53,6 @@ public class APIresActivity extends Activity implements OnItemClickListener , AP
     private final String [] IMAGE_SIZE  =  {"w92", "w154", "w185", "w342", "w500", "w780", "original"};
     private ArrayList<Event> popularMoviesList;
     private APIDataSync apidataSync;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

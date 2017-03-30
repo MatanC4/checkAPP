@@ -60,14 +60,12 @@ public class CheckedList extends Fragment {
                 ,R.layout.custom_category_item_layout,R.id.category_list_item ,
                 checkedItems);
 
-
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent  = new Intent(getContext() , APIresActivity.class);
                 startActivity(intent);
-
             }
         });
         return view;

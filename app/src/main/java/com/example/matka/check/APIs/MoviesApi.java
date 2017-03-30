@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import bl.entities.AdditionToDescription;
 import bl.entities.Event;
+import bl.entities.EventStatus;
 
 
 public class MoviesApi extends AppCompatActivity {
@@ -69,6 +70,7 @@ public class MoviesApi extends AppCompatActivity {
                         event.addToDescription(movie.getString("release_date"), AdditionToDescription.RELEASE_DATE);
                         event.setName(movie.getString("original_title"));
                         event.addToDescription(movie.getString("vote_average"), AdditionToDescription.SCORE);
+                        event.setStatus(EventStatus.VIEW);
                         Log.v("MOVIE NAME:" , event.toString());
 
                     }

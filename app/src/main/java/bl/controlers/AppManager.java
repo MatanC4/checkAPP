@@ -16,8 +16,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +33,7 @@ import bl.entities.Amendment;
 import bl.entities.AmendmentType;
 import bl.entities.Category;
 import bl.entities.CategoryName;
+import bl.entities.DateComparator;
 import bl.entities.Event;
 import bl.entities.EventStatus;
 import bl.entities.UserInfo;
@@ -47,7 +51,7 @@ public class AppManager implements DataListener {
     private HashMap<Category, HashMap<Long, Event>> sortedEvents;
     private HashMap<CategoryName, String> categoriesAPIKeys;
     private HashMap<CategoryName, ArrayList<DBRecord>> suggestion;
-    private HashMap<String, ImageView> images;
+    private HashMap<String, Bitmap> images;
     private UserEvents userEvents;
     private UserInfo info;
     private FireBaseHandler fbHandler;
@@ -63,14 +67,39 @@ public class AppManager implements DataListener {
         return modifiedEvent;
     }
 
+    public ArrayList<Event> getEventsByStatus(CategoryName cName, EventStatus status){
+        HashMap<Long, Event> eventsInCategory = sortedEvents.get(new Category(cName,null));
+        ArrayList<Event> eventsToReturn = new ArrayList<>();
+        for(Event e : eventsInCategory.values()){
+            if(e.getStatus()==status){
+                eventsToReturn.add(e);
+            }
+        }
+        return eventsToReturn;
+    }
 
-    public ImageView getImageByKey(String key) throws Exception{
+    public ArrayList<Event> getNext5Events(){
+        ArrayList<Event> sortedByDate = new ArrayList<>(userEvents.getEvents());
+        Collections.sort(sortedByDate, new DateComparator());
+        ArrayList<Event> nextFive = new ArrayList<>();
+        for(int i=0 ; i<Math.min(5,nextFive.size()) ; i++){
+            if(sortedByDate.get(i).getStatus()==EventStatus.TODO)
+                nextFive.add(sortedByDate.get(i));
+            else{
+                break;
+            }
+        }
+        return nextFive;
+    }
+
+
+    public Bitmap getImageByKey(String key) throws Exception{
         if(!images.containsKey(key))
             throw new Exception("Invalid Key");
         return images.get(key);
     }
     
-    public void temporarilyStoreImage(String key, ImageView image){
+    public void temporarilyStoreImage(String key, Bitmap image){
         images.put(key, image);
     }
 
@@ -100,7 +129,7 @@ public class AppManager implements DataListener {
         if(info==null)
             info = getUserInformation(context);
         if(info.isAnonymous())
-            throw new Exception("Sorry! this service is not available to anonymous users");
+            throw new Exception("Sorry! this feature is not available for anonymous users");
         return suggestion.get(categoryName);
     }
 
@@ -115,17 +144,16 @@ public class AppManager implements DataListener {
         }
     }
 
-
     private AppManager(Context context){
         initMaps();
-/*      userEvents = SharedPreferencesHandler.getData(context);
+        userEvents = SharedPreferencesHandler.getData(context);
         FireBaseHandler fbHandler =  new FireBaseHandler(this);
         UserInfo info = getUserInformation(context);
         if(!info.isAnonymous())
-            readFromFireBase(info);*/
+            readFromFireBase(info);
         setCategories();
         setKeys();
-        //getData(context);
+        getData(context);
     }
 
     public boolean isEventAlreadyExist(long id, CategoryName cName){
@@ -170,7 +198,6 @@ public class AppManager implements DataListener {
     public Bitmap getImageFromStorage(Event event){
         return BitmapFactory.decodeFile(event.getImageURL());
     }
-
 
     public Event addEvent(Context context, Event event, Bitmap image) {
 
@@ -233,7 +260,6 @@ public class AppManager implements DataListener {
         PendingIntent operation = PendingIntent.getBroadcast(context, 0, intent, 0);
         alarms.set(AlarmManager.RTC_WAKEUP, event.getDueDate().getTimeInMillis(), operation) ;
     }
-
 
     private void setKeys(){
         categoriesAPIKeys.put(CategoryName.BOOKS, APIKey.BOOKS);
