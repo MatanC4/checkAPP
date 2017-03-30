@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,6 +22,9 @@ import com.example.matka.check.MainScreen.MainScreenCollectionPagerAdapter;
 import com.example.matka.check.MainScreen.UpNextListView;
 import com.example.matka.check.R;
 
+import bl.entities.Category;
+import bl.entities.CategoryName;
+
 public class CategoryActivity extends AppCompatActivity implements ExpiredChecksList.OnFragmentInteractionListener , ToCheckList.OnFragmentInteractionListener ,CheckedList.OnFragmentInteractionListener {
 
     private CheckedList checkedList;
@@ -29,18 +33,27 @@ public class CategoryActivity extends AppCompatActivity implements ExpiredChecks
     private CategoryScreenCollectionPagerAdapter categoryScreenCollectionPagerAdapter;
     //private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    private CategoryName categoryName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+        categoryName = (CategoryName) getIntent().getSerializableExtra("Category");
+
         checkedList = CheckedList.newInstance();
+        checkedList.setCategoryName(categoryName);
+
         expiredChecksList = ExpiredChecksList.newInstance();
+        expiredChecksList.setCategoryName(categoryName);
+
         toCheckList = ToCheckList.newInstance();
+        toCheckList.setCategoryName(categoryName);
+
         bindUi();
 
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        //setSupportActifBar(toolbar);
 
 
 

@@ -4,18 +4,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.example.matka.check.APIs.APIresActivity;
 import com.example.matka.check.R;
 
 import java.util.ArrayList;
+
+import bl.entities.CategoryName;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +32,18 @@ public class CheckedList extends Fragment {
     private ArrayList<String> checkedItems;
     private OnFragmentInteractionListener mListener;
     private Intent intent;
+    private CategoryName categoryName;
+    private FloatingActionButton fab;
+    private ImageButton add;
+
+    public CategoryName getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(CategoryName categoryName) {
+        this.categoryName = categoryName;
+    }
+
     public CheckedList() {
         // Required empty public constructor
     }
@@ -38,6 +54,7 @@ public class CheckedList extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_checked, container, false);
+        //fab = (FloatingActionButton) view.findViewById(R.id.add_event_from_category);
         //ScoreTable table;
         try{
             //table = SharedPreferencesHandler.getData(getContext());
@@ -55,6 +72,16 @@ public class CheckedList extends Fragment {
 
 
         // }
+        add = (ImageButton) view.findViewById(R.id.add_eve_via_api__button);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent  = new Intent(getContext() , APIresActivity.class);
+                intent.putExtra("Category" ,categoryName);
+                startActivity(intent);
+            }
+        });
+
         ListView listView = (ListView) view.findViewById(R.id.checked_list_view);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity()
                 ,R.layout.custom_category_item_layout,R.id.category_list_item ,
@@ -65,11 +92,11 @@ public class CheckedList extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent  = new Intent(getContext() , APIresActivity.class);
-                startActivity(intent);
+
 
             }
         });
+
         return view;
     }
 

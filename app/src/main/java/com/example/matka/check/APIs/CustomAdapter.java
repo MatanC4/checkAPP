@@ -81,12 +81,9 @@ public class CustomAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.api_results_item_layout, null);
             holder = new ViewHolder();
 
-
-
             holder.eventImage = (ImageView) convertView.findViewById(R.id.event_image);
             Picasso.with(context).load(arrayList.get(position).getImageURL()).into(holder.eventImage);
             appManager.temporarilyStoreImage(arrayList.get(position).getImageURL(),holder.eventImage);
-
 
             //prepare image to be passed in intent
            /*Bitmap bitmap = (((BitmapDrawable)holder.eventImage.getDrawable())).getBitmap();

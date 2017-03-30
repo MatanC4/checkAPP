@@ -6,7 +6,7 @@
     tools:context="com.example.matka.check.Event.EventInfoFragment">
 
     <!-- TODO: Update blank fragment layout -->
-        <LinearLayout
+        <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -16,66 +16,100 @@
             <android.support.v7.widget.Toolbar
             android:id="@+id/tool_bar_event_info"
             android:minHeight="?attr/actionBarSize"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_width="match_parent"
+                android:layout_alignParentTop="true"
             android:background="#2153a5"
             ></android.support.v7.widget.Toolbar>
 
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:layout_marginTop="60dp"
                 android:id="@+id/event_bg_image"
                 />
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="EVENT NAME"
-            android:id="@+id/event_title_event_info_screen"
-            android:layout_gravity="center_horizontal"
-            android:layout_alignParentTop="true"
-            android:paddingBottom="15dp"
-            android:paddingLeft="10dp"
-            android:textColor="#eff1f4"
-             />
-
 
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="EVENT NAME "
+                android:layout_marginTop="260dp"
+                android:lines="2"
+                android:maxLines="2"
+                android:id="@+id/event_title_event_info_screen"
+                android:layout_alignParentTop="true"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:textColor="#eff1f4"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="190dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="overview:In the near future, a weary Logan cares for an ailing Professor X in a hide out on the Mexican border. But Logan's attempts
-                to hide from the world and his legacy are up-ended when a young mutant arrives, being
-                 pursued by dark forces.view:In the near future,
-                 a weary Logan cares for an ailing Professor X in a hide out on the Mexican
-                  border. But Logan's attempts to hide from the wor view:In the near future, a weary Logan cares for an ailing Professor X in a hide out on the Mexican border. But Logan's attempts to hide from the wor"
+        to hide from the world and his legacy are up-ended when a young mutant arrives, being
+         pursued by dark forces.view:In the near future,
+         a weary Logan cares for an ailing Professor X in a hide out on the Mexican
+          border. But Logan's attempts to hide from the wor view:In the near future, a weary Logan cares for an ailing Professor X in a hide out on the Mexican border. But Logan's attempts to hide from the wor"
                 android:id="@+id/desc_textview"
-                android:layout_gravity="left"
                 android:paddingTop="3dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="4dp"
+                android:layout_marginTop="320dp"
                 android:paddingLeft="8dp"
                 android:textColor="#eff1f4"
-                android:layout_centerVertical="true"
-                android:layout_alignParentStart="true" />
+                android:scrollbars = "vertical"
+
+                 />
 
             <Button
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="60dp"
+                android:layout_gravity="bottom"
                 android:text="ADD TO LIST"
                 android:id="@+id/add_event_button"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
+                android:paddingTop="5dp"
                 android:background="#22c13d"
                 android:textColor="#eff1f4"
+                android:visibility="invisible"
+
                 />
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_alignParentBottom="true"
+                android:visibility="visible"
+                android:orientation="horizontal"
+                android:id="@+id/linear_buttons_holder">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="REMOVE"
+                    android:id="@+id/remove_event_btn"
+
+                    />
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="CHECK"
+                    android:id="@+id/check_event_btn"
+
+                    />
+
+
+            </LinearLayout>
+
         </RelativeLayout>
-        </LinearLayout>
 
 </FrameLayout>

@@ -18,6 +18,8 @@ import android.support.v4.app.FragmentTransaction;
 import org.w3c.dom.Text;
 
 import bl.controlers.AppManager;
+import bl.entities.Category;
+import bl.entities.CategoryName;
 import bl.entities.Event;
 
 
@@ -28,6 +30,7 @@ public class EventInfoActivity extends AppCompatActivity implements EventInfoFra
     private AppManager appManager;
     private Event event;
     private EventInfoFragment eventInfoFragment;
+    private CategoryName categoryName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,8 @@ public class EventInfoActivity extends AppCompatActivity implements EventInfoFra
         setContentView(R.layout.activity_event_info);
         Gson gson = new Gson();
         event = gson.fromJson(getIntent().getExtras().getString("EventObj"),Event.class);
+        categoryName = (CategoryName) getIntent().getSerializableExtra("Category");
+
         eventInfoFragment = EventInfoFragment.newInstance();
         eventInfoFragment.setEvent(event);
         setFragment(eventInfoFragment);

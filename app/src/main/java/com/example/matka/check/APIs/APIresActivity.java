@@ -29,6 +29,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import bl.entities.AdditionToDescription;
+import bl.entities.Category;
+import bl.entities.CategoryName;
 import bl.entities.Event;
 
 
@@ -53,6 +55,8 @@ public class APIresActivity extends Activity implements OnItemClickListener , AP
     private final String [] IMAGE_SIZE  =  {"w92", "w154", "w185", "w342", "w500", "w780", "original"};
     private ArrayList<Event> popularMoviesList;
     private APIDataSync apidataSync;
+    private CategoryName categoryName;
+    private Category category;
 
 
 
@@ -63,13 +67,10 @@ public class APIresActivity extends Activity implements OnItemClickListener , AP
         setContentView(R.layout.activity_apires);
         final String popUrl = BASE_URL + getPopularMethod + API_KEY + languagePrefix + pagePrefix;
         rowItems = new ArrayList<>();
+        categoryName = (CategoryName) getIntent().getSerializableExtra("Category");
+        category = new Category(categoryName ,null);
         apidataSync = new APIDataSync(popUrl,this,this);
         apidataSync.start();
-        //popularMoviesList = new ArrayList<>();
-        //getPopularMovies(popUrl);
-
-       // titles = new String[]{"Title 1","Title2", "Title 3","Title 1","Title2", "Title 3","Title 1","Title2"};
-
 
     }
 
@@ -92,8 +93,7 @@ public class APIresActivity extends Activity implements OnItemClickListener , AP
                     R.drawable.millennial_explorers,
                     R.drawable.plus_1);
             rowItems.add(item);
-
-           // Picasso.with(this).load(popularMoviesList.get(i).getImageURL()).into();
+            popularMoviesList.get(i).setCategory(category);
         }
         mylistview = (ListView) findViewById(R.id.list_for_api_res);
         CustomAdapter adapter = new CustomAdapter(this, rowItems , popularMoviesList);

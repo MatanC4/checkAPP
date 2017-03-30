@@ -106,18 +106,21 @@ public class AppManager implements DataListener {
 
     private AppManager(Context context){
         initMaps();
-/*      userEvents = SharedPreferencesHandler.getData(context);
+        userEvents = SharedPreferencesHandler.getData(context);
         FireBaseHandler fbHandler =  new FireBaseHandler(this);
         UserInfo info = getUserInformation(context);
         if(!info.isAnonymous())
-            readFromFireBase(info);*/
+            readFromFireBase(info);
         setCategories();
         setKeys();
-        //getData(context);
+        getData(context);
     }
 
     public boolean isEventAlreadyExist(long id, CategoryName cName){
-        return sortedEvents.get(new Category(cName, null)).containsKey(id);
+        try {
+            return sortedEvents.get(new Category(cName, null)).containsKey(id);
+        }
+        catch(Exception e){return false;}
     }
 
     private void initMaps(){
