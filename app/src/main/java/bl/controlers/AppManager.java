@@ -157,7 +157,10 @@ public class AppManager implements DataListener {
     }
 
     public boolean isEventAlreadyExist(long id, CategoryName cName){
-        return sortedEvents.get(new Category(cName, null)).containsKey(id);
+        try {
+            return sortedEvents.get(new Category(cName, null)).containsKey(id);
+        }
+        catch(Exception e){return false;}
     }
 
     private void initMaps(){

@@ -26,14 +26,12 @@ public class CategoryScreenCollectionPagerAdapter extends FragmentStatePagerAdap
     public Fragment getItem(int position) {
 
         switch (position) {
-            case 0:
-                return this.toCheckList;
 
             case 1:
                 return this.checkedList;
             case 2:
                 return this.expiredChecksList;
-
+            case 0:
             default:
                 return this.toCheckList;
         }

@@ -31,7 +31,7 @@ import bl.entities.CategoryName;
 
 public class CategoriesListView extends Fragment {
 
-    private ArrayList<String> categoryList;
+    private ArrayList<CategoryName> categoryList;
     private OnFragmentInteractionListener mListener;
     private Intent intent;
 
@@ -46,12 +46,16 @@ public class CategoriesListView extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categories_list_view, container, false);
         categoryList = new ArrayList<>();
+
+
+        categoryList = new ArrayList<>();
         for(CategoryName name:CategoryName.values()){
             categoryList.add(name.toString());
         }
 
         ListView  listView = (ListView) view.findViewById(R.id.category_list_view);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity()
+        ArrayAdapter<CategoryName> arrayAdapter = new ArrayAdapter<>(getActivity()
                 ,R.layout.custom_category_item_layout,R.id.category_list_item ,
                 categoryList);
 
@@ -60,7 +64,7 @@ public class CategoriesListView extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 intent  = new Intent(getContext() , CategoryActivity.class);
-                intent.putExtra("CATEGORY_NAME",CategoryName.valueOf(categoryList.get(i)));
+                intent.putExtra("Category" ,CategoryName.values()[i]);
                 startActivity(intent);
             }
         });

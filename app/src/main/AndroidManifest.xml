@@ -72,6 +72,15 @@
                 <action android:name="ALARM_ACTION" />
             </intent-filter>
         </receiver>
+         />
+        <activity android:name=".APIs.MoviesApi"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".APIs.APIresActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Event.EventActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Event.EventInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

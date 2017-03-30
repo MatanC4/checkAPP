@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Animation;
@@ -31,6 +33,11 @@ public class EventInfoFragment extends android.support.v4.app.Fragment {
     private Button addBtn;
     private AppManager appManager;
     private Event event;
+    private FloatingActionButton fab;
+    private ImageView imageForFab;
+    private Button checkBtn;
+    private Button removeBtn;
+    private LinearLayout ll;
 
     public ImageView getImageView() {
         return imageView;
@@ -74,7 +81,22 @@ public class EventInfoFragment extends android.support.v4.app.Fragment {
         imageView = (ImageView)view.findViewById(R.id.event_bg_image);
         title = (TextView) view.findViewById(R.id.event_title_event_info_screen);
         description = (TextView) view.findViewById(R.id.desc_textview);
-        addBtn = (Button)view.findViewById(R.id.add_event_button);
+        //fab = (FloatingActionButton)view.findViewById(R.id.delete_red_x_button);
+        //fab.setVisibility(View.VISIBLE);
+
+
+
+        imageForFab = new ImageView(this.getContext());
+        imageForFab.setImageResource(R.drawable.plus_blue_128px);
+
+
+       // FloatingActionButton actionButton = new FloatingActionButton.Builder.
+         //       .setContentView(imageForFab)
+           //     .build();
+
+
+
+
         showButtonsAccordingToEventStatus(view ,event.getStatus());
 
         try {
@@ -93,8 +115,16 @@ public class EventInfoFragment extends android.support.v4.app.Fragment {
     }
 
     private void showButtonsAccordingToEventStatus(View view , EventStatus eventStaus) {
+        addBtn = (Button)view.findViewById(R.id.add_event_button);
+        removeBtn = (Button)view.findViewById(R.id.remove_event_btn);
+        ll = (LinearLayout)view.findViewById(R.id.linear_buttons_holder);
+        checkBtn = (Button)view.findViewById(R.id.check_event_btn);
+        ll.setVisibility(View.GONE);
 
         if(true){
+        if(eventStaus == EventStatus.VIEW){
+            addBtn.setVisibility(View.VISIBLE);
+            //ll.setVisibility(View.GONE);
 
             addBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -105,10 +135,11 @@ public class EventInfoFragment extends android.support.v4.app.Fragment {
                     animFadeOut.setDuration(2000);
                     addBtn.setAnimation(animFadeOut);
                     addBtn.setVisibility(View.GONE);
+                    ll.setVisibility(View.VISIBLE);
                 }
             });
         }
-        else if(eventStaus== EventStatus.VIEW){
+        else if(eventStaus == EventStatus.VIEW){
 
         }
 

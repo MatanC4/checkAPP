@@ -98,6 +98,14 @@ public class CustomAdapter extends BaseAdapter {
                     holder.eventImage.setImageResource(rowItems.get(position).getEventImageId());
                 }
             }
+            Picasso.with(context).load(arrayList.get(position).getImageURL()).into(holder.eventImage);
+            appManager.temporarilyStoreImage(arrayList.get(position).getImageURL(),holder.eventImage);
+
+            //prepare image to be passed in intent
+           /*Bitmap bitmap = (((BitmapDrawable)holder.eventImage.getDrawable())).getBitmap();
+            ByteArrayOutputStream byteArrayOutputStream  = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG , 50 ,byteArrayOutputStream);**/
+
 
             holder.title = (TextView) convertView
                     .findViewById(R.id.event_name);

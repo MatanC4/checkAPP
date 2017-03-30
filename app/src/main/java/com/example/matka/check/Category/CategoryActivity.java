@@ -29,6 +29,9 @@ import java.util.Calendar;
 
 import bl.notifications.NotificationService;
 
+import bl.entities.Category;
+import bl.entities.CategoryName;
+
 public class CategoryActivity extends AppCompatActivity implements ExpiredChecksList.OnFragmentInteractionListener , ToCheckList.OnFragmentInteractionListener ,CheckedList.OnFragmentInteractionListener {
 
     private CheckedList checkedList;
@@ -37,14 +40,23 @@ public class CategoryActivity extends AppCompatActivity implements ExpiredChecks
     private CategoryScreenCollectionPagerAdapter categoryScreenCollectionPagerAdapter;
     //private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    private CategoryName categoryName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+        categoryName = (CategoryName) getIntent().getSerializableExtra("Category");
+
         checkedList = CheckedList.newInstance();
+        checkedList.setCategoryName(categoryName);
+
         expiredChecksList = ExpiredChecksList.newInstance();
+        expiredChecksList.setCategoryName(categoryName);
+
         toCheckList = ToCheckList.newInstance();
+        toCheckList.setCategoryName(categoryName);
+
         bindUi();
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);

@@ -17,7 +17,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import bl.controlers.AppManager;
 import bl.entities.AdditionToDescription;
+import bl.entities.CategoryName;
 import bl.entities.Event;
 import bl.entities.EventStatus;
 
@@ -40,32 +42,44 @@ public class APIDataSync extends Thread implements Runnable {
     private String popUrl;
     Context context;
     APIListener apiListener;
+    AppManager appManager;
+
 
     public APIDataSync(String popUrl, Context context , APIListener apiListener){
-        this.handler = handler;
         this.popUrl=popUrl;
         this.context=context;
         this.apiListener=apiListener;
+        appManager = AppManager.getInstance(this.context);
     }
 
 @Override
     public void run(){
         popularMoviesList = new ArrayList<>();
+
         jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,popUrl ,
                 null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 Log.v("MOVIE DB API" , "RESPONSE: " + response.toString());
                 try {
-                    //JSONObject responseText = response.getJSONObject("overview");
-
+                    Log.v("Event id" , "before response ");
                     JSONArray movieList = response.getJSONArray("results");
+                    Log.v("Event id" , "afetr response");
                     for (int i = 0; i<NUM_OF_RES ; i++){
                         Event event = new Event(i);
+                        Log.v("Event id" , "reight before json");
                         JSONObject movie = movieList.getJSONObject(i);
-                        event.setImageURL(BASE_URL_IMAGE + IMAGE_SIZE[4]+ movie.getString("backdrop_path"));
-                        event.setDescription(movie.getString("overview"));
                         event.setId(movie.getInt("id"));
+                        Log.v("Event id" , event.getId()+ "");
+                        if (!appManager.isEventAlreadyExist(event.getId(),CategoryName.MOVIES)){
+                            event.setDescription(movie.getString("overview"));
+                            event.setImageURL(BASE_URL_IMAGE + IMAGE_SIZE[4]+ movie.getString("backdrop_path"));
+                            event.addToDescription(movie.getString("release_date"), AdditionToDescription.RELEASE_DATE);
+                            event.setName(movie.getString("original_title"));
+                            event.addToDescription(movie.getString("vote_average"), AdditionToDescription.SCORE);
+                            event.setStatus(EventStatus.VIEW);
+                            popularMoviesList.add(event);
+                        }
                         event.addToDescription(movie.getString("release_date"), AdditionToDescription.RELEASE_DATE);
                         event.setName(movie.getString("original_title"));
                         event.addToDescription(movie.getString("vote_average"), AdditionToDescription.SCORE);

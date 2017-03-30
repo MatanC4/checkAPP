@@ -5,18 +5,23 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.example.matka.check.APIs.APIresActivity;
 import com.example.matka.check.APIs.CustomAdapter;
 import com.example.matka.check.APIs.RowItem;
 import com.example.matka.check.R;
 
 import java.util.ArrayList;
+
+import bl.entities.CategoryName;
 
 import bl.controlers.AppManager;
 import bl.entities.Event;
@@ -32,6 +37,18 @@ public class ToCheckList extends Fragment {
     private ArrayList<String> ToCheckItems;
     private OnFragmentInteractionListener mListener;
     private Intent intent;
+    private CategoryName categoryName;
+    private ImageButton add;
+
+
+    public CategoryName getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(CategoryName categoryName) {
+        this.categoryName = categoryName;
+    }
+
 
     public ToCheckList() {
         // Required empty public constructor
@@ -54,7 +71,6 @@ public class ToCheckList extends Fragment {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity()
                 ,R.layout.custom_category_item_layout,R.id.category_list_item ,
                 ToCheckItems);
-
 
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -79,6 +95,9 @@ public class ToCheckList extends Fragment {
         myListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent  = new Intent(getContext() , APIresActivity.class);
+                intent.putExtra("Category" ,CategoryName.values()[i]);
+                startActivity(intent);
             }
         });
         return view;

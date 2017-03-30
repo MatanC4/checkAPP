@@ -10,11 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.example.matka.check.APIs.APIresActivity;
 import com.example.matka.check.R;
 
 import java.util.ArrayList;
+
+import bl.entities.CategoryName;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +31,17 @@ public class ExpiredChecksList extends Fragment {
     private ArrayList<String> expiredItems;
     private OnFragmentInteractionListener mListener;
     private Intent intent;
+    private CategoryName categoryName;
+    private ImageButton add;
+
+
+    public CategoryName getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(CategoryName categoryName) {
+        this.categoryName = categoryName;
+    }
 
     public ExpiredChecksList() {
         // Required empty public constructor
@@ -54,20 +69,36 @@ public class ExpiredChecksList extends Fragment {
 
 
 
-        // }
+        add = (ImageButton) view.findViewById(R.id.add_eve_via_api__button);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent  = new Intent(getContext() , APIresActivity.class);
+                intent.putExtra("Category" ,categoryName);
+                startActivity(intent);
+            }
+        });
+
+
         ListView listView = (ListView) view.findViewById(R.id.expired_checks_list_view);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity()
                 ,R.layout.custom_category_item_layout,R.id.category_list_item ,
                 expiredItems);
-
-
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                Intent intent  = new Intent(getContext() , APIresActivity.class);
+                intent.putExtra("Category" ,CategoryName.values()[i]);
+                startActivity(intent);
             }
         });
+
+
+
+
+
+
         return view;
     }
 
