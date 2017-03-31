@@ -47,14 +47,11 @@ public class CategoriesListView extends Fragment {
         View view = inflater.inflate(R.layout.fragment_categories_list_view, container, false);
         categoryList = new ArrayList<>();
 
-
-        categoryList = new ArrayList<>();
         for(CategoryName name:CategoryName.values()){
-            categoryList.add(name.toString());
+            categoryList.add(name);
         }
 
         ListView  listView = (ListView) view.findViewById(R.id.category_list_view);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity()
         ArrayAdapter<CategoryName> arrayAdapter = new ArrayAdapter<>(getActivity()
                 ,R.layout.custom_category_item_layout,R.id.category_list_item ,
                 categoryList);

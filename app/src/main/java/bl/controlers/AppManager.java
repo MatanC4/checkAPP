@@ -51,6 +51,7 @@ public class AppManager implements DataListener {
     private HashMap<Category, HashMap<Long, Event>> sortedEvents;
     private HashMap<CategoryName, String> categoriesAPIKeys;
     private HashMap<CategoryName, ArrayList<DBRecord>> suggestion;
+    private HashMap<CategoryName, Category> categories;
     private HashMap<String, Bitmap> images;
     private UserEvents userEvents;
     private UserInfo info;
@@ -68,7 +69,7 @@ public class AppManager implements DataListener {
     }
 
     public ArrayList<Event> getEventsByStatus(CategoryName cName, EventStatus status){
-        HashMap<Long, Event> eventsInCategory = sortedEvents.get(new Category(cName,null));
+        HashMap<Long, Event> eventsInCategory = sortedEvents.get(categories.get(cName));
         ArrayList<Event> eventsToReturn = new ArrayList<>();
         for(Event e : eventsInCategory.values()){
             if(e.getStatus()==status){
@@ -108,7 +109,7 @@ public class AppManager implements DataListener {
     }
 
     public ArrayList<Event> getEventsInCategory(CategoryName cName){
-        HashMap<Long,Event> eventsMap = sortedEvents.get(new Category(cName,null));
+        HashMap<Long,Event> eventsMap = sortedEvents.get(categories.get(cName));
         ArrayList<Event> events = new ArrayList<>();
         for(Event e : eventsMap.values()){
             events.add(e);
@@ -158,7 +159,7 @@ public class AppManager implements DataListener {
 
     public boolean isEventAlreadyExist(long id, CategoryName cName){
         try {
-            return sortedEvents.get(new Category(cName, null)).containsKey(id);
+            return sortedEvents.get(categories.get(cName)).containsKey(id);
         }
         catch(Exception e){return false;}
     }
@@ -168,6 +169,8 @@ public class AppManager implements DataListener {
         categoriesAPIKeys = new HashMap<>();
         suggestion = new HashMap<>();
         images = new HashMap<>();
+        categories = new HashMap<>();
+
     }
 
     public static AppManager getInstance(Context context){
@@ -276,6 +279,7 @@ public class AppManager implements DataListener {
     private void setCategories(){
         for(CategoryName cn : CategoryName.values()){
             Category category = new Category(cn,categoriesAPIKeys.get(cn));
+            categories.put(cn, category);
             HashMap<Long,Event> events = new HashMap<>();
             sortedEvents.put(category,events);
         }
@@ -296,7 +300,7 @@ public class AppManager implements DataListener {
     public void onDataReceived(CategoryName categoryName, ArrayList<DBRecord> records) {
         ArrayList<DBRecord> approved = new ArrayList();
         for(DBRecord record : records){
-            if(!sortedEvents.get(new Category(categoryName,null)).containsKey(record.getId()) && record.getRating()>=MINIMUM_RATING){
+            if(!sortedEvents.get(categories.get(categoryName)).containsKey(record.getId()) && record.getRating()>=MINIMUM_RATING){
                 approved.add(record);
             }
         }

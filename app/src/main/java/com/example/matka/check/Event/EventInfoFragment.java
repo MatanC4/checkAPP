@@ -121,26 +121,26 @@ public class EventInfoFragment extends android.support.v4.app.Fragment {
         checkBtn = (Button)view.findViewById(R.id.check_event_btn);
         ll.setVisibility(View.GONE);
 
-        if(true){
-        if(eventStaus == EventStatus.VIEW){
-            addBtn.setVisibility(View.VISIBLE);
-            //ll.setVisibility(View.GONE);
+        if(true) {
+            if (eventStaus == EventStatus.VIEW) {
+                addBtn.setVisibility(View.VISIBLE);
+                //ll.setVisibility(View.GONE);
 
-            addBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //appManager.addEvent( )
-                    addBtn.setText("EVENT ADDED TO LIST");
-                    Animation animFadeOut = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_out);
-                    animFadeOut.setDuration(2000);
-                    addBtn.setAnimation(animFadeOut);
-                    addBtn.setVisibility(View.GONE);
-                    ll.setVisibility(View.VISIBLE);
-                }
-            });
-        }
-        else if(eventStaus == EventStatus.VIEW){
+                addBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //appManager.addEvent( )
+                        addBtn.setText("EVENT ADDED TO LIST");
+                        Animation animFadeOut = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_out);
+                        animFadeOut.setDuration(2000);
+                        addBtn.setAnimation(animFadeOut);
+                        addBtn.setVisibility(View.GONE);
+                        ll.setVisibility(View.VISIBLE);
+                    }
+                });
+            } else if (eventStaus == EventStatus.VIEW) {
 
+            }
         }
 
     }

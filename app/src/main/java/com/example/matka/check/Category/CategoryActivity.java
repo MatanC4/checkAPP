@@ -38,7 +38,6 @@ public class CategoryActivity extends AppCompatActivity implements ExpiredChecks
     private ExpiredChecksList expiredChecksList;
     private ToCheckList toCheckList;
     private CategoryScreenCollectionPagerAdapter categoryScreenCollectionPagerAdapter;
-    //private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private CategoryName categoryName;
 

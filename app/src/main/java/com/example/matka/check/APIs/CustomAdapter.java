@@ -61,7 +61,7 @@ public class CustomAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return rowItems.indexOf(getItem(position));
+        return arrayList.get(position).getId();
     }
 
     /* private view holder class */
@@ -79,61 +79,44 @@ public class CustomAdapter extends BaseAdapter {
 
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.api_results_item_layout, null);
-            holder = new ViewHolder();
+        convertView = mInflater.inflate(R.layout.api_results_item_layout, null);
+        holder = new ViewHolder();
 
-            holder.eventImage = (ImageView) convertView.findViewById(R.id.event_image);
-            if(arrayList.get(position).getStatus()== EventStatus.VIEW) {
-                Picasso.with(context).load(arrayList.get(position).getImageURL()).into(holder.eventImage);
-            }
-            else{
-                Log.d("STATUS", arrayList.get(position).getStatus().toString());
-                Bitmap image;
-                try {
-                    image = appManager.getImageFromStorage(arrayList.get(position));
-                    holder.eventImage.setImageBitmap(image);
-                }
-                catch(Exception e){
-                    holder.eventImage.setImageResource(rowItems.get(position).getEventImageId());
-                }
-            }
+        holder.eventImage = (ImageView) convertView.findViewById(R.id.event_image);
+        if(arrayList.get(position).getStatus()== EventStatus.VIEW) {
             Picasso.with(context).load(arrayList.get(position).getImageURL()).into(holder.eventImage);
-            appManager.temporarilyStoreImage(arrayList.get(position).getImageURL(),holder.eventImage);
-
-            //prepare image to be passed in intent
-           /*Bitmap bitmap = (((BitmapDrawable)holder.eventImage.getDrawable())).getBitmap();
-            ByteArrayOutputStream byteArrayOutputStream  = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG , 50 ,byteArrayOutputStream);**/
-
-
-            holder.title = (TextView) convertView
-                    .findViewById(R.id.event_name);
-            holder.addBtn = (ImageButton) convertView
-                    .findViewById(R.id.add_btn);
-            final RowItem row_pos = rowItems.get(position);
-            holder.title.setText(row_pos.getTitle());
-            holder.addBtn.setImageResource(row_pos.getAddButtonImage());
-            convertView.setTag(holder);
-
-            holder.addBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    getNextActivity(position);
-                }
-            });
-
-            convertView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    getNextActivity(position);
-                }
-            });
-
-        } else {
-            holder = (ViewHolder) convertView.getTag();
         }
-
+        else{
+            Log.d("STATUS", arrayList.get(position).getStatus().toString());
+            Bitmap image;
+            try {
+                image = appManager.getImageFromStorage(arrayList.get(position));
+                holder.eventImage.setImageBitmap(image);
+            }
+            catch(Exception e){
+                holder.eventImage.setImageResource(rowItems.get(position).getEventImageId());
+            }
+        }
+        holder.title = (TextView) convertView
+                .findViewById(R.id.event_name);
+        holder.addBtn = (ImageButton) convertView
+                .findViewById(R.id.add_btn);
+        final RowItem row_pos = rowItems.get(position);
+        holder.title.setText(row_pos.getTitle());
+        holder.addBtn.setImageResource(row_pos.getAddButtonImage());
+        convertView.setTag(holder);
+        holder.addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getNextActivity(position);
+            }
+        });
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getNextActivity(position);
+            }
+        });
         return convertView;
     }
 

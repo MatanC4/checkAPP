@@ -60,17 +60,14 @@ public class APIDataSync extends Thread implements Runnable {
                 null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.v("MOVIE DB API" , "RESPONSE: " + response.toString());
+                //Log.v("MOVIE DB API" , "RESPONSE: " + response.toString());
                 try {
-                    Log.v("Event id" , "before response ");
                     JSONArray movieList = response.getJSONArray("results");
-                    Log.v("Event id" , "afetr response");
                     for (int i = 0; i<NUM_OF_RES ; i++){
                         Event event = new Event(i);
-                        Log.v("Event id" , "reight before json");
                         JSONObject movie = movieList.getJSONObject(i);
+                        //Log.d("JSON MOVIE", movie.toString());
                         event.setId(movie.getInt("id"));
-                        Log.v("Event id" , event.getId()+ "");
                         if (!appManager.isEventAlreadyExist(event.getId(),CategoryName.MOVIES)){
                             event.setDescription(movie.getString("overview"));
                             event.setImageURL(BASE_URL_IMAGE + IMAGE_SIZE[4]+ movie.getString("backdrop_path"));
@@ -80,14 +77,10 @@ public class APIDataSync extends Thread implements Runnable {
                             event.setStatus(EventStatus.VIEW);
                             popularMoviesList.add(event);
                         }
-                        event.addToDescription(movie.getString("release_date"), AdditionToDescription.RELEASE_DATE);
-                        event.setName(movie.getString("original_title"));
-                        event.addToDescription(movie.getString("vote_average"), AdditionToDescription.SCORE);
-                        event.setStatus(EventStatus.VIEW);
-                        popularMoviesList.add(event);
 
-                        Log.v("MOVIE NAME:" , event.toString());
+                        //Log.v("MOVIE NAME " + i , event.toString());
                     }
+                    //Log.v("all movies", popularMoviesList.toString());
                     apiListener.passArrayList(popularMoviesList);
                 }catch (JSONException e){
                     Log.v("JSON Parsing" , "ERROR:" + e.getLocalizedMessage());
@@ -102,7 +95,6 @@ public class APIDataSync extends Thread implements Runnable {
 
         Volley.newRequestQueue(context).add(jsonObjectRequest);
         Log.v("i was here" , popularMoviesList.toString());
-
     }
 
 

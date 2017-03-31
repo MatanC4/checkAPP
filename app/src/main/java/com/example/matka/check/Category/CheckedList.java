@@ -15,11 +15,16 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.example.matka.check.APIs.APIresActivity;
+import com.example.matka.check.APIs.CustomAdapter;
+import com.example.matka.check.APIs.RowItem;
 import com.example.matka.check.R;
 
 import java.util.ArrayList;
 
+import bl.controlers.AppManager;
 import bl.entities.CategoryName;
+import bl.entities.Event;
+import bl.entities.EventStatus;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,23 +59,11 @@ public class CheckedList extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_checked, container, false);
-        //fab = (FloatingActionButton) view.findViewById(R.id.add_event_from_category);
-        //ScoreTable table;
-        try{
-            //table = SharedPreferencesHandler.getData(getContext());
-        }
-        catch(Exception e){
-            //table = new ScoreTable();
-        }
-
-        checkedItems = new ArrayList<String>();
+/*      checkedItems = new ArrayList<String>();
         checkedItems.add("Taizu");
         checkedItems.add("Topolopompo");
         checkedItems.add("Thai House");
         checkedItems.add("Messa");
-
-
-
         // }
         add = (ImageButton) view.findViewById(R.id.add_eve_via_api__button);
         add.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +74,6 @@ public class CheckedList extends Fragment {
                 startActivity(intent);
             }
         });
-
         ListView listView = (ListView) view.findViewById(R.id.checked_list_view);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity()
                 ,R.layout.custom_category_item_layout,R.id.category_list_item ,
@@ -93,8 +85,35 @@ public class CheckedList extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent  = new Intent(getContext() , APIresActivity.class);
                 startActivity(intent);
+            }
+        });*/
 
+        AppManager manager = AppManager.getInstance(getContext());
+        ArrayList<Event> done = manager.getEventsByStatus(categoryName, EventStatus.DONE);
+        ArrayList<RowItem> rowItems = new ArrayList<>();
+        for (Event event :  done) {
+            RowItem item = new RowItem(event.getName(),
+                    R.drawable.millennial_explorers,
+                    R.drawable.plus_1);
+            rowItems.add(item);
+        }
+        ListView myListView = (ListView) view.findViewById(R.id.checked_list_view);
+        CustomAdapter adapter = new CustomAdapter(this.getContext(), rowItems, done);
+        myListView.setAdapter(adapter);
 
+        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            }
+        });
+
+        add = (ImageButton) view.findViewById(R.id.add_eve_via_api__button);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent  = new Intent(getContext() , APIresActivity.class);
+                intent.putExtra("Category" ,categoryName);
+                startActivity(intent);
             }
         });
 
