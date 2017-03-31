@@ -82,16 +82,22 @@ public class AppManager implements DataListener {
     }
 
     public ArrayList<Event> getNext5Events(){
+
         ArrayList<Event> sortedByDate = new ArrayList<>(userEvents.getEvents());
-        Collections.sort(sortedByDate, new DateComparator());
+        Log.d("EVENTS", sortedByDate.toString());
+        //Collections.sort(sortedByDate, new DateComparator());
         ArrayList<Event> nextFive = new ArrayList<>();
-        for(int i=0 ; i<Math.min(5,nextFive.size()) ; i++){
+        for(int i=0 ; i<Math.min(5,sortedByDate.size()) ; i++){
             if(sortedByDate.get(i).getStatus()==EventStatus.TODO)
                 nextFive.add(sortedByDate.get(i));
             else{
-                break;
+                //break;
+                sortedByDate.get(i).setStatus(EventStatus.TODO);
+                nextFive.add(sortedByDate.get(i));
+
             }
         }
+        Log.d("next5", nextFive.toString());
         return nextFive;
     }
 
@@ -217,6 +223,7 @@ public class AppManager implements DataListener {
                 SharedPreferencesHandler.getNextGeneralID(context):event.getId();
         event.setCreationDate(calendar);
         event.setId(eventID);
+        event.setStatus(EventStatus.TODO);
         storeImage(event, image);
         saveAndStoreEvent(context, event);
         return event;
@@ -252,7 +259,7 @@ public class AppManager implements DataListener {
 
     private void saveAndStoreEvent(Context context, Event event){
         userEvents.getEvents().add(event);
-        sortedEvents.get(event.getCategory()).put(event.getId(),event);
+        sortedEvents.get(categories.get(event.getCategory().getName())).put(event.getId(),event);
         saveData(context);
         setEventNotification(context, event);
     }

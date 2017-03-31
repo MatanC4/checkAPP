@@ -28,7 +28,7 @@ public class EventNotification extends BroadcastReceiver {
         long[] pattern = {0, 300, 0};
         PendingIntent pi = PendingIntent.getActivity(context, 0, newIntent, 0);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.notification)
+                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark_focused)
                 .setContentTitle("Event due date")
                 .setContentText(intent.getStringExtra(BroadcastTags.EVENT_TITLE))
                 .setVibrate(pattern)

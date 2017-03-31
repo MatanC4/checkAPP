@@ -15,6 +15,6 @@ public class DateComparator implements Comparator<Event> {
             if(event2.getStatus() == EventStatus.TODO )
                 return 1;
         }
-        return (int)(event2.getDueDate().getTimeInMillis()-event2.getDueDate().getTimeInMillis());
+        return (int)(event2.getDueDate().getTimeInMillis()-event1.getDueDate().getTimeInMillis());
     }
 }

@@ -171,6 +171,7 @@ public class EventInfoFragment extends android.support.v4.app.Fragment implement
                                     !incentiveDescription.getText().toString().matches("")){
                                 Calendar cal = Calendar.getInstance();
                                 cal.add(Calendar.DATE,Integer.parseInt(timeToComplete.getText().toString()) );
+                                event.setDueDate(cal);
                                 Amendment am = new Amendment();
                                 am.setDescription(incentiveDescription.toString());
                                 am.setType(getAmendmantFromUI(rg));
@@ -186,6 +187,8 @@ public class EventInfoFragment extends android.support.v4.app.Fragment implement
                                     Toast.makeText(getActivity(), "failed saving event ",
                                             Toast.LENGTH_LONG).show();
                                     Log.v("Crash on saving " , e.getMessage());
+                                    //Log.v("Crash on saving " , e.getStackTrace().toString());
+                                    e.printStackTrace();
                                 }
 
 
@@ -205,7 +208,7 @@ public class EventInfoFragment extends android.support.v4.app.Fragment implement
         else if(eventStaus == EventStatus.VIEW){
 
         }
-
+    }
     }
 
     private AmendmentType getAmendmantFromUI(RadioGroup rg) {
@@ -258,28 +261,7 @@ public class EventInfoFragment extends android.support.v4.app.Fragment implement
 
 
 
-    public ImageView getImageView() {
-        return imageView;
-    }
 
-    public void setImageView(ImageView imageView) {
-        this.imageView = imageView;
-    }
-
-    private OnFragmentInteractionListener mListener;
-
-    public EventInfoFragment() {
-        // Required empty public constructor
-    }
-
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
-    }
 
     @Override
     public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
