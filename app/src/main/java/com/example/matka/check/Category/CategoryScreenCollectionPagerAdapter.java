@@ -10,12 +10,24 @@ import android.support.v4.app.FragmentStatePagerAdapter;
  * Created by matka on 21/03/17.
  */
 public class CategoryScreenCollectionPagerAdapter extends FragmentStatePagerAdapter {
-    private CheckedList checkedList;
+/*    private CheckedList checkedList;
     private ExpiredChecksList expiredChecksList;
-    private ToCheckList toCheckList;
+    private ToCheckList toCheckList;*/
 
-    public CategoryScreenCollectionPagerAdapter(FragmentManager fm , CheckedList checkedList
+    private EventsList checkedList;
+    private EventsList expiredChecksList;
+    private EventsList toCheckList;
+
+/*    public CategoryScreenCollectionPagerAdapter(FragmentManager fm , CheckedList checkedList
             , ExpiredChecksList expiredChecksList , ToCheckList toCheckList) {
+        super(fm);
+        this.checkedList = checkedList;
+        this.expiredChecksList = expiredChecksList;
+        this.toCheckList = toCheckList;
+    }*/
+
+    public CategoryScreenCollectionPagerAdapter(FragmentManager fm , EventsList checkedList
+            , EventsList expiredChecksList , EventsList toCheckList) {
         super(fm);
         this.checkedList = checkedList;
         this.expiredChecksList = expiredChecksList;

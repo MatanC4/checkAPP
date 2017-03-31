@@ -8,8 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.matka.check.APIs.CustomAdapter;
 import com.example.matka.check.APIs.RowItem;
@@ -18,52 +18,64 @@ import com.example.matka.check.R;
 import java.util.ArrayList;
 
 import bl.controlers.AppManager;
+import bl.entities.CategoryName;
 import bl.entities.Event;
 
 
-public class UpNextListView extends Fragment {
-
+public class SpecialEventsList extends Fragment {
 
     private ArrayList upNextList;
     private OnFragmentInteractionListener mListener;
+    private boolean isSuggestions = false;
 
-    public UpNextListView() {
+    public boolean isSuggestions() {
+        return isSuggestions;
     }
 
-    public void sadsd(){
-
+    public void setSuggestions(boolean suggestions) {
+        isSuggestions = suggestions;
     }
+
+    public SpecialEventsList() {
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_up_next_list_view, container, false);
-
-/*        upNextList = new ArrayList<>();
-        upNextList.add("first");
-        upNextList.add("second");
-        upNextList.add("third");
-
-        ListView listView = (ListView) view.findViewById(R.id.up_next_list_view_ListView);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,
-                upNextList);
-        listView.setAdapter(arrayAdapter);*/
         AppManager manager = AppManager.getInstance(getContext());
-        ArrayList<Event> upNext = manager.getNext5Events();
+        ArrayList<Event> eventsForDisplay;
+        if(!isSuggestions)
+            eventsForDisplay = manager.getNext5Events();
+        else{
+            try{
+                eventsForDisplay = manager.getSuggestionsByProfile(CategoryName.values()
+                        [(int)(Math.random()*CategoryName.values().length)],getContext());
+            }
+            catch(Exception e){
+                eventsForDisplay = new ArrayList<>();
+                Toast.makeText(getContext(),e.getMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+
         ArrayList<RowItem> rowItems = new ArrayList<>();
-        for (Event event :  upNext) {
+        for (Event event :  eventsForDisplay) {
             RowItem item = new RowItem(event.getName(),
                     R.drawable.millennial_explorers,
                     R.drawable.plus_1);
             rowItems.add(item);
         }
-        ListView myListview = (ListView) view.findViewById(R.id.up_next_list_view_ListView);
-        CustomAdapter adapter = new CustomAdapter(this.getContext(), rowItems, upNext);
-        myListview.setAdapter(adapter);
 
-        myListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        ListView lView = (ListView) view.findViewById(R.id.up_next_list_view_ListView);
+        CustomAdapter adapter = new CustomAdapter(this.getContext(), rowItems, eventsForDisplay);
+        lView.setAdapter(adapter);
+
+        lView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
             }
         });
         return view;
@@ -93,8 +105,8 @@ public class UpNextListView extends Fragment {
         mListener = null;
     }
 
-    public static UpNextListView newInstance()  {
-        UpNextListView fragment = new UpNextListView();
+    public static SpecialEventsList newInstance()  {
+        SpecialEventsList fragment = new SpecialEventsList();
         return fragment;
     }
 

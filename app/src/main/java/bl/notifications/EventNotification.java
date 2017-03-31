@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.matka.check.Category.CategoryActivity;
+import com.example.matka.check.Event.EventInfoActivity;
 import com.example.matka.check.R;
 
 /**
@@ -21,9 +22,10 @@ import com.example.matka.check.R;
 public class EventNotification extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent newIntent = new Intent(context, CategoryActivity.class);
-        newIntent.putExtra(BroadcastTags.EVENT_ID,(intent.getLongExtra(BroadcastTags.EVENT_ID, -1)));
-        newIntent.putExtra(BroadcastTags.CATEGORY_NAME,(intent.getSerializableExtra(BroadcastTags.EVENT_TITLE)));
+        Intent newIntent = new Intent(context, EventInfoActivity.class);
+
+        newIntent.putExtra(BroadcastTags.EVENT_OBJ,(intent.getStringExtra(BroadcastTags.EVENT_OBJ)));
+        newIntent.putExtra(BroadcastTags.CATEGORY_NAME,(intent.getSerializableExtra(BroadcastTags.CATEGORY_NAME)));
         Log.d("NOTIFICATION", "On");
         long[] pattern = {0, 300, 0};
         PendingIntent pi = PendingIntent.getActivity(context, 0, newIntent, 0);

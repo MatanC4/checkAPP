@@ -37,7 +37,7 @@ public class FireBaseHandler {
         mDatabase = database.getReference(reference);
         DatabaseReference postsRef = mDatabase;
         DatabaseReference newPostRef = postsRef.push();
-        newPostRef.setValue(new DBRecord(event.getId(), event.getRating()));
+        newPostRef.setValue(new DBRecord(event, event.getRating()));
     }
 
     public void readFromFireBase(final CategoryName cName, UserInfo info){

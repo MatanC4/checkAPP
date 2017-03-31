@@ -37,11 +37,8 @@ public class CustomAdapter extends BaseAdapter {
     private List<RowItem> rowItems;
     private ArrayList<Event> arrayList;
     private Intent intent;
-    private int imageIdToPassToIntent;
     private ViewHolder holder;
-    private ByteArrayOutputStream byteArrayOutputStream;
     private AppManager appManager;
-    private int positionOfEvent;
 
     public CustomAdapter(Context context, List<RowItem> rowItems, ArrayList<Event> arrayList) {
         this.context = context;

@@ -1,25 +1,31 @@
 package bl.data;
 
 
+import bl.entities.Event;
+
 /**
  * Created by Daniel_m on 26/03/2017.
  */
 
 public class DBRecord implements Comparable<DBRecord>{
-    private long id;
+    private Event event;
     private int rating;
 
-    public DBRecord(long id, int rating) {
-        this.id = id;
+    public DBRecord(){
+
+    }
+
+    public DBRecord(Event event, int rating) {
+        this.event = event;
         this.rating = rating;
     }
 
-    public long getId() {
-        return id;
+    public Event getEvent() {
+        return event;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     public int getRating() {

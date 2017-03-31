@@ -13,9 +13,11 @@ import android.widget.ImageView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,7 +52,7 @@ public class AppManager implements DataListener {
     private static AppManager singleton;
     private HashMap<Category, HashMap<Long, Event>> sortedEvents;
     private HashMap<CategoryName, String> categoriesAPIKeys;
-    private HashMap<CategoryName, ArrayList<DBRecord>> suggestion;
+    private HashMap<CategoryName, ArrayList<Event>> suggestion;
     private HashMap<CategoryName, Category> categories;
     private HashMap<String, Bitmap> images;
     private UserEvents userEvents;
@@ -126,7 +128,7 @@ public class AppManager implements DataListener {
         }
     }
 
-    public ArrayList<DBRecord> getSuggestionsByProfile(CategoryName categoryName, Context context) throws Exception{
+    public ArrayList<Event> getSuggestionsByProfile(CategoryName categoryName, Context context) throws Exception{
         if(info==null)
             info = getUserInformation(context);
         if(info.isAnonymous())
@@ -141,6 +143,7 @@ public class AppManager implements DataListener {
             }
             catch(Exception e){
                 Log.v("FIRE_BASE","Reading failed, Category: " +cn.toString());
+                suggestion.put(cn,new ArrayList<Event>());
             }
         }
     }
@@ -202,7 +205,7 @@ public class AppManager implements DataListener {
     }
 
     public Bitmap getImageFromStorage(Event event){
-        return BitmapFactory.decodeFile(event.getImageURL());
+        return BitmapFactory.decodeFile(event.getImagePath());
     }
 
     public Event addEvent(Context context, Event event, Bitmap image) {
@@ -230,7 +233,7 @@ public class AppManager implements DataListener {
             image.compress(Bitmap.CompressFormat.JPEG, 90, out);
             out.flush();
             out.close();
-            event.setImageURL(myDir.getPath());
+            event.setImagePath(myDir.getPath());
         } catch(Exception e){
             Log.d("IMAGE", "Saving the image failed");
         }
@@ -238,7 +241,7 @@ public class AppManager implements DataListener {
     }
     public Event addEventByDetails(Context context, long id, CategoryName categoryName, String name, String imageURL, String description, Calendar dueDate,
                                    AmendmentType amendmentType, String amendmentDescription, Bitmap image){
-        Event event = new Event(id, name, imageURL, description, new Category(categoryName,categoriesAPIKeys.get(categoryName)),
+        Event event = new Event(id, name, imageURL, description, categories.get(categoryName),
                 EventStatus.TODO, dueDate);
         Amendment amendment = new Amendment(amendmentType, amendmentDescription);
         event.setAmendment(amendment);
@@ -260,7 +263,9 @@ public class AppManager implements DataListener {
         context.registerReceiver(receiver, filter);
 
         Intent intent = new Intent(BroadcastTags.ACTION);
-        intent.putExtra(BroadcastTags.EVENT_ID, event.getId());
+        Gson gson = new Gson();
+        String json =  gson.toJson(event);
+        intent.putExtra(BroadcastTags.EVENT_OBJ, json);
         intent.putExtra(BroadcastTags.CATEGORY_NAME,event.getCategory().getName());
         intent.putExtra(BroadcastTags.EVENT_TITLE,event.getName());
         PendingIntent operation = PendingIntent.getBroadcast(context, 0, intent, 0);
@@ -292,18 +297,26 @@ public class AppManager implements DataListener {
     private void getData(Context context){
         userEvents = SharedPreferencesHandler.getData(context);
         for(Event e : userEvents.getEvents()){
+            e.setCategory(categories.get(e.getCategory().getName()));
             sortedEvents.get(e.getCategory()).put(e.getId(),e);
         }
     }
 
     @Override
     public void onDataReceived(CategoryName categoryName, ArrayList<DBRecord> records) {
-        ArrayList<DBRecord> approved = new ArrayList();
+        ArrayList<Event> approved = new ArrayList();
         for(DBRecord record : records){
-            if(!sortedEvents.get(categories.get(categoryName)).containsKey(record.getId()) && record.getRating()>=MINIMUM_RATING){
-                approved.add(record);
+            if(!sortedEvents.get(categories.get(categoryName)).containsKey(record.getEvent().getId()) && record.getRating()>=MINIMUM_RATING){
+                Event event = record.getEvent();
+                event.setStatus(EventStatus.VIEW);
+                event.setImagePath(null);
+                event.setAmendment(null);
+                event.setCreationDate(null);
+                event.setDueDate(null);
+                approved.add(record.getEvent());
             }
         }
+
         suggestion.put(categoryName,approved);
     }
 }

@@ -1,42 +1,32 @@
 package com.example.matka.check.Category;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.volley.Request;
-import com.example.matka.check.MainScreen.CategoriesListView;
-import com.example.matka.check.MainScreen.MainScreenCollectionPagerAdapter;
-import com.example.matka.check.MainScreen.UpNextListView;
 import com.example.matka.check.R;
 
-import java.util.Calendar;
+import bl.entities.EventStatus;
 
-import bl.notifications.NotificationService;
-
-import bl.entities.Category;
 import bl.entities.CategoryName;
 
 public class CategoryActivity extends AppCompatActivity implements ExpiredChecksList.OnFragmentInteractionListener , ToCheckList.OnFragmentInteractionListener ,CheckedList.OnFragmentInteractionListener {
 
-    private CheckedList checkedList;
+/*    private CheckedList checkedList;
     private ExpiredChecksList expiredChecksList;
-    private ToCheckList toCheckList;
+    private ToCheckList toCheckList*/;
+    private EventsList checkedList;
+    private EventsList expiredChecksList;
+    private EventsList toCheckList;
     private CategoryScreenCollectionPagerAdapter categoryScreenCollectionPagerAdapter;
     private ViewPager mViewPager;
     private CategoryName categoryName;
@@ -47,14 +37,21 @@ public class CategoryActivity extends AppCompatActivity implements ExpiredChecks
         setContentView(R.layout.activity_main_screen);
         categoryName = (CategoryName) getIntent().getSerializableExtra("Category");
 
-        checkedList = CheckedList.newInstance();
-        checkedList.setCategoryName(categoryName);
-
+/*      checkedList = CheckedList.newInstance();
         expiredChecksList = ExpiredChecksList.newInstance();
-        expiredChecksList.setCategoryName(categoryName);
+        toCheckList = ToCheckList.newInstance();*/
 
-        toCheckList = ToCheckList.newInstance();
+        checkedList = EventsList.newInstance();
+        expiredChecksList = EventsList.newInstance();
+        toCheckList = EventsList.newInstance();
+
+        checkedList.setCategoryName(categoryName);
+        expiredChecksList.setCategoryName(categoryName);
         toCheckList.setCategoryName(categoryName);
+
+        toCheckList.setStatus(EventStatus.TODO);
+        expiredChecksList.setStatus(EventStatus.EXPIRED);
+        checkedList.setStatus(EventStatus.DONE);
 
         bindUi();
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
