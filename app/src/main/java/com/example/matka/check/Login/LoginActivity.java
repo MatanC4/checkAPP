@@ -75,9 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         mainScreenIntent = new Intent(this, MainScreenActivity.class);
         UserInfo info = manager.getUserInformation(this);
         Log.v("USER_INFO", info.toString());
-        dummyReadFromFireBase();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        //dummyReadFromFireBase();
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
         if(!info.isAnonymous())
@@ -134,14 +132,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 textview.setText("Success + \n" +
                         loginResult.getRecentlyGrantedPermissions() + "\n");
-                GraphRequest request = GraphRequest.newMeRequest(
+                        GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
                                 Log.v("LoginActivity", response.toString());
-
-                                // Application code
                                 try {
                                     String birthday = object.getString("birthday");
                                     JSONObject location = (JSONObject)object.get("location");
@@ -164,7 +160,6 @@ public class LoginActivity extends AppCompatActivity {
                                 } catch (JSONException e) {
                                     Log.d("FACEBOOK","Failed");
                                 }
-                                 // 01/31/1980 format
                             }
                         });
                 Bundle parameters = new Bundle();
@@ -187,6 +182,8 @@ public class LoginActivity extends AppCompatActivity {
         anonymousLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String country = LoginActivity.this.getResources().getConfiguration().locale.getCountry();
+                LoginActivity.this.manager.saveAnonymousUserInformation(LoginActivity.this, country);
                 startNextActivity();
             }
         });

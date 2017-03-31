@@ -39,7 +39,7 @@ public class APIresActivity extends Activity implements OnItemClickListener , AP
     private String[] titles;
     private int [] eventImages;
     private int [] addBtnImages;
-    List<RowItem> rowItems;
+    private List<RowItem> rowItems;
     ListView mylistview;
     Intent intent;
 
@@ -57,9 +57,6 @@ public class APIresActivity extends Activity implements OnItemClickListener , AP
     private APIDataSync apidataSync;
     private CategoryName categoryName;
     private Category category;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +84,7 @@ public class APIresActivity extends Activity implements OnItemClickListener , AP
 
     @Override
     public void passArrayList(ArrayList<Event> popularMoviesList) {
-        Log.v("Log 3" , popularMoviesList.toString());
+        //Log.v("FROM_API_RES" , popularMoviesList.toString());
         for (int i = 0; i < popularMoviesList.size(); i++) {
             RowItem item = new RowItem(popularMoviesList.get(i).getName(),
                     R.drawable.millennial_explorers,
@@ -95,6 +92,7 @@ public class APIresActivity extends Activity implements OnItemClickListener , AP
             rowItems.add(item);
             popularMoviesList.get(i).setCategory(category);
         }
+        //Log.v("before Adapter", rowItems.toString());
         mylistview = (ListView) findViewById(R.id.list_for_api_res);
         CustomAdapter adapter = new CustomAdapter(this, rowItems , popularMoviesList);
         mylistview.setAdapter(adapter);

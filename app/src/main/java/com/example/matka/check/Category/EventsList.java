@@ -4,12 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -28,17 +27,24 @@ import bl.entities.EventStatus;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ExpiredChecksList.OnFragmentInteractionListener} interface
  * to handle interaction events.
+ * create an instance of this fragment.
  */
-public class ExpiredChecksList extends Fragment {
-
+public class EventsList extends android.support.v4.app.Fragment {
     private ArrayList<String> expiredItems;
-    private OnFragmentInteractionListener mListener;
+    private ExpiredChecksList.OnFragmentInteractionListener mListener;
     private Intent intent;
     private CategoryName categoryName;
     private ImageButton add;
+    private EventStatus status;
 
+    public EventStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EventStatus status) {
+        this.status = status;
+    }
 
     public CategoryName getCategoryName() {
         return categoryName;
@@ -48,49 +54,24 @@ public class ExpiredChecksList extends Fragment {
         this.categoryName = categoryName;
     }
 
-    public ExpiredChecksList() {
+
+    public EventsList() {
         // Required empty public constructor
     }
 
+    public static EventsList newInstance() {
+        EventsList fragment = new EventsList();
+        return fragment;
+    }
 
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_expired_checks, container, false);
- /*
-        expiredItems = new ArrayList<String>();
-        expiredItems.add("Mcdonalds");
-        expiredItems.add("Said 2000");
-        expiredItems.add("Goocha");
-        expiredItems.add("Girraf");
-
-        add = (ImageButton) view.findViewById(R.id.add_eve_via_api__button);
-        add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent  = new Intent(getContext() , APIresActivity.class);
-                intent.putExtra("Category" ,categoryName);
-                startActivity(intent);
-            }
-        });
-        ListView listView = (ListView) view.findViewById(R.id.expired_checks_list_view);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity()
-                ,R.layout.custom_category_item_layout,R.id.category_list_item ,
-                expiredItems);
-        listView.setAdapter(arrayAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent  = new Intent(getContext() , APIresActivity.class);
-                intent.putExtra("Category" ,CategoryName.values()[i]);
-                startActivity(intent);
-            }
-        });*/
-
+        View view = inflater.inflate(R.layout.fragment_events_list, container, false);
 
         AppManager manager = AppManager.getInstance(getContext());
-        ArrayList<Event> toCheck = manager.getEventsByStatus(categoryName, EventStatus.EXPIRED);
+        ArrayList<Event> toCheck = manager.getEventsByStatus(categoryName, status);
         ArrayList<RowItem> rowItems = new ArrayList<>();
         for (Event event :  toCheck) {
             RowItem item = new RowItem(event.getName(),
@@ -98,11 +79,11 @@ public class ExpiredChecksList extends Fragment {
                     R.drawable.plus_1);
             rowItems.add(item);
         }
-        ListView myListView = (ListView) view.findViewById(R.id.expired_checks_list_view);
+        ListView myListview = (ListView) view.findViewById(R.id.events_list_view);
         CustomAdapter adapter = new CustomAdapter(this.getContext(), rowItems, toCheck);
-        myListView.setAdapter(adapter);
+        myListview.setAdapter(adapter);
 
-        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        myListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             }
@@ -120,7 +101,7 @@ public class ExpiredChecksList extends Fragment {
         return view;
     }
 
-
+    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -130,8 +111,8 @@ public class ExpiredChecksList extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof ExpiredChecksList.OnFragmentInteractionListener) {
+            mListener = (ExpiredChecksList.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -144,11 +125,16 @@ public class ExpiredChecksList extends Fragment {
         mListener = null;
     }
 
-    public static ExpiredChecksList newInstance() {
-        ExpiredChecksList fragment = new ExpiredChecksList();
-        return fragment;
-    }
-
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.example.matka.check.Category.CategoryActivity;
+import com.example.matka.check.Event.EventInfoActivity;
 import com.example.matka.check.R;
 
 /**
@@ -19,16 +20,17 @@ import com.example.matka.check.R;
 public class EventNotification extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent newIntent = new Intent(context, CategoryActivity.class);
-        newIntent.putExtra(BroadCastTags.EVENT_ID,(intent.getLongExtra(BroadCastTags.EVENT_ID, -1)));
-        newIntent.putExtra(BroadCastTags.CATEGORY_NAME,(intent.getSerializableExtra(BroadCastTags.EVENT_TITLE)));
+        Intent newIntent = new Intent(context, EventInfoActivity.class);
+
+        newIntent.putExtra(BroadcastTags.EVENT_OBJ,(intent.getStringExtra(BroadcastTags.EVENT_OBJ)));
+        newIntent.putExtra(BroadcastTags.CATEGORY_NAME,(intent.getSerializableExtra(BroadcastTags.CATEGORY_NAME)));
         Log.d("NOTIFICATION", "On");
         long[] pattern = {0, 300, 0};
         PendingIntent pi = PendingIntent.getActivity(context, 0, newIntent, 0);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark_focused)
+                .setSmallIcon(R.drawable.notification)
                 .setContentTitle("Event due date")
-                .setContentText(intent.getStringExtra(BroadCastTags.EVENT_TITLE))
+                .setContentText(intent.getStringExtra(BroadcastTags.EVENT_TITLE))
                 .setVibrate(pattern)
                 .setAutoCancel(true);
         mBuilder.setContentIntent(pi);

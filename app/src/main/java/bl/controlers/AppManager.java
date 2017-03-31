@@ -11,11 +11,20 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 import bl.data.DBRecord;
 import bl.data.DataListener;
@@ -26,10 +35,11 @@ import bl.entities.Amendment;
 import bl.entities.AmendmentType;
 import bl.entities.Category;
 import bl.entities.CategoryName;
+import bl.entities.DateComparator;
 import bl.entities.Event;
 import bl.entities.EventStatus;
 import bl.entities.UserInfo;
-import bl.notifications.BroadCastTags;
+import bl.notifications.BroadcastTags;
 import bl.notifications.EventNotification;
 
 /**
@@ -42,8 +52,9 @@ public class AppManager implements DataListener {
     private static AppManager singleton;
     private HashMap<Category, HashMap<Long, Event>> sortedEvents;
     private HashMap<CategoryName, String> categoriesAPIKeys;
-    private HashMap<CategoryName, ArrayList<DBRecord>> suggestion;
-    private HashMap<String, ImageView> images;
+    private HashMap<CategoryName, ArrayList<Event>> suggestion;
+    private HashMap<CategoryName, Category> categories;
+    private HashMap<String, Bitmap> images;
     private UserEvents userEvents;
     private UserInfo info;
     private FireBaseHandler fbHandler;
@@ -59,14 +70,39 @@ public class AppManager implements DataListener {
         return modifiedEvent;
     }
 
+    public ArrayList<Event> getEventsByStatus(CategoryName cName, EventStatus status){
+        HashMap<Long, Event> eventsInCategory = sortedEvents.get(categories.get(cName));
+        ArrayList<Event> eventsToReturn = new ArrayList<>();
+        for(Event e : eventsInCategory.values()){
+            if(e.getStatus()==status){
+                eventsToReturn.add(e);
+            }
+        }
+        return eventsToReturn;
+    }
 
-    public ImageView getImageByKey(String key) throws Exception{
+    public ArrayList<Event> getNext5Events(){
+        ArrayList<Event> sortedByDate = new ArrayList<>(userEvents.getEvents());
+        Collections.sort(sortedByDate, new DateComparator());
+        ArrayList<Event> nextFive = new ArrayList<>();
+        for(int i=0 ; i<Math.min(5,nextFive.size()) ; i++){
+            if(sortedByDate.get(i).getStatus()==EventStatus.TODO)
+                nextFive.add(sortedByDate.get(i));
+            else{
+                break;
+            }
+        }
+        return nextFive;
+    }
+
+
+    public Bitmap getImageByKey(String key) throws Exception{
         if(!images.containsKey(key))
             throw new Exception("Invalid Key");
         return images.get(key);
     }
     
-    public void temporarilyStoreImage(String key, ImageView image){
+    public void temporarilyStoreImage(String key, Bitmap image){
         images.put(key, image);
     }
 
@@ -75,7 +111,7 @@ public class AppManager implements DataListener {
     }
 
     public ArrayList<Event> getEventsInCategory(CategoryName cName){
-        HashMap<Long,Event> eventsMap = sortedEvents.get(new Category(cName,null));
+        HashMap<Long,Event> eventsMap = sortedEvents.get(categories.get(cName));
         ArrayList<Event> events = new ArrayList<>();
         for(Event e : eventsMap.values()){
             events.add(e);
@@ -92,11 +128,11 @@ public class AppManager implements DataListener {
         }
     }
 
-    public ArrayList<DBRecord> getSuggestionsByProfile(CategoryName categoryName, Context context) throws Exception{
+    public ArrayList<Event> getSuggestionsByProfile(CategoryName categoryName, Context context) throws Exception{
         if(info==null)
             info = getUserInformation(context);
         if(info.isAnonymous())
-            throw new Exception("Sorry! this service is not available to anonymous users");
+            throw new Exception("Sorry! this feature is not available for anonymous users");
         return suggestion.get(categoryName);
     }
 
@@ -107,6 +143,7 @@ public class AppManager implements DataListener {
             }
             catch(Exception e){
                 Log.v("FIRE_BASE","Reading failed, Category: " +cn.toString());
+                suggestion.put(cn,new ArrayList<Event>());
             }
         }
     }
@@ -126,7 +163,7 @@ public class AppManager implements DataListener {
 
     public boolean isEventAlreadyExist(long id, CategoryName cName){
         try {
-            return sortedEvents.get(new Category(cName, null)).containsKey(id);
+            return sortedEvents.get(categories.get(cName)).containsKey(id);
         }
         catch(Exception e){return false;}
     }
@@ -136,6 +173,8 @@ public class AppManager implements DataListener {
         categoriesAPIKeys = new HashMap<>();
         suggestion = new HashMap<>();
         images = new HashMap<>();
+        categories = new HashMap<>();
+
     }
 
     public static AppManager getInstance(Context context){
@@ -167,7 +206,7 @@ public class AppManager implements DataListener {
     }
 
     public Bitmap getImageFromStorage(Event event){
-        return BitmapFactory.decodeFile(event.getImageURL());
+        return BitmapFactory.decodeFile(event.getImagePath());
     }
 
 
@@ -196,7 +235,7 @@ public class AppManager implements DataListener {
             image.compress(Bitmap.CompressFormat.JPEG, 90, out);
             out.flush();
             out.close();
-            event.setImageURL(myDir.getPath());
+            event.setImagePath(myDir.getPath());
         } catch(Exception e){
             Log.d("IMAGE", "Saving the image failed");
         }
@@ -204,7 +243,7 @@ public class AppManager implements DataListener {
     }
     public Event addEventByDetails(Context context, long id, CategoryName categoryName, String name, String imageURL, String description, Calendar dueDate,
                                    AmendmentType amendmentType, String amendmentDescription, Bitmap image){
-        Event event = new Event(id, name, imageURL, description, new Category(categoryName,categoriesAPIKeys.get(categoryName)),
+        Event event = new Event(id, name, imageURL, description, categories.get(categoryName),
                 EventStatus.TODO, dueDate);
         Amendment amendment = new Amendment(amendmentType, amendmentDescription);
         event.setAmendment(amendment);
@@ -222,13 +261,15 @@ public class AppManager implements DataListener {
         AlarmManager alarms = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 
         EventNotification receiver = new EventNotification();
-        IntentFilter filter = new IntentFilter(BroadCastTags.ACTION);
+        IntentFilter filter = new IntentFilter(BroadcastTags.ACTION);
         context.registerReceiver(receiver, filter);
 
-        Intent intent = new Intent(BroadCastTags.ACTION);
-        intent.putExtra(BroadCastTags.EVENT_ID, event.getId());
-        intent.putExtra(BroadCastTags.CATEGORY_NAME,event.getCategory().getName());
-        intent.putExtra(BroadCastTags.EVENT_TITLE,event.getName());
+        Intent intent = new Intent(BroadcastTags.ACTION);
+        Gson gson = new Gson();
+        String json =  gson.toJson(event);
+        intent.putExtra(BroadcastTags.EVENT_OBJ, json);
+        intent.putExtra(BroadcastTags.CATEGORY_NAME,event.getCategory().getName());
+        intent.putExtra(BroadcastTags.EVENT_TITLE,event.getName());
         PendingIntent operation = PendingIntent.getBroadcast(context, 0, intent, 0);
         alarms.set(AlarmManager.RTC_WAKEUP, event.getDueDate().getTimeInMillis(), operation) ;
     }
@@ -246,6 +287,7 @@ public class AppManager implements DataListener {
     private void setCategories(){
         for(CategoryName cn : CategoryName.values()){
             Category category = new Category(cn,categoriesAPIKeys.get(cn));
+            categories.put(cn, category);
             HashMap<Long,Event> events = new HashMap<>();
             sortedEvents.put(category,events);
         }
@@ -258,18 +300,26 @@ public class AppManager implements DataListener {
     private void getData(Context context){
         userEvents = SharedPreferencesHandler.getData(context);
         for(Event e : userEvents.getEvents()){
+            e.setCategory(categories.get(e.getCategory().getName()));
             sortedEvents.get(e.getCategory()).put(e.getId(),e);
         }
     }
 
     @Override
     public void onDataReceived(CategoryName categoryName, ArrayList<DBRecord> records) {
-        ArrayList<DBRecord> approved = new ArrayList();
+        ArrayList<Event> approved = new ArrayList();
         for(DBRecord record : records){
-            if(!sortedEvents.get(new Category(categoryName,null)).containsKey(record.getId()) && record.getRating()>=MINIMUM_RATING){
-                approved.add(record);
+            if(!sortedEvents.get(categories.get(categoryName)).containsKey(record.getEvent().getId()) && record.getRating()>=MINIMUM_RATING){
+                Event event = record.getEvent();
+                event.setStatus(EventStatus.VIEW);
+                event.setImagePath(null);
+                event.setAmendment(null);
+                event.setCreationDate(null);
+                event.setDueDate(null);
+                approved.add(record.getEvent());
             }
         }
+
         suggestion.put(categoryName,approved);
     }
 }

@@ -42,4 +42,12 @@ public class RowItem {
 
         return title;
     }
+
+    @Override
+    public String toString() {
+        return "RowItem{" +
+                "title='" + title + '\'' +
+                ", eventImageId=" + eventImageId +
+                '}';
+    }
 }

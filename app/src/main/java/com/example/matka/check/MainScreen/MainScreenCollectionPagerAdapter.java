@@ -8,9 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.example.matka.check.MainScreen.CategoriesListView;
-import com.example.matka.check.MainScreen.UpNextListView;
-
 
 /**
  * Created by matka on 13/01/17.
@@ -18,12 +15,14 @@ import com.example.matka.check.MainScreen.UpNextListView;
 
 public class MainScreenCollectionPagerAdapter extends FragmentStatePagerAdapter {
     private CategoriesListView categoriesListView;
-    private UpNextListView upNextListView;
+    private SpecialEventsList upNext;
+    private SpecialEventsList suggestions;
 
-    public MainScreenCollectionPagerAdapter(FragmentManager fm , CategoriesListView categoriesListView , UpNextListView upNextListView) {
+    public MainScreenCollectionPagerAdapter(FragmentManager fm , CategoriesListView categoriesListView , SpecialEventsList upNext, SpecialEventsList suggestions) {
         super(fm);
         this.categoriesListView = categoriesListView;
-        this.upNextListView = upNextListView;
+        this.upNext = upNext;
+        this.suggestions = suggestions;
     }
 
     @Override
@@ -33,8 +32,11 @@ public class MainScreenCollectionPagerAdapter extends FragmentStatePagerAdapter 
             case 0:
                 return this.categoriesListView;
 
-             case 1:
-                 return this.upNextListView;
+            case 1:
+                 return this.upNext;
+
+            case 2:
+                return this.suggestions;
 
             default:
                 return null;
@@ -43,15 +45,17 @@ public class MainScreenCollectionPagerAdapter extends FragmentStatePagerAdapter 
 
     @Override
     public int getCount () {
-        return 2;
+        return 3;
     }
 
     @Override
     public CharSequence getPageTitle ( int position){
         if (position == 0)
             return ("CATEGORIES");
-        else
+        else if(position == 1)
             return ("UP NEXT");
+        else
+            return ("SUGGESTIONS");
     }
 }
 

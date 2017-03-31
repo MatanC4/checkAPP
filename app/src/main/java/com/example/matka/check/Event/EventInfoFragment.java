@@ -59,6 +59,28 @@ public class EventInfoFragment extends android.support.v4.app.Fragment implement
     private FragmentManager fragmentManager;
     private Button commitBtn;
 
+    public ImageView getImageView() {
+        return imageView;
+    }
+
+    public void setImageView(ImageView imageView) {
+        this.imageView = imageView;
+    }
+
+    private OnFragmentInteractionListener mListener;
+
+    public EventInfoFragment() {
+        // Required empty public constructor
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
     // TODO: Rename and change types and number of parameters
     public static EventInfoFragment newInstance() {
         EventInfoFragment fragment = new EventInfoFragment();
@@ -70,11 +92,6 @@ public class EventInfoFragment extends android.support.v4.app.Fragment implement
         super.onCreate(savedInstanceState);
 
     }
-
-    public void showDateDialog(){
-
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -128,9 +145,10 @@ public class EventInfoFragment extends android.support.v4.app.Fragment implement
         checkBtn = (Button)view.findViewById(R.id.check_event_btn);
         ll.setVisibility(View.GONE);
 
-        if(eventStaus == EventStatus.VIEW){
-            addBtn.setVisibility(View.VISIBLE);
-            //ll.setVisibility(View.GONE);
+        if(true) {
+            if (eventStaus == EventStatus.VIEW) {
+                addBtn.setVisibility(View.VISIBLE);
+                //ll.setVisibility(View.GONE);
 
             addBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

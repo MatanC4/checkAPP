@@ -11,6 +11,7 @@ public class Event implements Comparable<Event>{
     private long id;
     private String name;
     private String imageURL;
+    private String imagePath;
     private String description;
     private Category category;
     private EventStatus status;
@@ -36,6 +37,14 @@ public class Event implements Comparable<Event>{
         this.status = status;
         this.dueDate = dueDate;
         this.creationDate = Calendar.getInstance();
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public Category getCategory() {

@@ -1,32 +1,19 @@
 package com.example.matka.check.MainScreen;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.RelativeLayout;
-import android.util.Log;
 
 import com.example.matka.check.R;
 
-import java.util.Calendar;
-
-import bl.controlers.AppManager;
-import bl.entities.Event;
-import bl.notifications.EventNotification;
-import bl.notifications.NotificationService;
-
-public class MainScreenActivity extends FragmentActivity implements CategoriesListView.OnFragmentInteractionListener, UpNextListView.OnFragmentInteractionListener {
+public class MainScreenActivity extends FragmentActivity implements CategoriesListView.OnFragmentInteractionListener, SpecialEventsList.OnFragmentInteractionListener {
 
     private CategoriesListView categoriesListView;
-    private UpNextListView upNextListView;
+    private SpecialEventsList upNext;
+    private SpecialEventsList suggestions;
     private MainScreenCollectionPagerAdapter mainScreenCollectionPagerAdapter;
     private ViewPager mViewPager;
     private FloatingActionButton fab;
@@ -37,21 +24,19 @@ public class MainScreenActivity extends FragmentActivity implements CategoriesLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
         categoriesListView = CategoriesListView.newInstance();
-        upNextListView = UpNextListView.newInstance();
+        upNext = SpecialEventsList.newInstance();
+        suggestions = SpecialEventsList.newInstance();
+        suggestions.setSuggestions(true);
         bindUi();
-
-        AppManager manager = AppManager.getInstance(this);
     }
 
 
     private void bindUi() {
-        mainScreenCollectionPagerAdapter =  new MainScreenCollectionPagerAdapter(getSupportFragmentManager(), categoriesListView ,upNextListView);
+        mainScreenCollectionPagerAdapter =  new MainScreenCollectionPagerAdapter(getSupportFragmentManager(), categoriesListView , upNext, suggestions);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mainScreenCollectionPagerAdapter);
         rl = (RelativeLayout)findViewById(R.id.relative_main_layout);
         rl.invalidate();
-        //fab = (FloatingActionButton) findViewById(R.id.add_eve_via_api__button);
-        //fab.bringToFront();
 
     }
 
