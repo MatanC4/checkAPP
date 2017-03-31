@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,21 +46,17 @@ public class SpecialEventsList extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_up_next_list_view, container, false);
         AppManager manager = AppManager.getInstance(getContext());
         ArrayList<Event> eventsForDisplay;
-        if(!isSuggestions) {
+        if(!isSuggestions)
             eventsForDisplay = manager.getNext5Events();
-            Log.d("NOT_SUGG", eventsForDisplay.toString());
-        }
         else{
             try{
                 eventsForDisplay = manager.getSuggestionsByProfile(CategoryName.values()
                         [(int)(Math.random()*CategoryName.values().length)],getContext());
-                Log.d("SUGG", eventsForDisplay.toString());
             }
             catch(Exception e){
                 eventsForDisplay = new ArrayList<>();
                 Toast.makeText(getContext(),e.getMessage(),
                         Toast.LENGTH_LONG).show();
-                Log.d("NOT_SUGG", "CATCH");
             }
         }
 
@@ -72,7 +67,7 @@ public class SpecialEventsList extends Fragment {
                     R.drawable.plus_1);
             rowItems.add(item);
         }
-        Log.d("events", eventsForDisplay.toString());
+
         ListView lView = (ListView) view.findViewById(R.id.up_next_list_view_ListView);
         CustomAdapter adapter = new CustomAdapter(this.getContext(), rowItems, eventsForDisplay);
         lView.setAdapter(adapter);
