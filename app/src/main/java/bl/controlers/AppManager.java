@@ -11,15 +11,11 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Map;
 
 import bl.data.DBRecord;
 import bl.data.DataListener;
@@ -33,7 +29,7 @@ import bl.entities.CategoryName;
 import bl.entities.Event;
 import bl.entities.EventStatus;
 import bl.entities.UserInfo;
-import bl.notifications.BroadcastTags;
+import bl.notifications.BroadCastTags;
 import bl.notifications.EventNotification;
 
 /**
@@ -226,13 +222,13 @@ public class AppManager implements DataListener {
         AlarmManager alarms = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 
         EventNotification receiver = new EventNotification();
-        IntentFilter filter = new IntentFilter(BroadcastTags.ACTION);
+        IntentFilter filter = new IntentFilter(BroadCastTags.ACTION);
         context.registerReceiver(receiver, filter);
 
-        Intent intent = new Intent(BroadcastTags.ACTION);
-        intent.putExtra(BroadcastTags.EVENT_ID, event.getId());
-        intent.putExtra(BroadcastTags.CATEGORY_NAME,event.getCategory().getName());
-        intent.putExtra(BroadcastTags.EVENT_TITLE,event.getName());
+        Intent intent = new Intent(BroadCastTags.ACTION);
+        intent.putExtra(BroadCastTags.EVENT_ID, event.getId());
+        intent.putExtra(BroadCastTags.CATEGORY_NAME,event.getCategory().getName());
+        intent.putExtra(BroadCastTags.EVENT_TITLE,event.getName());
         PendingIntent operation = PendingIntent.getBroadcast(context, 0, intent, 0);
         alarms.set(AlarmManager.RTC_WAKEUP, event.getDueDate().getTimeInMillis(), operation) ;
     }

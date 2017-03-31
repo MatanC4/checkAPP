@@ -3,6 +3,7 @@ package com.example.matka.check.Event;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;

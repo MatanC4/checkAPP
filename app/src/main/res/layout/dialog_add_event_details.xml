@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#F1F2F4"
+    >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="130dp"
+    android:orientation="vertical"
+    android:id="@+id/linearLayout1">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Time to commit.."
+        android:id="@+id/title_of_dialog"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:textColor="#000000"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Here at CHECK we believe its important to commit in order to achieve"
+        android:id="@+id/textView2"
+        android:textColor="#000000"
+        android:lines="2"
+        android:maxLines="3"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below="@+id/title_of_dialog"
+        android:layout_marginTop="20dp"/>
+</LinearLayout>
+
+    <TextView
+        android:layout_width="55dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Set time limit in days"
+        android:id="@+id/time_limit_label"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toStartOf="@+id/time_limit_edit_text"
+        android:textSize="16dp"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:id="@+id/time_limit_edit_text"
+        android:hint="1 - 365"
+        android:layout_marginLeft="15dp"
+        android:layout_below="@+id/linearLayout1"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="80dp"
+         />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@android:color/black"
+        android:layout_below="@id/time_limit_label"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/separator1"
+        ></View>
+
+
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:id="@+id/incentiveRadioGroup"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@id/separator1"
+        android:layout_alignParentEnd="true"
+        >
+
+        <TextView
+            android:id="@+id/radio_button_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose your incentive"
+            android:textSize="16dp"
+            />
+        <RadioButton
+            android:id="@+id/option1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Donation"
+            android:paddingRight="15dp"
+            />
+        <RadioButton
+            android:id="@+id/option2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Volunteer work"
+            android:paddingRight="15dp"
+            />
+        <RadioButton
+            android:id="@+id/option3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hard Workout"
+            android:paddingRight="15dp"
+            />
+
+        <RadioButton
+            android:id="@+id/option4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Study something new"
+            android:paddingRight="15dp"
+            />
+
+
+
+    </RadioGroup>
+
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/com_facebook_likeboxcountview_border_width"
+        android:background="@android:color/black"
+        android:layout_below="@id/incentiveRadioGroup"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:id="@+id/separator2"
+        ></View>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Describe your incentive"
+        android:id="@+id/descrive_incentive_label"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:id="@+id/describe_inentive_textbox"
+        android:layout_alignStart="@+id/descrive_incentive_label"
+        android:layout_alignEnd="@+id/incentiveRadioGroup"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textIsSelectable="true"
+        android:elegantTextHeight="true"
+        android:maxLines="10"
+        android:hint="describe the action you will take in case of not completing your CHECK on time"
+        android:layout_below="@+id/separator2"
+        android:layout_above="@+id/commit_button_123"
+        android:inputType="text"
+        android:scrollHorizontally="true"
+        android:longClickable="true"
+        />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:background="#1D88EA"
+        android:text="Commit"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:id="@+id/commit_button_123" />
+
+</RelativeLayout>

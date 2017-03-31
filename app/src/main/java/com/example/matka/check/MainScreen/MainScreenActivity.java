@@ -39,38 +39,9 @@ public class MainScreenActivity extends FragmentActivity implements CategoriesLi
         categoriesListView = CategoriesListView.newInstance();
         upNextListView = UpNextListView.newInstance();
         bindUi();
-       // setDummyNotificaion();
-        //setDummyNotificationWithBroadcast();
+
         AppManager manager = AppManager.getInstance(this);
-        manager.setEventNotification(this,new Event(122));
     }
-
-    private void setDummyNotificaion(){
-        Calendar sevendayalarm = Calendar.getInstance();
-        sevendayalarm.add(Calendar.MINUTE, 1);
-        Intent intent = new Intent(this, NotificationService.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 001, intent, 0);
-        AlarmManager am = (AlarmManager)getSystemService(ALARM_SERVICE);
-        am.set(AlarmManager.RTC_WAKEUP, sevendayalarm.getTimeInMillis(), pendingIntent);
-        Log.d("ALARM","set to: "+sevendayalarm.getTime());
-    }
-
-    private void setDummyNotificationWithBroadcast(){
-        AlarmManager alarms = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
-
-        EventNotification receiver = new EventNotification();
-        IntentFilter filter = new IntentFilter("ALARM_ACTION");
-        registerReceiver(receiver, filter);
-
-        Intent intent = new Intent("ALARM_ACTION");
-        intent.putExtra("param", "My scheduled action");
-        PendingIntent operation = PendingIntent.getBroadcast(this, 0, intent, 0);
-        // I choose 3s after the launch of my application
-        alarms.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+5000, operation) ;
-        intent.putExtra("param", "My 2nd scheduled action");
-        alarms.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+15000, operation);
-    }
-
 
 
     private void bindUi() {
