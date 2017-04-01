@@ -9,6 +9,10 @@ public class Category implements Comparable<Category> {
     private CategoryName name;
     private String apiKey;
 
+    public Category(){
+
+    }
+
     public Category(CategoryName name, String apiKey) {
         this.name = name;
         this.apiKey = apiKey;
