@@ -9,4 +9,5 @@ public interface BroadcastTags {
     String CATEGORY_NAME = "CategoryName";
     String EVENT_TITLE = "EVENT_TITLE";
     String ACTION = "ALARM_ACTION";
+    String IS_FROM_BROADCAST = "IS_FROM_BROADCAST";
 }

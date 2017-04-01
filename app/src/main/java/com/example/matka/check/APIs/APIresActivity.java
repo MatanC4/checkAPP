@@ -50,13 +50,15 @@ public class APIresActivity extends Activity implements OnItemClickListener , AP
     private final String languagePrefix = "&language=en-US";
     private final String pagePrefix = "&page=1";
     private JsonObjectRequest jsonObjectRequest;
-    private final int NUM_OF_RES = 10;
+    private final int NUM_OF_RES = 20;
     private final  String BASE_URL_IMAGE = "http://image.tmdb.org/t/p/";
     private final String [] IMAGE_SIZE  =  {"w92", "w154", "w185", "w342", "w500", "w780", "original"};
     private ArrayList<Event> popularMoviesList;
     private APIDataSync apidataSync;
     private CategoryName categoryName;
     private Category category;
+
+    //https://api.themoviedb.org/3/movie/popular?api_key=8a5c1fef1a13c3293e4c069fde43be81&language=en-US&page=1
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

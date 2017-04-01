@@ -60,7 +60,7 @@ public class AppManager implements DataListener {
     private FireBaseHandler fbHandler;
 
     public Event changeEventStatus(Context context, Event event, EventStatus status){
-        Event modifiedEvent = sortedEvents.get(event.getCategory()).get(event.getId());
+        Event modifiedEvent = sortedEvents.get(categories.get(event.getCategory().getName())).get(event.getId());
         if(event.getStatus()!=status){
             modifiedEvent.setStatus(status);
             if(status==EventStatus.DONE)

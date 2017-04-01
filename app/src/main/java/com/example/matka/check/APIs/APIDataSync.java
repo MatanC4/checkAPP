@@ -35,7 +35,7 @@ public class APIDataSync extends Thread implements Runnable {
     private final String languagePrefix = "&language=en-US";
     private final String pagePrefix = "&page=1";
     private JsonObjectRequest jsonObjectRequest;
-    private final int NUM_OF_RES = 10;
+    private final int NUM_OF_RES = 20;
     private final  String BASE_URL_IMAGE = "http://image.tmdb.org/t/p/";
     private final String [] IMAGE_SIZE  =  {"w92", "w154", "w185", "w342", "w500", "w780", "original"};
     private ArrayList<Event> popularMoviesList;

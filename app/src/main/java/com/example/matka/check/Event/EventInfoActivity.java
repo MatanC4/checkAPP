@@ -22,6 +22,7 @@ import bl.controlers.AppManager;
 import bl.entities.Category;
 import bl.entities.CategoryName;
 import bl.entities.Event;
+import bl.notifications.BroadcastTags;
 
 
 public class EventInfoActivity extends AppCompatActivity implements EventInfoFragment.OnFragmentInteractionListener {
@@ -32,6 +33,7 @@ public class EventInfoActivity extends AppCompatActivity implements EventInfoFra
     private Event event;
     private EventInfoFragment eventInfoFragment;
     private CategoryName categoryName;
+    private boolean isFromService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class EventInfoActivity extends AppCompatActivity implements EventInfoFra
         Gson gson = new Gson();
         event = gson.fromJson(getIntent().getExtras().getString("EventObj"),Event.class);
         categoryName = (CategoryName) getIntent().getSerializableExtra("Category");
+        isFromService = getIntent().getBooleanExtra(BroadcastTags.IS_FROM_BROADCAST ,false);
 
         eventInfoFragment = EventInfoFragment.newInstance();
         eventInfoFragment.setEvent(event);
