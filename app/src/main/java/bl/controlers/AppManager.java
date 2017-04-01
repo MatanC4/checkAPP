@@ -3,6 +3,7 @@ package bl.controlers;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -17,6 +18,7 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -105,12 +107,6 @@ public class AppManager implements DataListener {
         for(int i=0 ; i<Math.min(5,sortedByDate.size()) ; i++){
             if(sortedByDate.get(i).getStatus()==EventStatus.TODO)
                 nextFive.add(sortedByDate.get(i));
-            else{
-                break;
-/*                sortedByDate.get(i).setStatus(EventStatus.TODO);
-                nextFive.add(sortedByDate.get(i));*/
-
-            }
         }
         Log.d("next5", nextFive.toString());
         return nextFive;
@@ -222,36 +218,40 @@ public class AppManager implements DataListener {
 
 
     public Event addEvent(Context context, Event event, Bitmap image) {
-
         Calendar calendar = Calendar.getInstance();
         long eventID = event.getCategory().getName()==CategoryName.GENERAL?
                 SharedPreferencesHandler.getNextGeneralID(context):event.getId();
         event.setCreationDate(calendar);
         event.setId(eventID);
         event.setStatus(EventStatus.TODO);
-        storeImage(event, image);
+        storeImage(event, image, context);
         saveAndStoreEvent(context, event);
         return event;
     }
 
-    private void storeImage(Event event, Bitmap image){
+    private void storeImage(Event event, Bitmap image, Context context){
+
+        String root = Environment.getExternalStorageDirectory().toString();
+        ContextWrapper cw = new ContextWrapper(context);
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File mypath=new File(directory,event.getCategory().getName().toString() + event.getId());
+
+        FileOutputStream fos = null;
         try {
-            String root = Environment.getExternalStorageDirectory().toString();
-            File myDir = new File(root + "/Check");
-            if (!myDir.exists()) {
-                myDir.mkdirs();
-            }
-            String name = event.getCategory().getName().toString() + event.getId();
-            myDir = new File(myDir, name);
-            FileOutputStream out = new FileOutputStream(myDir);
-            image.compress(Bitmap.CompressFormat.JPEG, 90, out);
-            out.flush();
-            out.close();
-            event.setImagePath(myDir.getPath());
-        } catch(Exception e){
-            Log.d("IMAGE", "Saving the image failed");
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            image.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+        event.setImagePath(directory.getAbsolutePath()+"/"+event.getCategory().getName().toString() + event.getId());
 
     }
     public Event addEventByDetails(Context context, long id, CategoryName categoryName, String name, String imageURL, String description, Calendar dueDate,
