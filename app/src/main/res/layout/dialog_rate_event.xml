@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="#89000000"
+    android:orientation="vertical"
+
+    android:weightSum="1">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="How did you like"
+        android:textColor="#FFFFFF"
+        android:textSize="30dp"
+        android:textAlignment="center"
+        android:paddingTop="30dp"
+        android:layout_weight="0.12" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="100px"
+        android:text="dsfvds"
+        android:textColor="#FFFFFF"
+        android:textSize="25dp"
+        android:layout_weight="0.11"
+        android:textAlignment="center"
+        android:paddingTop="15dp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+    <ImageButton
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/sadE"
+        android:src="@drawable/mad128px"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="7dp"
+        android:background="00FFFFFF"/>
+
+    <ImageButton
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/suspiciousE"
+        android:src="@drawable/suspicious128px"
+        android:layout_marginRight="5dp"
+        android:background="00FFFFFF"
+        />
+    <ImageButton
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/confusedE"
+        android:src="@drawable/confused128px"
+        android:layout_marginRight="5dp"
+        android:background="00FFFFFF"
+        />
+    <ImageButton
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/happyE"
+        android:src="@drawable/happy128px"
+        android:layout_marginRight="5dp"
+        android:background="00FFFFFF"
+        />
+
+    <ImageButton
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/inloveE"
+        android:src="@drawable/inlove128px"
+        android:background="00FFFFFF"
+        />
+    </LinearLayout>
+
+</LinearLayout>

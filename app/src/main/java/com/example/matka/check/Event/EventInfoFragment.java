@@ -65,6 +65,7 @@ public class EventInfoFragment extends android.support.v4.app.Fragment  {
 
 
 
+
     // TODO: Rename and change types and number of parameters
     public static EventInfoFragment newInstance() {
         EventInfoFragment fragment = new EventInfoFragment();
@@ -131,6 +132,15 @@ public class EventInfoFragment extends android.support.v4.app.Fragment  {
         checkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                AlertDialog.Builder myBuilder = new AlertDialog.Builder(getContext());
+                View mView = getLayoutInflater(null).inflate(R.layout.dialog_rate_event ,null);
+                myBuilder.setView(mView);
+                final AlertDialog dialog = myBuilder.create();
+                dialog.show();
+
+
+
                 appManager.changeEventStatus(getContext() , event ,EventStatus.DONE);
                 addBtn.setVisibility(View.GONE);
                 removeOrmark.setVisibility(View.GONE);
