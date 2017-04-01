@@ -91,6 +91,8 @@ public class CustomAdapter extends BaseAdapter {
                 holder.eventImage.setImageBitmap(image);
             }
             catch(Exception e){
+                Log.v("path from CustomAdapter",arrayList.get(position).getImageURL());
+                e.printStackTrace();
                 holder.eventImage.setImageResource(rowItems.get(position).getEventImageId());
             }
         }

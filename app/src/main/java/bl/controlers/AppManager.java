@@ -212,6 +212,7 @@ public class AppManager implements DataListener {
     }
 
     public Bitmap getImageFromStorage(Event event){
+        Log.v("image_path", event.getImagePath());
         return BitmapFactory.decodeFile(event.getImagePath());
     }
 
