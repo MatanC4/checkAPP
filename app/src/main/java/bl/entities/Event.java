@@ -2,6 +2,8 @@ package bl.entities;
 
 import java.util.Calendar;
 
+import bl.data.DBRecord;
+
 /**
  * Created by Daniel_m on 11/03/2017.
  */
@@ -37,6 +39,15 @@ public class Event implements Comparable<Event>{
         this.status = status;
         this.dueDate = dueDate;
         this.creationDate = Calendar.getInstance();
+    }
+
+    public Event(DBRecord record){
+        this.id = record.getId();
+        this.name = record.getName();
+        this.imageURL = record.getImageURL();
+        this.description = record.getDescription();
+        this.category = record.getCategory();
+        this.rating = record.getRating();
     }
 
     public String getImagePath() {

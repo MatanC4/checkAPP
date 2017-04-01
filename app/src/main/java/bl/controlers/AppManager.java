@@ -250,6 +250,7 @@ public class AppManager implements DataListener {
             event.setImagePath(myDir.getPath());
         } catch(Exception e){
             Log.d("IMAGE", "Saving the image failed");
+            e.printStackTrace();
         }
 
     }
@@ -321,14 +322,14 @@ public class AppManager implements DataListener {
     public void onDataReceived(CategoryName categoryName, ArrayList<DBRecord> records) {
         ArrayList<Event> approved = new ArrayList();
         for(DBRecord record : records){
-            if(!sortedEvents.get(categories.get(categoryName)).containsKey(record.getEvent().getId()) && record.getRating()>=MINIMUM_RATING){
-                Event event = record.getEvent();
+            if(!sortedEvents.get(categories.get(categoryName)).containsKey(record.getId()) && record.getRating()>=MINIMUM_RATING){
+                Event event = new Event(record);
                 event.setStatus(EventStatus.VIEW);
                 event.setImagePath(null);
                 event.setAmendment(null);
                 event.setCreationDate(null);
                 event.setDueDate(null);
-                approved.add(record.getEvent());
+                approved.add(event);
             }
         }
 
