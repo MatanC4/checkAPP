@@ -59,7 +59,21 @@ public class AppManager implements DataListener {
     private UserInfo info;
     private FireBaseHandler fbHandler;
 
+    private AppManager(Context context){
+        initMaps();
+        userEvents = SharedPreferencesHandler.getData(context);
+        this.fbHandler =  new FireBaseHandler(this);
+        UserInfo info = getUserInformation(context);
+        if(!info.isAnonymous())
+            readFromFireBase(info);
+        setCategories();
+        setKeys();
+        getData(context);
+    }
+
+
     public Event changeEventStatus(Context context, Event event, EventStatus status){
+        Log.v("changeEventStatus", event.toString() + " " +event.getCategory().getName());
         Event modifiedEvent = sortedEvents.get(categories.get(event.getCategory().getName())).get(event.getId());
         if(event.getStatus()!=status){
             modifiedEvent.setStatus(status);
@@ -71,6 +85,7 @@ public class AppManager implements DataListener {
     }
 
     public ArrayList<Event> getEventsByStatus(CategoryName cName, EventStatus status){
+        Log.v("CategoryBeforeCarsh", cName.toString());
         HashMap<Long, Event> eventsInCategory = sortedEvents.get(categories.get(cName));
         ArrayList<Event> eventsToReturn = new ArrayList<>();
         for(Event e : eventsInCategory.values()){
@@ -155,17 +170,6 @@ public class AppManager implements DataListener {
     }
 
 
-    private AppManager(Context context){
-        initMaps();
-        userEvents = SharedPreferencesHandler.getData(context);
-        FireBaseHandler fbHandler =  new FireBaseHandler(this);
-        UserInfo info = getUserInformation(context);
-        if(!info.isAnonymous())
-            readFromFireBase(info);
-        setCategories();
-        setKeys();
-        getData(context);
-    }
 
     public boolean isEventAlreadyExist(long id, CategoryName cName){
         try {
