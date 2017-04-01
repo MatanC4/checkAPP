@@ -95,7 +95,7 @@ public class ExpiredChecksList extends Fragment {
         for (Event event :  toCheck) {
             RowItem item = new RowItem(event.getName(),
                     R.drawable.millennial_explorers,
-                    R.drawable.plus_1);
+                    R.drawable.sad);
             rowItems.add(item);
         }
         ListView myListView = (ListView) view.findViewById(R.id.expired_checks_list_view);

@@ -43,8 +43,8 @@ public class EventInfoActivity extends AppCompatActivity implements EventInfoFra
         event = gson.fromJson(getIntent().getExtras().getString("EventObj"),Event.class);
         categoryName = (CategoryName) getIntent().getSerializableExtra("Category");
         isFromService = getIntent().getBooleanExtra(BroadcastTags.IS_FROM_BROADCAST ,false);
-
         eventInfoFragment = EventInfoFragment.newInstance();
+        eventInfoFragment.setIsFromService(isFromService);
         eventInfoFragment.setEvent(event);
         setFragment(eventInfoFragment);
     }

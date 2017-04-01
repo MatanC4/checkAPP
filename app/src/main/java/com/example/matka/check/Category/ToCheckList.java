@@ -68,7 +68,7 @@ public class ToCheckList extends Fragment {
         for (Event event :  toCheck) {
             RowItem item = new RowItem(event.getName(),
                     R.drawable.millennial_explorers,
-                    R.drawable.plus_1);
+                    R.drawable.ic_add_circle_outline);
             rowItems.add(item);
         }
         ListView myListview = (ListView) view.findViewById(R.id.to_check_list_view);

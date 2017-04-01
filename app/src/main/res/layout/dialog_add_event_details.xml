@@ -155,7 +155,8 @@
         android:textIsSelectable="true"
         android:elegantTextHeight="true"
         android:maxLines="10"
-        android:hint="describe the action you will take in case of not completing your CHECK on time"
+        android:hint="describe chosen incentive in details"
+        android:scrollbars="vertical"
         android:layout_below="@+id/separator2"
         android:layout_above="@+id/commit_button_123"
         android:inputType="text"
@@ -171,5 +172,6 @@
         android:textColor="#FFFFFF"
         android:textSize="20dp"
         android:id="@+id/commit_button_123" />
+
 
 </RelativeLayout>

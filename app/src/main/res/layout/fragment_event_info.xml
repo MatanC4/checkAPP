@@ -20,6 +20,10 @@
             android:layout_width="match_parent"
                 android:layout_alignParentTop="true"
             android:background="#2153a5"
+                app:title="INFO"
+                app:titleTextColor="#F2F2F2"
+                app:subtitle="info"
+                app:subtitleTextColor="#F2F2F2"
             ></android.support.v7.widget.Toolbar>
 
             <ImageView
@@ -44,10 +48,18 @@
                 android:paddingLeft="10dp"
                 android:textColor="#0d1e38"
                 />
-
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/com_facebook_likeboxcountview_border_width"
+                android:background="@android:color/black"
+                android:layout_below="@id/event_title_event_info_screen"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/separatorOne"
+                ></View>
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="190dp"
+                android:layout_height="140dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sed ornare urna, sed ornare magna. Nullam finibus, leo sed varius "
                 android:id="@+id/desc_textview"
@@ -58,8 +70,23 @@
                 android:paddingLeft="8dp"
                 android:textColor="#0d1e38"
                 android:scrollbars = "vertical"
-
+                android:maxLines="30"
                  />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/com_facebook_likeboxcountview_border_width"
+                android:background="@android:color/black"
+                android:layout_below="@id/desc_textview"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="5dp"
+                android:id="@+id/separatorTwo"
+                ></View>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_above="@+id/add_event_button"
+                android:layout_toEndOf="@+id/done_btn_layout"
+                android:layout_below="@+id/desc_textview" />
 
             <Button
                 android:layout_width="match_parent"

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -31,10 +32,11 @@ import android.content.DialogInterface;
 import com.example.matka.check.Date.DatePickerFragment;
 import com.example.matka.check.R;
 import com.squareup.picasso.Picasso;
-
+import android.support.design.widget.AppBarLayout.LayoutParams;
 import java.util.Calendar;
 import java.util.Timer;
-
+import android.view.Window;
+import android.text.method.ScrollingMovementMethod;
 import bl.controlers.AppManager;
 import bl.entities.Amendment;
 import bl.entities.AmendmentType;
@@ -42,7 +44,7 @@ import bl.entities.Event;
 import bl.entities.EventStatus;
 
 
-public class EventInfoFragment extends android.support.v4.app.Fragment  {
+public class EventInfoFragment extends android.support.v4.app.Fragment   {
     private ImageView imageView;
     private TextView title;
     private TextView description;
@@ -62,6 +64,7 @@ public class EventInfoFragment extends android.support.v4.app.Fragment  {
     private Button commitBtn;
     private Button expiredInactiveButton;
     private Button completedBtn;
+    private boolean isFromService;
 
 
 
@@ -86,6 +89,7 @@ public class EventInfoFragment extends android.support.v4.app.Fragment  {
         imageView = (ImageView)view.findViewById(R.id.event_bg_image);
         title = (TextView) view.findViewById(R.id.event_title_event_info_screen);
         description = (TextView) view.findViewById(R.id.desc_textview);
+        description.setMovementMethod(new ScrollingMovementMethod());
 
         showButtonsAccordingToEventStatus(view ,event.getStatus());
 
@@ -103,16 +107,19 @@ public class EventInfoFragment extends android.support.v4.app.Fragment  {
         return view;
     }
 
-    private void showButtonsAccordingToEventStatus(View view , EventStatus eventStaus) {
+
+
+    private void showButtonsAccordingToEventStatus(View view , EventStatus eventStatus) {
         expiredLayout = (LinearLayout)view.findViewById(R.id.expired_btn_layout);
         completedLayout = (LinearLayout)view.findViewById(R.id.done_btn_layout);
         removeOrmark = (LinearLayout)view.findViewById(R.id.linear_buttons_holder);
         expiredInactiveButton = (Button)view.findViewById(R.id.expired_btn);
         checkBtn = (Button)view.findViewById(R.id.check_event_btn);
-
-
         addBtn = (Button)view.findViewById(R.id.add_event_button);
         removeBtn = (Button)view.findViewById(R.id.remove_event_btn);
+        displayActionButtonAccordingToStatus(eventStatus);
+
+
         removeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,25 +139,81 @@ public class EventInfoFragment extends android.support.v4.app.Fragment  {
         checkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // creating alert dialog for rate screen
                 AlertDialog.Builder myBuilder = new AlertDialog.Builder(getContext());
                 View mView = getLayoutInflater(null).inflate(R.layout.dialog_rate_event ,null);
                 myBuilder.setView(mView);
                 final AlertDialog dialog = myBuilder.create();
                 dialog.show();
+                TextView eventName = (TextView) mView.findViewById(R.id.event_name_rate);
+                eventName.setText(event.getName());
+                // buttons for rate screen
+                ImageButton e1 = (ImageButton)mView.findViewById(R.id.madE);
+                e1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        event.setRating(1);
+                        dialog.dismiss();
+                    }
+                });
+                ImageButton e2 = (ImageButton) mView.findViewById(R.id.suspiciousE);
+                e2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        event.setRating(2);
+                        dialog.dismiss();
+                    }
+                });
+                ImageButton e3 = (ImageButton) mView.findViewById(R.id.confusedE);
+                e3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        event.setRating(3);
+                        dialog.dismiss();
+                    }
+                });
+                ImageButton e4 = (ImageButton) mView.findViewById(R.id.happyE);
+                e4.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        event.setRating(4);
+                        dialog.dismiss();
+                    }
+                });
+                ImageButton e5 = (ImageButton) mView.findViewById(R.id.inloveE);
+                e5.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        event.setRating(5);
+                        dialog.dismiss();
+                    }
+                });
 
-
-
+                // change the status of the events and show other buttons accordingly
                 appManager.changeEventStatus(getContext() , event ,EventStatus.DONE);
                 addBtn.setVisibility(View.GONE);
                 removeOrmark.setVisibility(View.GONE);
                 completedLayout.setVisibility(View.VISIBLE);
+
             }
         });
 
 
-            if (eventStaus == EventStatus.VIEW) {
-                addBtn.setVisibility(View.VISIBLE);
+
+    }
+
+
+
+    private void displayActionButtonAccordingToStatus(EventStatus eventStatus) {
+        if(isFromService || eventStatus == EventStatus.EXPIRED ){
+            addBtn.setVisibility(View.GONE);
+            removeOrmark.setVisibility(View.GONE);
+            completedLayout.setVisibility(View.GONE);
+            expiredInactiveButton.setVisibility(View.VISIBLE);
+        }
+
+        else if (eventStatus == EventStatus.VIEW) {
+            addBtn.setVisibility(View.VISIBLE);
 
             addBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -171,23 +234,21 @@ public class EventInfoFragment extends android.support.v4.app.Fragment  {
                             handleClickOnCommitBtn(dialog , timeToComplete ,incentiveDescription ,rg);
                         }
                     });
-
                 }
             });
 
-        } else if(eventStaus == EventStatus.TODO){
-                addBtn.setVisibility(View.GONE);
-                removeOrmark.setVisibility(View.VISIBLE);
-        } else if(eventStaus == EventStatus.DONE){
-                addBtn.setVisibility(View.GONE);
-                removeOrmark.setVisibility(View.GONE);
-                completedLayout.setVisibility(View.VISIBLE);
-            }else{
-                addBtn.setVisibility(View.GONE);
-                removeOrmark.setVisibility(View.GONE);
-                completedLayout.setVisibility(View.GONE);
-                expiredInactiveButton.setVisibility(View.VISIBLE);
-            }
+        } else if(eventStatus == EventStatus.TODO){
+            addBtn.setVisibility(View.GONE);
+            removeOrmark.setVisibility(View.VISIBLE);
+        } else if(eventStatus == EventStatus.DONE){
+            addBtn.setVisibility(View.GONE);
+            removeOrmark.setVisibility(View.GONE);
+            completedLayout.setVisibility(View.VISIBLE);
+        }else{
+            // in case its null put in TO-DO mode
+            addBtn.setVisibility(View.GONE);
+            removeOrmark.setVisibility(View.VISIBLE);
+        }
     }
 
 
@@ -316,8 +377,9 @@ public class EventInfoFragment extends android.support.v4.app.Fragment  {
     }
 
 
-
-
+    public void setIsFromService(boolean isFromService){
+        this.isFromService = isFromService;
+    }
 
     /**
      * This interface must be implemented by activities that contain this

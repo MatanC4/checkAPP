@@ -94,7 +94,7 @@ public class CheckedList extends Fragment {
         for (Event event :  done) {
             RowItem item = new RowItem(event.getName(),
                     R.drawable.millennial_explorers,
-                    R.drawable.plus_1);
+                    R.drawable.victory1);
             rowItems.add(item);
         }
         ListView myListView = (ListView) view.findViewById(R.id.checked_list_view);

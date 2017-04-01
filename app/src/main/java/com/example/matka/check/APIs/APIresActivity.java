@@ -90,7 +90,7 @@ public class APIresActivity extends Activity implements OnItemClickListener , AP
         for (int i = 0; i < popularMoviesList.size(); i++) {
             RowItem item = new RowItem(popularMoviesList.get(i).getName(),
                     R.drawable.millennial_explorers,
-                    R.drawable.plus_1);
+                    R.drawable.ic_add_circle_outline);
             rowItems.add(item);
             popularMoviesList.get(i).setCategory(category);
         }

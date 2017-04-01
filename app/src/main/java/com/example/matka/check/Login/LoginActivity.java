@@ -78,8 +78,11 @@ public class LoginActivity extends AppCompatActivity {
         //dummyReadFromFireBase();
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
-        if(!info.isAnonymous())
+        if(!info.isAnonymous()) {
             startNextActivity();
+            finish();
+        }
+
         else{
             fbConnect();
         }
@@ -167,6 +170,7 @@ public class LoginActivity extends AppCompatActivity {
                 request.setParameters(parameters);
                 request.executeAsync();
                 startNextActivity();
+                finish();
             }
 
             @Override
@@ -185,6 +189,7 @@ public class LoginActivity extends AppCompatActivity {
                 String country = LoginActivity.this.getResources().getConfiguration().locale.getCountry();
                 LoginActivity.this.manager.saveAnonymousUserInformation(LoginActivity.this, country);
                 startNextActivity();
+                finish();
             }
         });
     }
