@@ -24,6 +24,7 @@ public class EventNotification extends BroadcastReceiver {
 
         newIntent.putExtra(BroadcastTags.EVENT_OBJ,(intent.getStringExtra(BroadcastTags.EVENT_OBJ)));
         newIntent.putExtra(BroadcastTags.CATEGORY_NAME,(intent.getSerializableExtra(BroadcastTags.CATEGORY_NAME)));
+        newIntent.putExtra(BroadcastTags.IS_FROM_BROADCAST,true);
         Log.d("NOTIFICATION", "On");
         long[] pattern = {0, 300, 0};
         PendingIntent pi = PendingIntent.getActivity(context, 0, newIntent, 0);

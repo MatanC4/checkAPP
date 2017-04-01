@@ -27,7 +27,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Animation;
 import android.app.DialogFragment;
 import android.widget.Toast;
-
+import android.content.DialogInterface;
 import com.example.matka.check.Date.DatePickerFragment;
 import com.example.matka.check.R;
 import com.squareup.picasso.Picasso;
@@ -42,7 +42,7 @@ import bl.entities.Event;
 import bl.entities.EventStatus;
 
 
-public class EventInfoFragment extends android.support.v4.app.Fragment implements DatePickerDialog.OnDateSetListener {
+public class EventInfoFragment extends android.support.v4.app.Fragment  {
     private ImageView imageView;
     private TextView title;
     private TextView description;
@@ -53,33 +53,17 @@ public class EventInfoFragment extends android.support.v4.app.Fragment implement
     private ImageView imageForFab;
     private Button checkBtn;
     private Button removeBtn;
-    private LinearLayout ll;
+    private LinearLayout removeOrmark;
+    private LinearLayout expiredLayout;
+    private LinearLayout completedLayout;
     private int year , month , day;
     final static int DATE_DIALOG_ID = 0;
     private FragmentManager fragmentManager;
     private Button commitBtn;
+    private Button expiredInactiveButton;
+    private Button completedBtn;
 
-    public ImageView getImageView() {
-        return imageView;
-    }
 
-    public void setImageView(ImageView imageView) {
-        this.imageView = imageView;
-    }
-
-    private OnFragmentInteractionListener mListener;
-
-    public EventInfoFragment() {
-        // Required empty public constructor
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
-    }
 
     // TODO: Rename and change types and number of parameters
     public static EventInfoFragment newInstance() {
@@ -101,21 +85,6 @@ public class EventInfoFragment extends android.support.v4.app.Fragment implement
         imageView = (ImageView)view.findViewById(R.id.event_bg_image);
         title = (TextView) view.findViewById(R.id.event_title_event_info_screen);
         description = (TextView) view.findViewById(R.id.desc_textview);
-        //fab = (FloatingActionButton)view.findViewById(R.id.delete_red_x_button);
-        //fab.setVisibility(View.VISIBLE);
-
-
-
-        imageForFab = new ImageView(this.getContext());
-        imageForFab.setImageResource(R.drawable.plus_blue_128px);
-
-
-       // FloatingActionButton actionButton = new FloatingActionButton.Builder.
-         //       .setContentView(imageForFab)
-           //     .build();
-
-
-
 
         showButtonsAccordingToEventStatus(view ,event.getStatus());
 
@@ -130,25 +99,48 @@ public class EventInfoFragment extends android.support.v4.app.Fragment implement
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-
-
-
         return view;
     }
 
-    private void showButtonsAccordingToEventStatus(View view , final EventStatus eventStaus) {
+    private void showButtonsAccordingToEventStatus(View view , EventStatus eventStaus) {
+        expiredLayout = (LinearLayout)view.findViewById(R.id.expired_btn_layout);
+        completedLayout = (LinearLayout)view.findViewById(R.id.done_btn_layout);
+        removeOrmark = (LinearLayout)view.findViewById(R.id.linear_buttons_holder);
+        expiredInactiveButton = (Button)view.findViewById(R.id.expired_btn);
+        checkBtn = (Button)view.findViewById(R.id.check_event_btn);
+
+
         addBtn = (Button)view.findViewById(R.id.add_event_button);
         removeBtn = (Button)view.findViewById(R.id.remove_event_btn);
-        ll = (LinearLayout)view.findViewById(R.id.linear_buttons_holder);
-        checkBtn = (Button)view.findViewById(R.id.check_event_btn);
-        ll.setVisibility(View.GONE);
+        removeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+                alertDialog.setTitle("Remove?");
+                alertDialog.setMessage("You made a commitment remember? ;) \nwe believe you would find the way to complete it ");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK wont do it again",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+            }
+        });
 
-        if(true) {
+        checkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                appManager.changeEventStatus(getContext() , event ,EventStatus.DONE);
+                addBtn.setVisibility(View.GONE);
+                removeOrmark.setVisibility(View.GONE);
+                completedLayout.setVisibility(View.VISIBLE);
+            }
+        });
+
+
             if (eventStaus == EventStatus.VIEW) {
                 addBtn.setVisibility(View.VISIBLE);
-                //ll.setVisibility(View.GONE);
 
             addBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -156,7 +148,7 @@ public class EventInfoFragment extends android.support.v4.app.Fragment implement
                     AlertDialog.Builder myBuilder = new AlertDialog.Builder(getContext());
                     View mView = getLayoutInflater(null).inflate(R.layout.dialog_add_event_details ,null);
                     myBuilder.setView(mView);
-                    AlertDialog dialog = myBuilder.create();
+                    final AlertDialog dialog = myBuilder.create();
                     dialog.show();
                     final EditText timeToComplete = (EditText)mView.findViewById(R.id.time_limit_edit_text);
                     final EditText incentiveDescription = (EditText)mView.findViewById(R.id.describe_inentive_textbox);
@@ -166,49 +158,83 @@ public class EventInfoFragment extends android.support.v4.app.Fragment implement
                     commitBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            if (!timeToComplete.getText().toString().matches("") && Integer.parseInt(timeToComplete.getText().toString()) < 365  &&
-                                    !(rg.getCheckedRadioButtonId() == -1) &&
-                                    !incentiveDescription.getText().toString().matches("")){
-                                Calendar cal = Calendar.getInstance();
-                                cal.add(Calendar.DATE,Integer.parseInt(timeToComplete.getText().toString()) );
-                                event.setDueDate(cal);
-                                Amendment am = new Amendment();
-                                am.setDescription(incentiveDescription.toString());
-                                am.setType(getAmendmantFromUI(rg));
-                                event.setAmendment(am);
-                                Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
-
-                                try{
-                                   appManager.addEvent(getContext() , event , bitmap);
-                                    Toast.makeText(getActivity(), "new event added ",
-                                            Toast.LENGTH_LONG).show();
-
-                                }catch (Exception e){
-                                    Toast.makeText(getActivity(), "failed saving event ",
-                                            Toast.LENGTH_LONG).show();
-                                    Log.v("Crash on saving " , e.getMessage());
-                                    //Log.v("Crash on saving " , e.getStackTrace().toString());
-                                    e.printStackTrace();
-                                }
-
-
-
-
-                            }else{
-                                Toast.makeText(getActivity(), "seems some info is missing.. ",
-                                        Toast.LENGTH_LONG).show();
-
-                            }
+                            handleClickOnCommitBtn(dialog , timeToComplete ,incentiveDescription ,rg);
                         }
                     });
 
                 }
             });
+
+        } else if(eventStaus == EventStatus.TODO){
+                addBtn.setVisibility(View.GONE);
+                removeOrmark.setVisibility(View.VISIBLE);
+        } else if(eventStaus == EventStatus.DONE){
+                addBtn.setVisibility(View.GONE);
+                removeOrmark.setVisibility(View.GONE);
+                completedLayout.setVisibility(View.VISIBLE);
+            }else{
+                addBtn.setVisibility(View.GONE);
+                removeOrmark.setVisibility(View.GONE);
+                completedLayout.setVisibility(View.GONE);
+                expiredInactiveButton.setVisibility(View.VISIBLE);
+            }
+    }
+
+
+    private void handleClickOnCommitBtn(AlertDialog dialog, EditText timeToComplete, EditText incentiveDescription, RadioGroup rg) {
+        if (!timeToComplete.getText().toString().matches("") && Integer.parseInt(timeToComplete.getText().toString()) < 365  &&
+                !(rg.getCheckedRadioButtonId() == -1) &&
+                !incentiveDescription.getText().toString().matches("")){
+
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE,Integer.parseInt(timeToComplete.getText().toString()) );
+            event.setDueDate(cal);
+
+            Amendment am = new Amendment();
+            am.setDescription(incentiveDescription.toString());
+            am.setType(getAmendmantFromUI(rg));
+            event.setAmendment(am);
+
+            Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+
+            try{
+                // add event to db and update UI accordignly
+                appManager.addEvent(getContext() , event , bitmap);
+                dialog.dismiss();
+                addBtn.setText("EVENT ADDED TO LIST");
+                animateButtons(1);
+               animateButtons(0);
+                Toast.makeText(getActivity(), "new event added  ",
+                        Toast.LENGTH_LONG).show();
+            }catch (Exception e){
+                Toast.makeText(getActivity(), "failed saving event ",
+                        Toast.LENGTH_LONG).show();
+                Log.v("Crash on saving " , e.getMessage());
+                //Log.v("Crash on saving " , e.getStackTrace().toString());
+                e.printStackTrace();
+            }
+        }else{
+            Toast.makeText(getActivity(), "seems some info is missing.. ",
+                    Toast.LENGTH_LONG).show();
         }
-        else if(eventStaus == EventStatus.VIEW){
+
+    }
+
+    private void animateButtons( int showOrHide) {
+        if(showOrHide == 1){
+            Animation animFadeOut = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_out);
+            animFadeOut.setDuration(2000);
+            addBtn.setAnimation(animFadeOut);
+            addBtn.setVisibility(View.GONE);
+            //removeOrmark.setVisibility(View.VISIBLE);
+        }else{
+            Animation animFadeIn = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_in);
+            animFadeIn.setDuration(1000);
+            removeOrmark.setAnimation(animFadeIn);
+            removeOrmark.setVisibility(View.VISIBLE);
 
         }
-    }
+
     }
 
     private AmendmentType getAmendmantFromUI(RadioGroup rg) {
@@ -229,10 +255,7 @@ public class EventInfoFragment extends android.support.v4.app.Fragment implement
     }
 
 
-    public void showDatePickerDialog(View v) {
-        DialogFragment dateFragment = new DatePickerFragment();
-        dateFragment.show(getActivity().getFragmentManager(), "datePicker");
-    }
+
 
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -260,20 +283,30 @@ public class EventInfoFragment extends android.support.v4.app.Fragment implement
     }
 
 
-
-
-
-    @Override
-    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-        //event.setDueDate();
-        //appManager.addEvent( )
-        addBtn.setText("EVENT ADDED TO LIST");
-        Animation animFadeOut = AnimationUtils.loadAnimation(getContext(), android.R.anim.fade_out);
-        animFadeOut.setDuration(2000);
-        addBtn.setAnimation(animFadeOut);
-        addBtn.setVisibility(View.GONE);
-        ll.setVisibility(View.VISIBLE);
+    public ImageView getImageView() {
+        return imageView;
     }
+
+    public void setImageView(ImageView imageView) {
+        this.imageView = imageView;
+    }
+
+    private OnFragmentInteractionListener mListener;
+
+    public EventInfoFragment() {
+        // Required empty public constructor
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
+
+
+
 
 
     /**
