@@ -100,15 +100,15 @@ public class AppManager implements DataListener {
 
         ArrayList<Event> sortedByDate = new ArrayList<>(userEvents.getEvents());
         Log.d("EVENTS", sortedByDate.toString());
-        //Collections.sort(sortedByDate, new DateComparator());
+        Collections.sort(sortedByDate, new DateComparator());
         ArrayList<Event> nextFive = new ArrayList<>();
         for(int i=0 ; i<Math.min(5,sortedByDate.size()) ; i++){
             if(sortedByDate.get(i).getStatus()==EventStatus.TODO)
                 nextFive.add(sortedByDate.get(i));
             else{
-                //break;
-                sortedByDate.get(i).setStatus(EventStatus.TODO);
-                nextFive.add(sortedByDate.get(i));
+                break;
+/*                sortedByDate.get(i).setStatus(EventStatus.TODO);
+                nextFive.add(sortedByDate.get(i));*/
 
             }
         }
