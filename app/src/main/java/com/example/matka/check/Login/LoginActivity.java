@@ -192,6 +192,7 @@ public class LoginActivity extends AppCompatActivity {
                 finish();
             }
         });
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
     }
 
     public void startNextActivity(){

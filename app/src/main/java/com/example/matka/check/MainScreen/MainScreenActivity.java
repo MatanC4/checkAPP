@@ -62,7 +62,7 @@ public class MainScreenActivity extends FragmentActivity implements CategoriesLi
     public void onPageSelected(int position) {
         if(position==2)
             if(suggestions.isAnonymous()){
-                Snackbar s = Snackbar.make(suggestions.getView(),suggestions.getMessage(),Snackbar.LENGTH_INDEFINITE);
+                Snackbar s = Snackbar.make(suggestions.getView(),suggestions.getMessage(),Snackbar.LENGTH_SHORT);
                 s.show();
             }
     }
