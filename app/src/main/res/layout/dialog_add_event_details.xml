@@ -84,8 +84,11 @@
             android:id="@+id/radio_button_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Choose your incentive"
-            android:textSize="16dp"
+            android:text="If i fail to complete on time, i commit to:"
+            android:textSize="18dp"
+            android:textColor="#E41B17"
+            android:backgroundTint="#E41B17"
+            android:maxLines="3"
             />
         <RadioButton
             android:id="@+id/option1"
@@ -93,6 +96,7 @@
             android:layout_height="wrap_content"
             android:text="Donation"
             android:paddingRight="15dp"
+            android:checked="true"
             />
         <RadioButton
             android:id="@+id/option2"
@@ -133,36 +137,25 @@
         android:id="@+id/separator2"
         ></View>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Describe your incentive"
-        android:id="@+id/descrive_incentive_label"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="100dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"/>
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:id="@+id/describe_inentive_textbox"
-        android:layout_alignStart="@+id/descrive_incentive_label"
         android:layout_alignEnd="@+id/incentiveRadioGroup"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:textIsSelectable="true"
         android:elegantTextHeight="true"
         android:maxLines="10"
-        android:hint="describe chosen incentive in details"
+        android:layout_alignParentLeft="true"
+        android:hint="describe your commitment to details"
         android:scrollbars="vertical"
-        android:layout_below="@+id/separator2"
         android:layout_above="@+id/commit_button_123"
         android:inputType="text"
         android:scrollHorizontally="true"
         android:longClickable="true"
-        />
+        android:layout_below="@+id/separator2" />
     <Button
         android:layout_width="match_parent"
         android:layout_height="50dp"

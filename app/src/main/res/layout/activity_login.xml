@@ -21,12 +21,13 @@
         />
 
     <com.facebook.login.widget.LoginButton
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_width="200dp"
         android:id="@+id/fb_login_id"
         android:layout_alignBottom="@+id/text_view"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="109dp"></com.facebook.login.widget.LoginButton>
+        android:layout_marginBottom="109dp"
+        ></com.facebook.login.widget.LoginButton>
 
     <TextView
         android:layout_width="wrap_content"
@@ -35,25 +36,24 @@
         android:text="CHECK"
         android:id="@+id/title"
         android:textSize="60dp"
-        android:textColor="#555653"
+        android:textColor="#25383C"
         android:backgroundTint="@color/colorPrimaryDark"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="ACHIEVE MORE"
+        android:text="DO MORE."
         android:id="@+id/welcome_description"
-        android:layout_marginTop="46dp"
         android:textColor="#555653"
         android:layout_below="@+id/title"
-        android:layout_alignEnd="@+id/text_view" />
+        android:layout_toStartOf="@+id/anonymous_login" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
         android:text="Anonymous login"
         android:id="@+id/anonymous_login"
         android:layout_alignTop="@+id/fb_login_id"

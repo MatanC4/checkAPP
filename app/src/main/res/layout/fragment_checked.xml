@@ -29,7 +29,7 @@
             android:layout_alignParentRight="true"
             android:src="@drawable/plus_blue_128px"
             android:layout_marginRight="13dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="2dp"
             android:scaleType="center"
             android:background="#00FFFFFF"
             />

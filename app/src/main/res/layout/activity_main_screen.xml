@@ -28,6 +28,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:id="@+id/tab_strip"
+            android:background="#616161"
+            android:textColor="#FFFFFF"
 
             />
 

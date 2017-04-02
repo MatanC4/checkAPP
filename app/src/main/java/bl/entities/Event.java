@@ -108,7 +108,7 @@ public class Event implements Comparable<Event>{
 
     public void addToDescription(String addedText , AdditionToDescription type){
 
-        this.description += "\n" + type.toString() + " " +  addedText + ".";
+        this.description += "\n" + type.toString() + "  " +  addedText + ".";
     }
 
     public EventStatus getStatus() {

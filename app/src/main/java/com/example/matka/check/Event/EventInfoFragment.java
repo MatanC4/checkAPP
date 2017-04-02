@@ -42,6 +42,7 @@ import bl.entities.Amendment;
 import bl.entities.AmendmentType;
 import bl.entities.Event;
 import bl.entities.EventStatus;
+import java.text.SimpleDateFormat;
 
 
 public class EventInfoFragment extends android.support.v4.app.Fragment   {
@@ -65,6 +66,7 @@ public class EventInfoFragment extends android.support.v4.app.Fragment   {
     private Button expiredInactiveButton;
     private Button completedBtn;
     private boolean isFromService;
+    private TextView dueDate;
 
 
 
@@ -117,7 +119,8 @@ public class EventInfoFragment extends android.support.v4.app.Fragment   {
         checkBtn = (Button)view.findViewById(R.id.check_event_btn);
         addBtn = (Button)view.findViewById(R.id.add_event_button);
         removeBtn = (Button)view.findViewById(R.id.remove_event_btn);
-        displayActionButtonAccordingToStatus(eventStatus);
+        dueDate = (TextView)view.findViewById(R.id.due_date_field);
+                displayActionButtonAccordingToStatus(eventStatus);
 
 
         removeBtn.setOnClickListener(new View.OnClickListener() {
@@ -272,9 +275,15 @@ public class EventInfoFragment extends android.support.v4.app.Fragment   {
                 // add event to db and update UI accordignly
                 appManager.addEvent(getContext() , event , bitmap);
                 dialog.dismiss();
+                // set due date
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                String formatted = format.format(cal.getTime());
+                dueDate.setText("Due Date: " + formatted);
+
                 addBtn.setText("EVENT ADDED TO LIST");
                 animateButtons(1);
                animateButtons(0);
+
                 Toast.makeText(getActivity(), "new event added  ",
                         Toast.LENGTH_LONG).show();
             }catch (Exception e){

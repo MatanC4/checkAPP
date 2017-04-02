@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="#B3E5FC"
+    android:background="#eff1f4"
     tools:context=".Category.CategoryActivity">
 
 
@@ -23,7 +23,6 @@
             android:layout_alignParentTop="true"
             android:background="#2153a5"
             app:titleTextColor="#F2F2F2"
-
             >
 
             <TextView
