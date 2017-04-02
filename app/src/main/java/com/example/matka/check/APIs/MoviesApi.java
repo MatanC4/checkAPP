@@ -45,8 +45,6 @@ public class MoviesApi extends AppCompatActivity {
         String popUrl = BASE_URL + getPopularMethod + API_KEY + languagePrefix + pagePrefix;
         getPopularMovies(popUrl);
 
-
-
     }
 
     private void getPopularMovies(String popUrl) {

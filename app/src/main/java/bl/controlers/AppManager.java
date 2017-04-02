@@ -233,14 +233,12 @@ public class AppManager implements DataListener {
 
         String root = Environment.getExternalStorageDirectory().toString();
         ContextWrapper cw = new ContextWrapper(context);
-        // path to /data/data/yourapp/app_data/imageDir
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
         File mypath=new File(directory,event.getCategory().getName().toString() + event.getId());
 
         FileOutputStream fos = null;
         try {
             fos = new FileOutputStream(mypath);
-            // Use the compress method on the BitMap object to write image to the OutputStream
             image.compress(Bitmap.CompressFormat.PNG, 100, fos);
         } catch (Exception e) {
             e.printStackTrace();
@@ -320,6 +318,7 @@ public class AppManager implements DataListener {
 
     @Override
     public void onDataReceived(CategoryName categoryName, ArrayList<DBRecord> records) {
+        Log.v("NOT_APROVED_YET", records.toString());
         ArrayList<Event> approved = new ArrayList();
         for(DBRecord record : records){
             if(!sortedEvents.get(categories.get(categoryName)).containsKey(record.getId()) && record.getRating()>=MINIMUM_RATING){
@@ -332,7 +331,7 @@ public class AppManager implements DataListener {
                 approved.add(event);
             }
         }
-
+        Log.v("SUGGESTIONS", approved.toString());
         suggestion.put(categoryName,approved);
     }
 }

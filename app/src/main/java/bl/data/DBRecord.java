@@ -88,6 +88,18 @@ public class DBRecord implements Comparable<DBRecord>{
     }
 
     @Override
+    public String toString() {
+        return "DBRecord{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", imageURL='" + imageURL + '\'' +
+                ", description='" + description + '\'' +
+                ", category=" + category +
+                ", rating=" + rating +
+                '}';
+    }
+
+    @Override
     public int compareTo(DBRecord dbRecord) {
         return dbRecord.getRating()-this.getRating();
     }
