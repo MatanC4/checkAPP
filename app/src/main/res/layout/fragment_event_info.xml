@@ -86,7 +86,8 @@
                 android:layout_height="30dp"
                 android:layout_above="@+id/add_event_button"
                 android:layout_toEndOf="@+id/done_btn_layout"
-                android:layout_below="@+id/desc_textview" />
+                android:layout_below="@+id/desc_textview"
+                android:id="@+id/due_date_field"/>
 
             <Button
                 android:layout_width="match_parent"
