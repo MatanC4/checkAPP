@@ -9,9 +9,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainScreen.MainScreenActivity"
-    android:background="#B0BEC5"
+    android:background="#eff1f4"
     android:id="@+id/relative_main_layout"
     >
+    
+    
 
 
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,6 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:id="@+id/tab_strip"
+
             />
 
     </android.support.v4.view.ViewPager>

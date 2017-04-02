@@ -1,5 +1,6 @@
 package com.example.matka.check.Category;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 
@@ -7,11 +8,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.ToolbarWidgetWrapper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.matka.check.R;
 
@@ -30,13 +35,20 @@ public class CategoryActivity extends AppCompatActivity implements ExpiredChecks
     private CategoryScreenCollectionPagerAdapter categoryScreenCollectionPagerAdapter;
     private ViewPager mViewPager;
     private CategoryName categoryName;
+    private Toolbar toolbar;
+    private TextView toolbarTitle;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_screen);
+        setContentView(R.layout.activity_category);
         categoryName = (CategoryName) getIntent().getSerializableExtra("Category");
 
+        toolbar = (Toolbar)findViewById(R.id.tool_bar_main);
+        toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
+        //Log.v("Cat name" , categoryName.toString());
+        toolbarTitle.setText(categoryName.toString());
 /*      checkedList = CheckedList.newInstance();
         expiredChecksList = ExpiredChecksList.newInstance();
         toCheckList = ToCheckList.newInstance();*/
@@ -74,7 +86,7 @@ public class CategoryActivity extends AppCompatActivity implements ExpiredChecks
 
     private void bindUi() {
         categoryScreenCollectionPagerAdapter =  new CategoryScreenCollectionPagerAdapter(getSupportFragmentManager(),checkedList,expiredChecksList,toCheckList);
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(categoryScreenCollectionPagerAdapter);
 
     }
