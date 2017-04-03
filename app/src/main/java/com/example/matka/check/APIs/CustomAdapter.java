@@ -73,7 +73,6 @@ public class CustomAdapter extends BaseAdapter {
 
         holder = null;
         appManager = AppManager.getInstance(CustomAdapter.this.context);
-
         LayoutInflater mInflater = (LayoutInflater) context
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         convertView = mInflater.inflate(R.layout.api_results_item_layout, null);

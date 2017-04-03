@@ -178,6 +178,7 @@ public class AppManager implements DataListener {
         sortedEvents = new HashMap<>();
         categoriesAPIKeys = new HashMap<>();
         suggestion = new HashMap<>();
+        suggestion.put(CategoryName.MOVIES, new ArrayList<Event>());
         images = new HashMap<>();
         categories = new HashMap<>();
 

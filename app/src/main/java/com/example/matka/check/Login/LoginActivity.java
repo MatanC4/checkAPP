@@ -95,8 +95,8 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                textview.setText("Success + \n" +
-                        loginResult.getRecentlyGrantedPermissions() + "\n");
+                //textview.setText("Success + \n" +
+                        //loginResult.getRecentlyGrantedPermissions() + "\n");
                 GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {

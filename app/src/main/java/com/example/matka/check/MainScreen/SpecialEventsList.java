@@ -49,7 +49,6 @@ public class SpecialEventsList extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_up_next_list_view, container, false);
         eventsForDisplay = new ArrayList<>();
         AppManager manager = AppManager.getInstance(getContext());
-        ArrayList<Event> eventsForDisplay;
         if(!isSuggestions)
             eventsForDisplay = manager.getNext5Events();
         else{
@@ -59,10 +58,11 @@ public class SpecialEventsList extends Fragment {
                 eventsForDisplay = manager.getSuggestionsByProfile(CategoryName.MOVIES,getContext());
             }
             catch(Exception e){
-                isAnonymous = true;
+                e.printStackTrace();
+                if(manager.getUserInformation(getContext()).isAnonymous()){
+                    this.isAnonymous = true;
+                }
                 message = e.getMessage();
-                eventsForDisplay = new ArrayList<>();
-
             }
         }
 
