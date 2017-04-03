@@ -73,12 +73,22 @@ public class CustomAdapter extends BaseAdapter {
                 .getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         convertView = mInflater.inflate(R.layout.api_results_item_layout, null);
         holder = new ViewHolder();
-
+        holder.title = (TextView) convertView
+                .findViewById(R.id.event_name);
+        holder.addBtn = (ImageButton) convertView
+                .findViewById(R.id.add_btn);
+        final RowItem row_pos = rowItems.get(position);
+        holder.title.setText(row_pos.getTitle());
+        holder.addBtn.setImageResource(row_pos.getAddButtonImage());
+        convertView.setTag(holder);
         holder.eventImage = (ImageView) convertView.findViewById(R.id.event_image);
         if(arrayList.get(position).getStatus()== EventStatus.VIEW) {
             Picasso.with(context).load(arrayList.get(position).getImageURL()).into(holder.eventImage);
+            holder.addBtn.setVisibility(View.VISIBLE);
+
         }
         else{
+            holder.addBtn.setVisibility(View.INVISIBLE);
             Log.d("STATUS", arrayList.get(position).getStatus().toString());
             Bitmap image;
             try {
@@ -91,14 +101,7 @@ public class CustomAdapter extends BaseAdapter {
                 holder.eventImage.setImageResource(rowItems.get(position).getEventImageId());
             }
         }
-        holder.title = (TextView) convertView
-                .findViewById(R.id.event_name);
-        holder.addBtn = (ImageButton) convertView
-                .findViewById(R.id.add_btn);
-        final RowItem row_pos = rowItems.get(position);
-        holder.title.setText(row_pos.getTitle());
-        holder.addBtn.setImageResource(row_pos.getAddButtonImage());
-        convertView.setTag(holder);
+
         holder.addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

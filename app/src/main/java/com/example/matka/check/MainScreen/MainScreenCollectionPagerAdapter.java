@@ -4,9 +4,11 @@ package com.example.matka.check.MainScreen;
  * Created by matka on 11/03/17.
  */
 
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.widget.Toast;
 
 
 /**

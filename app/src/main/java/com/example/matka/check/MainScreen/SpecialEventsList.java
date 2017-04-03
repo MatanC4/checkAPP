@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ public class SpecialEventsList extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private boolean isSuggestions = false;
+    private boolean isAnonymous = false;
+    private String message;
 
     public boolean isSuggestions() {
         return isSuggestions;
@@ -43,16 +46,20 @@ public class SpecialEventsList extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_up_next_list_view, container, false);
+        eventsForDisplay = new ArrayList<>();
         AppManager manager = AppManager.getInstance(getContext());
         ArrayList<Event> eventsForDisplay;
         if(!isSuggestions)
             eventsForDisplay = manager.getNext5Events();
         else{
             try{
-                eventsForDisplay = manager.getSuggestionsByProfile(CategoryName.values()
-                        [(int)(Math.random()*CategoryName.values().length)],getContext());
+/*                eventsForDisplay = manager.getSuggestionsByProfile(CategoryName.values()
+                        [(int)(Math.random()*CategoryName.values().length)],getContext());*/
+                eventsForDisplay = manager.getSuggestionsByProfile(CategoryName.MOVIES,getContext());
             }
             catch(Exception e){
+                isAnonymous = true;
+                message = e.getMessage();
                 eventsForDisplay = new ArrayList<>();
                 Toast.makeText(getContext(),e.getMessage(),
                         Toast.LENGTH_LONG).show();
@@ -60,12 +67,15 @@ public class SpecialEventsList extends Fragment {
         }
 
         ArrayList<RowItem> rowItems = new ArrayList<>();
-        for (Event event :  eventsForDisplay) {
-            RowItem item = new RowItem(event.getName(),
-                    R.drawable.millennial_explorers,
-                    R.drawable.ic_add_circle_outline);
-            rowItems.add(item);
+        try{
+            for (Event event :  eventsForDisplay) {
+                RowItem item = new RowItem(event.getName(),
+                        R.drawable.millennial_explorers,
+                        R.drawable.ic_add_circle_outline);
+                rowItems.add(item);
+            }
         }
+        catch(Exception e){}
 
         ListView lView = (ListView) view.findViewById(R.id.up_next_list_view_ListView);
         CustomAdapter adapter = new CustomAdapter(this.getContext(), rowItems, eventsForDisplay);
@@ -112,5 +122,13 @@ public class SpecialEventsList extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public boolean isAnonymous() {
+        return isAnonymous;
     }
 }
