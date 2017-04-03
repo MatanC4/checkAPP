@@ -32,7 +32,7 @@ import bl.entities.EventStatus;
  */
 public class EventsList extends android.support.v4.app.Fragment {
     private ArrayList<String> expiredItems;
-    private ExpiredChecksList.OnFragmentInteractionListener mListener;
+    private EventsList.OnFragmentInteractionListener mListener;
     private Intent intent;
     private CategoryName categoryName;
     private ImageButton add;
@@ -111,8 +111,8 @@ public class EventsList extends android.support.v4.app.Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof ExpiredChecksList.OnFragmentInteractionListener) {
-            mListener = (ExpiredChecksList.OnFragmentInteractionListener) context;
+        if (context instanceof EventsList.OnFragmentInteractionListener) {
+            mListener = (EventsList.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");

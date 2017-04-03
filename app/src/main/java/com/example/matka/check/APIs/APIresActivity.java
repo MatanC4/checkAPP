@@ -18,6 +18,7 @@ import java.util.List;
 import android.content.Intent;
 
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.matka.check.Category.CategoryActivity;
 import com.example.matka.check.R;
 
 import bl.entities.Category;
@@ -137,5 +138,11 @@ public class APIresActivity extends Activity implements OnItemClickListener , AP
             apidataSync.start();
         }**/
         return true;
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent =  new Intent (this, CategoryActivity.class);
+        intent.putExtra("Category",CategoryName.MOVIES);
+        startActivity(intent);
     }
 }

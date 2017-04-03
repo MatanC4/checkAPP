@@ -122,6 +122,10 @@ public class CustomAdapter extends BaseAdapter {
         Gson gson = new Gson();
         String event = gson.toJson(arrayList.get(position));
         intent.putExtra("EventObj",event);
+        intent.putExtra("Category",arrayList.get(position).getCategory().getName());
+        if(arrayList.get(position).getStatus() != EventStatus.VIEW){
+            intent.putExtra("IS_CHECKED",true);
+        }
         CustomAdapter.this.context.startActivity(intent);
     }
 }

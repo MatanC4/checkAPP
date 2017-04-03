@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.matka.check.APIs.CustomAdapter;
 import com.example.matka.check.APIs.RowItem;
+import com.example.matka.check.Category.EventsList;
 import com.example.matka.check.R;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class SpecialEventsList extends Fragment {
     private boolean isSuggestions = false;
     private boolean isAnonymous = false;
     private String message;
-
+    private ArrayList<Event> eventsForDisplay;
     public boolean isSuggestions() {
         return isSuggestions;
     }
@@ -61,8 +62,7 @@ public class SpecialEventsList extends Fragment {
                 isAnonymous = true;
                 message = e.getMessage();
                 eventsForDisplay = new ArrayList<>();
-                Toast.makeText(getContext(),e.getMessage(),
-                        Toast.LENGTH_LONG).show();
+
             }
         }
 

@@ -10,12 +10,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.support.v4.app.Fragment;
+
+import com.example.matka.check.Category.CategoryActivity;
 import com.example.matka.check.R;
 import com.google.gson.Gson;
-
+import android.util.Log;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-
+import android.content.Intent;
 import org.w3c.dom.Text;
 
 import bl.controlers.AppManager;
@@ -65,5 +67,18 @@ public class EventInfoActivity extends AppCompatActivity implements EventInfoFra
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(getIntent().getBooleanExtra("IS_CHECKED",false)) {
+            Intent intent = new Intent(this, CategoryActivity.class);
+            Log.v("After Event info", categoryName.toString());
+            intent.putExtra("Category", categoryName);
+            startActivity(intent);
+        }
+        else{
+            super.onBackPressed();
+        }
     }
 }

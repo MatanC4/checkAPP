@@ -24,7 +24,7 @@ import bl.entities.EventStatus;
 
 import bl.entities.CategoryName;
 
-public class CategoryActivity extends AppCompatActivity implements ExpiredChecksList.OnFragmentInteractionListener , ToCheckList.OnFragmentInteractionListener ,CheckedList.OnFragmentInteractionListener {
+public class CategoryActivity extends AppCompatActivity implements EventsList.OnFragmentInteractionListener {
 
 /*    private CheckedList checkedList;
     private ExpiredChecksList expiredChecksList;
