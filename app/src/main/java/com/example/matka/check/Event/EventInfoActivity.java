@@ -49,6 +49,7 @@ public class EventInfoActivity extends AppCompatActivity implements EventInfoFra
         eventInfoFragment.setIsFromService(isFromService);
         eventInfoFragment.setEvent(event);
         setFragment(eventInfoFragment);
+        
     }
 
     // This could be moved into an abstract BaseActivity

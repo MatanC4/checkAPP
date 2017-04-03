@@ -43,7 +43,12 @@ public class CustomAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return arrayList.size();
+        try {
+            return arrayList.size();
+        }catch (Exception e){
+            return 2;
+        }
+
     }
 
     @Override

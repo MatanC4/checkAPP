@@ -17,7 +17,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.content.Intent;
 
+import com.example.matka.check.MainScreen.MainScreenActivity;
 import com.example.matka.check.R;
 
 import bl.entities.EventStatus;
@@ -121,10 +123,18 @@ public class CategoryActivity extends AppCompatActivity implements EventsList.On
 
     }
 
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(CategoryActivity.this,MainScreenActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public class PlaceholderFragment extends Fragment  {
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -145,6 +155,10 @@ public class CategoryActivity extends AppCompatActivity implements EventsList.On
             fragment.setArguments(args);
             return fragment;
         }**/
+
+
+
+
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,

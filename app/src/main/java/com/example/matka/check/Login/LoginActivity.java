@@ -141,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onError(FacebookException error) {
-                textview.setText("Error occured");
+               Log.v("Facebook: ", error.toString());
             }
         });
         anonymousLogin.setOnClickListener(new View.OnClickListener() {
