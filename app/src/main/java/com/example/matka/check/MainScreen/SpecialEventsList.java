@@ -24,7 +24,6 @@ import bl.entities.Event;
 
 public class SpecialEventsList extends Fragment {
 
-    private ArrayList upNextList;
     private OnFragmentInteractionListener mListener;
     private boolean isSuggestions = false;
 
@@ -64,7 +63,7 @@ public class SpecialEventsList extends Fragment {
         for (Event event :  eventsForDisplay) {
             RowItem item = new RowItem(event.getName(),
                     R.drawable.millennial_explorers,
-                    R.drawable.plus_1);
+                    R.drawable.ic_add_circle_outline);
             rowItems.add(item);
         }
 

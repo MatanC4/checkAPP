@@ -63,7 +63,8 @@ public class APIDataSync extends Thread implements Runnable {
                 //Log.v("MOVIE DB API" , "RESPONSE: " + response.toString());
                 try {
                     JSONArray movieList = response.getJSONArray("results");
-                    for (int i = 0; i<NUM_OF_RES ; i++){
+
+                    for (int i = 0; i<movieList.length(); i++){
                         Event event = new Event(i);
                         JSONObject movie = movieList.getJSONObject(i);
                         //Log.d("JSON MOVIE", movie.toString());

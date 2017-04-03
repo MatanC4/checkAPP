@@ -18,7 +18,7 @@ public class MainScreenCollectionPagerAdapter extends FragmentStatePagerAdapter 
     private SpecialEventsList upNext;
     private SpecialEventsList suggestions;
 
-    public MainScreenCollectionPagerAdapter(FragmentManager fm , CategoriesListView categoriesListView , SpecialEventsList upNext, SpecialEventsList suggestions) {
+    public MainScreenCollectionPagerAdapter(FragmentManager fm, CategoriesListView categoriesListView, SpecialEventsList upNext, SpecialEventsList suggestions) {
         super(fm);
         this.categoriesListView = categoriesListView;
         this.upNext = upNext;
@@ -33,7 +33,7 @@ public class MainScreenCollectionPagerAdapter extends FragmentStatePagerAdapter 
                 return this.categoriesListView;
 
             case 1:
-                 return this.upNext;
+                return this.upNext;
 
             case 2:
                 return this.suggestions;
@@ -44,15 +44,15 @@ public class MainScreenCollectionPagerAdapter extends FragmentStatePagerAdapter 
     }
 
     @Override
-    public int getCount () {
+    public int getCount() {
         return 3;
     }
 
     @Override
-    public CharSequence getPageTitle ( int position){
+    public CharSequence getPageTitle(int position) {
         if (position == 0)
             return ("CATEGORIES");
-        else if(position == 1)
+        else if (position == 1)
             return ("UP NEXT");
         else
             return ("SUGGESTIONS");

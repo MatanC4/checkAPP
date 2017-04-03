@@ -22,8 +22,6 @@
             android:background="#2153a5"
                 app:title="INFO"
                 app:titleTextColor="#F2F2F2"
-                app:subtitle="info"
-                app:subtitleTextColor="#F2F2F2"
             ></android.support.v7.widget.Toolbar>
 
             <ImageView

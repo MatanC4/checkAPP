@@ -2,53 +2,47 @@ package com.example.matka.check.APIs;
 
 
 import android.app.Activity;
-import android.content.res.TypedArray;
-import android.os.AsyncTask;
+import android.app.ActivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import android.content.Intent;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.example.matka.check.Event.EventActivity;
-import com.example.matka.check.Event.EventInfoActivity;
 import com.example.matka.check.R;
-import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import bl.entities.AdditionToDescription;
 import bl.entities.Category;
 import bl.entities.CategoryName;
 import bl.entities.Event;
 
 
-public class APIresActivity extends Activity implements OnItemClickListener , APIListener {
+public class APIresActivity extends Activity implements OnItemClickListener , APIListener , SearchView.OnQueryTextListener , Filterable {
 
     private String[] titles;
     private int [] eventImages;
     private int [] addBtnImages;
     private List<RowItem> rowItems;
-    ListView mylistview;
-    Intent intent;
+    private ListView mylistview;
+    private Intent intent;
+    private SearchView searchView;
 
     private final String BASE_URL = "https://api.themoviedb.org/3/";
     private final String API_KEY = "8a5c1fef1a13c3293e4c069fde43be81";
     private String inputLang = "en-US";
-    private final String getPopularMethod = "movie/popular?api_key=";
-    private final String languagePrefix = "&language=en-US";
-    private final String pagePrefix = "&page=1";
+    private final String GET_POPULAR_METHOD = "movie/popular?api_key=";
+    private final String SEARCH_METHOD = "search/movie?api_key=";
+    private final String LANGUAGE_PREFIX = "&language=en-US";
+    private final String PAGE_PREFIX = "&page=1";
+    private final String QUERY_PREFIX = "&query=";
     private JsonObjectRequest jsonObjectRequest;
     private final int NUM_OF_RES = 20;
     private final  String BASE_URL_IMAGE = "http://image.tmdb.org/t/p/";
@@ -57,17 +51,21 @@ public class APIresActivity extends Activity implements OnItemClickListener , AP
     private APIDataSync apidataSync;
     private CategoryName categoryName;
     private Category category;
-
+    private String popUrl;
     //https://api.themoviedb.org/3/movie/popular?api_key=8a5c1fef1a13c3293e4c069fde43be81&language=en-US&page=1
+//https://api.themoviedb.org/3/search/movie?api_key={api_key}&query=Jack+Reacher
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apires);
-        final String popUrl = BASE_URL + getPopularMethod + API_KEY + languagePrefix + pagePrefix;
+        popUrl = BASE_URL + GET_POPULAR_METHOD + API_KEY + LANGUAGE_PREFIX + PAGE_PREFIX;
         rowItems = new ArrayList<>();
         categoryName = (CategoryName) getIntent().getSerializableExtra("Category");
         category = new Category(categoryName ,null);
+        searchView = (SearchView)findViewById(R.id.search_bar_api);
+        searchView.setOnQueryTextListener(this);
+
         apidataSync = new APIDataSync(popUrl,this,this);
         apidataSync.start();
 
@@ -87,6 +85,7 @@ public class APIresActivity extends Activity implements OnItemClickListener , AP
     @Override
     public void passArrayList(ArrayList<Event> popularMoviesList) {
         //Log.v("FROM_API_RES" , popularMoviesList.toString());
+        rowItems = new ArrayList<>();
         for (int i = 0; i < popularMoviesList.size(); i++) {
             RowItem item = new RowItem(popularMoviesList.get(i).getName(),
                     R.drawable.millennial_explorers,
@@ -106,5 +105,37 @@ public class APIresActivity extends Activity implements OnItemClickListener , AP
         });
 
 
+    }
+
+    @Override
+    public Filter getFilter() {
+        return null;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        popUrl = BASE_URL + SEARCH_METHOD  + API_KEY + QUERY_PREFIX + s ;
+        Log.v("new url is set" , popUrl);
+        apidataSync = new APIDataSync(popUrl,this,this);
+        apidataSync.start();
+        //Log.v("new url is set" , popUrl);
+
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+
+        popUrl = BASE_URL + SEARCH_METHOD  + API_KEY + QUERY_PREFIX + s ;
+        Log.v("new url is set" , popUrl);
+        apidataSync = new APIDataSync(popUrl,this,this);
+        apidataSync.start();
+
+        /*if((s == null)|| s.equals("")){
+            popUrl = BASE_URL + GET_POPULAR_METHOD + API_KEY + LANGUAGE_PREFIX + PAGE_PREFIX;
+            apidataSync = new APIDataSync(popUrl,this,this);
+            apidataSync.start();
+        }**/
+        return true;
     }
 }

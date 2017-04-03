@@ -5,7 +5,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.support.v4.widget.SlidingPaneLayout;
 import android.widget.RelativeLayout;
 
 import com.example.matka.check.R;
@@ -31,18 +30,16 @@ public class MainScreenActivity extends FragmentActivity implements CategoriesLi
         bindUi();
     }
 
-
     private void bindUi() {
-        mainScreenCollectionPagerAdapter =  new MainScreenCollectionPagerAdapter(getSupportFragmentManager(), categoriesListView , upNext, suggestions);
+        mainScreenCollectionPagerAdapter = new MainScreenCollectionPagerAdapter(getSupportFragmentManager(), categoriesListView, upNext, suggestions);
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mainScreenCollectionPagerAdapter);
 
         //slidingPaneLayout = (SlidingPaneLayout) findViewById(R.id.sliding_tab_strip);
         //slidingPaneLayout.setDistributeEvenly(true);
         //slidingPaneLayout.setViewPager(mViewPager);
-        rl = (RelativeLayout)findViewById(R.id.relative_main_layout);
+        rl = (RelativeLayout) findViewById(R.id.relative_main_layout);
         rl.invalidate();
-
     }
 
     @Override

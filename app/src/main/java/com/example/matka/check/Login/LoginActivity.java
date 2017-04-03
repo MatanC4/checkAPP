@@ -1,7 +1,6 @@
 package com.example.matka.check.Login;
 
 import android.content.Intent;
-import android.location.Location;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,14 +22,11 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
@@ -38,8 +34,6 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 import bl.controlers.AppManager;
 import bl.entities.UserInfo;
@@ -53,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button anonymousLogin;
     private Intent mainScreenIntent;
     private String city = "Earth";
-    private String country="Earth";
+    private String country = "Earth";
     private String name = "Anonynous";
     private int age;
     private AppManager manager;
@@ -68,22 +62,18 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //dummyWriteToFireBase();
         this.requestWindowFeature(getWindow().FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
         manager = AppManager.getInstance(this);
         mainScreenIntent = new Intent(this, MainScreenActivity.class);
         UserInfo info = manager.getUserInformation(this);
         Log.v("USER_INFO", info.toString());
-        //dummyReadFromFireBase();
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
-        if(!info.isAnonymous()) {
+        if (!info.isAnonymous()) {
             startNextActivity();
             finish();
-        }
-
-        else{
+        } else {
             fbConnect();
         }
     }
@@ -94,34 +84,6 @@ public class LoginActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void dummyWriteToFireBase() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mDatabase = database.getReference();
-        DatabaseReference postsRef = mDatabase.child("msg");
-        DatabaseReference newPostRef = postsRef.push();
-        newPostRef.setValue("Hello, Universe!");
-    }
-
-    private void dummyReadFromFireBase(){
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        //mDatabase = database.getReference("msg");
-        Query q = database.getReference("msg").limitToFirst(3);
-
-        q.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    String s = child.getValue(String.class);
-                    Log.d("Reading:", s);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // ...
-            }
-        });
-    }
 
     public void fbConnect() {
         loginButton = (LoginButton) findViewById(R.id.fb_login_id);
@@ -135,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onSuccess(LoginResult loginResult) {
                 textview.setText("Success + \n" +
                         loginResult.getRecentlyGrantedPermissions() + "\n");
-                        GraphRequest request = GraphRequest.newMeRequest(
+                GraphRequest request = GraphRequest.newMeRequest(
                         loginResult.getAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
@@ -143,25 +105,24 @@ public class LoginActivity extends AppCompatActivity {
                                 Log.v("LoginActivity", response.toString());
                                 try {
                                     String birthday = object.getString("birthday");
-                                    JSONObject location = (JSONObject)object.get("location");
+                                    JSONObject location = (JSONObject) object.get("location");
                                     LoginActivity.this.name = object.get("name").toString();
-                                    String locationDetails  = location.getString("name");
+                                    String locationDetails = location.getString("name");
                                     String[] localDetails = locationDetails.split(", ");
                                     LoginActivity.this.city = localDetails[0];
-                                    if(localDetails.length>0)
-                                        LoginActivity.this.country = localDetails[localDetails.length-1];
+                                    if (localDetails.length > 0)
+                                        LoginActivity.this.country = localDetails[localDetails.length - 1];
                                     int year;
-                                    try{
+                                    try {
                                         year = Integer.parseInt(birthday.substring(birthday.length() - 4));
-                                    }
-                                    catch(Exception e){
+                                    } catch (Exception e) {
                                         year = 2000;
                                     }
                                     LoginActivity.this.age = Calendar.getInstance().get(Calendar.YEAR) - year;
-                                    Log.d("FACEBOOK","name: " + name + " ,BirthDay: " + birthday + " City: "+ localDetails[0] + " Country: "+ localDetails[localDetails.length-1] + " ,Age: " + age);
+                                    Log.d("FACEBOOK", "name: " + name + " ,BirthDay: " + birthday + " City: " + localDetails[0] + " Country: " + localDetails[localDetails.length - 1] + " ,Age: " + age);
                                     LoginActivity.this.saveUserData();
                                 } catch (JSONException e) {
-                                    Log.d("FACEBOOK","Failed");
+                                    Log.d("FACEBOOK", "Failed");
                                 }
                             }
                         });
@@ -194,7 +155,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void startNextActivity(){
+    public void startNextActivity() {
         try {
             startActivity(mainScreenIntent);
         } catch (Exception e) {
@@ -238,7 +199,7 @@ public class LoginActivity extends AppCompatActivity {
         client.disconnect();
     }
 
-    public void saveUserData(){
-        manager.saveLoggedUserInformation(this,name,age,city,country);
+    public void saveUserData() {
+        manager.saveLoggedUserInformation(this, name, age, city, country);
     }
 }

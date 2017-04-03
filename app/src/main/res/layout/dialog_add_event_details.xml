@@ -85,10 +85,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="If i fail to complete on time, i commit to:"
-            android:textSize="18dp"
+            android:textSize="15dp"
             android:textColor="#E41B17"
             android:backgroundTint="#E41B17"
             android:maxLines="3"
+
             />
         <RadioButton
             android:id="@+id/option1"
@@ -147,7 +148,8 @@
         android:layout_marginRight="10dp"
         android:textIsSelectable="true"
         android:elegantTextHeight="true"
-        android:maxLines="10"
+        android:textSize="15dp"
+        android:maxLines="6"
         android:layout_alignParentLeft="true"
         android:hint="describe your commitment to details"
         android:scrollbars="vertical"

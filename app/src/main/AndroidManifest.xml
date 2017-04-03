@@ -85,9 +85,6 @@
         <activity android:name=".APIs.APIresActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="true"/>
-        <activity android:name=".Event.EventActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:exported="true"/>
         <activity android:name=".Event.EventInfoActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:exported="true"></activity>

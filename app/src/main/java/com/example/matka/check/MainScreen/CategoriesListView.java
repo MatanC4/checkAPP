@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
 
 import com.example.matka.check.Category.CategoryActivity;
@@ -22,11 +21,7 @@ import com.example.matka.check.R;
 
 import java.util.ArrayList;
 
-import bl.entities.Category;
 import bl.entities.CategoryName;
-
-
-//import android.app.Fragment;
 
 
 public class CategoriesListView extends Fragment {
@@ -40,28 +35,27 @@ public class CategoriesListView extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categories_list_view, container, false);
         categoryList = new ArrayList<>();
 
-        for(CategoryName name:CategoryName.values()){
+        for (CategoryName name : CategoryName.values()) {
             categoryList.add(name);
         }
 
-        ListView  listView = (ListView) view.findViewById(R.id.category_list_view);
+        ListView listView = (ListView) view.findViewById(R.id.category_list_view);
         ArrayAdapter<CategoryName> arrayAdapter = new ArrayAdapter<>(getActivity()
-                ,R.layout.custom_category_item_layout,R.id.category_list_item ,
+                , R.layout.custom_category_item_layout, R.id.category_list_item,
                 categoryList);
 
         listView.setAdapter(arrayAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                intent  = new Intent(getContext() , CategoryActivity.class);
-                intent.putExtra("Category" ,CategoryName.values()[i]);
+                intent = new Intent(getContext(), CategoryActivity.class);
+                intent.putExtra("Category", CategoryName.values()[i]);
                 startActivity(intent);
             }
         });
